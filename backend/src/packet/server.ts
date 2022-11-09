@@ -1,71 +1,81 @@
+import { Packet } from "./packets";
+
 // Server packet ids
-const serverIds = {
-    SDisconnect: 0x00,
-    SError: 0x01,
-    SJoinedGame: 0x02,
-    SNameTakenResult: 0x03,
-    SGameState: 0x04,
-    SPlayerData: 0x05,
-    STimeSync: 0x06,
-    SQuestion: 0x07,
-    SAnswerResult: 0x08,
-    SScores: 0x09
-};
+export enum SPID {
+    SDisconnect = 0x00,
+    SError,
+    SJoinedGame,
+    SNameTakenResult,
+    SGameState,
+    SPlayerData,
+    STimeSync,
+    SQuestion,
+    SAnswerResult,
+    SScores
+}
 
 // Disconnect a user from the game
-type SDisconnect = {
+export interface SDisconnect {
     reason: string;
-};
+}
 
 // Error on the game server
-type SError = {
+export interface SError {
     cause: string;
-};
+}
 
 // Joined a quiz
-type SJoinedGame = {
+export interface SJoinedGame {
     owner: boolean; // If created this game
     id: string; // Id of the game
-    title: string; // Name of user
-};
+    title: string; // Title of quiz
+}
 
 // Result of checking if name is taken
-type SNameTakenResult = {
+export interface SNameTakenResult {
     result: boolean; // If name is taken
-};
+}
 
 // Return of current joined game state
-type SGameState = {
+export interface SGameState {
     state: number; // ID of game state
-};
+}
 
 // The player's current data
-type SPlayerData = {
+export interface SPlayerData {
     id: string; // Player id
     name: string; // Player name
     type: number;
-};
+}
 
 // Server time for game to sync up
-type STimeSync = {
+export interface STimeSync {
     total: number; // Total game time
     remaining: number; // Remaining game time
-};
+}
 
 // Current question data
-type SQuestion = {
+export interface SQuestion {
     question: string; // String question
     answers: string[]; // Available answers
-};
+}
 
 // If chosen answer was correct
-type SAnswerResult = {
+export interface SAnswerResult {
     result: boolean; // If was correct
-};
+}
 
 // Updated scores for the game
-type SScores = {
+export interface SScores {
     scores: Map<number, string>; // Player scores
-};
+}
 
-export { serverIds, SDisconnect, SError, SJoinedGame, SNameTakenResult, SGameState, SPlayerData, STimeSync, SQuestion, SAnswerResult, SScores };
+// Server packet constructors
+export const disconnect = (reason: string): Packet => {
+    return {
+        id: SPID.SDisconnect,
+        data: {
+            reason
+        }
+    }
+}

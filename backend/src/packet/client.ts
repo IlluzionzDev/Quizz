@@ -1,49 +1,50 @@
-const clientIds = {
-    CCreateGame: 0x01,
-    CCheckNameTaken: 0x02,
-    CRequestGameState: 0x03,
-    CRequestJoin: 0x04,
-    CStateChange: 0x05,
-    CAnswer: 0x06,
-    CKick: 0x07
+import { QuestionData } from "./packets";
+
+// Client packet ids
+export enum CPID {
+    CCreateGame = 0x00,
+    CCheckNameTaken,
+    CRequestGameState,
+    CRequestJoin,
+    CStateChange,
+    CAnswer,
+    CKick
 };
 
 // Request to create a quiz
-type CCreateGame = {
+export interface CCreateGame {
     title: string;
     questions: QuestionData[];
 };
 
 // Request to see if name is taken
-type CCheckNameTaken = {
+export interface CCheckNameTaken {
     id: string;
     name: string;
 };
 
 // Request active game state
-type CRequestGameState = {
+export interface CRequestGameState {
     id: string;
 };
 
 // Request to join with a name
-type CRequestJoin = {
+export interface CRequestJoin {
     id: string;
     name: string;
 };
 
 // Request to change state
-type CStateChange = {
+export interface CStateChange {
     state: number;
 };
 
 // Request to set answer for a question
-type CAnswer = {
+export interface CAnswer {
     id: number;
 };
 
 // Request kick of a player
-type CKick = {
+export interface CKick {
     id: string;
 };
-
-export { clientIds, CCreateGame, CCheckNameTaken, CRequestGameState, CRequestJoin, CStateChange, CAnswer, CKick };

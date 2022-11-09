@@ -1,5 +1,5 @@
 // A player instance is created when joining a game instance
-type PlayerData = {
+interface PlayerData {
     socket: WebSocket; // Client connection
     id: string; // Player id
     name: string; // Name of player in game
