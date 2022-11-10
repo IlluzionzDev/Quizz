@@ -1,10 +1,10 @@
-import { Packet } from "./packets";
+import { GameState, Packet } from './packets';
 
 // Server packet ids
 export enum SPID {
     SDisconnect = 0x00,
     SError,
-    SJoinedGame,
+    SJoinGame,
     SNameTakenResult,
     SGameState,
     SPlayerData,
@@ -25,7 +25,7 @@ export interface SError {
 }
 
 // Joined a quiz
-export interface SJoinedGame {
+export interface SJoinGame {
     owner: boolean; // If created this game
     id: string; // Id of the game
     title: string; // Title of quiz
@@ -41,11 +41,18 @@ export interface SGameState {
     state: number; // ID of game state
 }
 
-// The player's current data
+// Contains data about a player in a game
 export interface SPlayerData {
     id: string; // Player id
     name: string; // Player name
-    type: number;
+    score: number; // Score of player
+    type: SPlayerDataType; // Mode for player data
+}
+
+export enum SPlayerDataType {
+    ADD = 0x00,
+    REMOVE,
+    SELF
 }
 
 // Server time for game to sync up
@@ -77,5 +84,93 @@ export const disconnect = (reason: string): Packet => {
         data: {
             reason
         }
-    }
-}
+    };
+};
+
+export const error = (cause: string): Packet => {
+    return {
+        id: SPID.SError,
+        data: {
+            cause
+        }
+    };
+};
+
+export const joinGame = (owner: boolean, id: string, title: string): Packet => {
+    return {
+        id: SPID.SJoinGame,
+        data: {
+            owner,
+            id,
+            title
+        }
+    };
+};
+
+export const nameTakenResult = (result: boolean): Packet => {
+    return {
+        id: SPID.SNameTakenResult,
+        data: {
+            result
+        }
+    };
+};
+
+export const gameState = (state: GameState): Packet => {
+    return {
+        id: SPID.SGameState,
+        data: {
+            state
+        }
+    };
+};
+
+export const playerData = (id: string, name: string, score: number, type: SPlayerDataType): Packet => {
+    return {
+        id: SPID.SPlayerData,
+        data: {
+            id,
+            name,
+            score,
+            type
+        }
+    };
+};
+
+export const timeSync = (total: number, remaining: number): Packet => {
+    return {
+        id: SPID.STimeSync,
+        data: {
+            total,
+            remaining
+        }
+    };
+};
+
+export const question = (question: string, answers: string[]): Packet => {
+    return {
+        id: SPID.SQuestion,
+        data: {
+            question,
+            answers
+        }
+    };
+};
+
+export const answerResult = (result: boolean): Packet => {
+    return {
+        id: SPID.SAnswerResult,
+        data: {
+            result
+        }
+    };
+};
+
+export const scores = (scores: Map<string, string>): Packet => {
+    return {
+        id: SPID.SScores,
+        data: {
+            scores
+        }
+    };
+};

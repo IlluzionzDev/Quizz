@@ -7,7 +7,7 @@ import * as WebSocket from 'ws';
 import * as packets from './packet/packets';
 import * as gameServer from './game/server'
 import { CAnswer, CCheckNameTaken, CCreateGame, CKick, CPID, CRequestGameState, CRequestJoin, CStateChange } from './packet/client';
-import { SJoinedGame } from './packet/server';
+import { error, gameState, joinGame, SJoinGame } from './packet/server';
 
 // Initializes env variables
 config();
@@ -64,16 +64,21 @@ wss.on('connection', (ws: WebSocket) => {
 function onCreateGame(client: WebSocket, data: CCreateGame) {
     const newGame = gameServer.newGame(client, data.title, data.questions)
 
-    // Join host to new game
-    const joinGamePacket: SJoinedGame = {
-        owner: true,
-        id: newGame.id,
-        title: data.title
-    }
-    client.send(JSON.stringify(joinGamePacket));
+    // Join player to game as host
+    packets.sendPacket(client, joinGame(true, newGame.id, data.title))
+    // Set game state to waiting
+    packets.sendPacket(client, gameState(packets.GameState.WAITING))
 }
 
-function onCheckNameTaken(client: WebSocket, data: CCheckNameTaken) {}
+function onCheckNameTaken(client: WebSocket, data: CCheckNameTaken) {
+    const game = gameServer.getGame(data.id)
+
+    if (game) {
+        
+    } else {
+        packets.sendPacket(client, error('Game does not exist'))
+    }
+}
 
 function onRequestGameState(client: WebSocket, data: CRequestGameState) {
     console.log(data);
