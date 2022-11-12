@@ -34,10 +34,16 @@ export interface CRequestJoin {
     name: string;
 };
 
-// Request to change state
+// Request to change client state
 export interface CStateChange {
-    state: number;
+    state: number; // Game state
 };
+
+export enum CStateChangeState {
+    DISCONNECT = 0x00, // Disconnect from the game
+    START, // Start the current game
+    SKIP // Skip the current question
+}
 
 // Request to set answer for a question
 export interface CAnswer {

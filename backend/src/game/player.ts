@@ -29,6 +29,12 @@ export class Player {
         return this.answers.get(questionIndex) ?? -1;
     }
 
+    // Check if player has answered the question for the current game
+    hasAnswered(game: Game): boolean {
+        const activeQuestion = game.activeQuestion;
+        return this.getAnswer(activeQuestion.index) !== -1;
+    }
+
     // Answer the current game question
     answer(game: Game, questionIndex: number) {}
 }

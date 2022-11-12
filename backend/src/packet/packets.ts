@@ -1,5 +1,3 @@
-import * as clientPackets from './client';
-import * as serverPackets from './server';
 import * as WebSocket from 'ws';
 
 // Packet data object
@@ -12,7 +10,8 @@ export interface Packet {
 export enum GameState {
     WAITING = 0x00, // Players can join
     ACTIVE, // In session
-    FINISHED // Game over
+    FINISHED, // Game over
+    NOT_FOUND // Game does not exist
 }
 
 // Data for a question
@@ -24,7 +23,5 @@ export interface QuestionData {
 
 // Send a packet to the client
 export const sendPacket = (client: WebSocket, packet: Packet) => {
-    client.send(JSON.stringify(packet))
-}
-
-export { clientPackets, serverPackets };
+    client.send(JSON.stringify(packet));
+};

@@ -14,7 +14,7 @@ export class Game {
     players: Map<string, player.Player>; // Player's in game
     startTime: number; // Start time in millis
     state: number; // GameState ID
-    activeQuestion?: ActiveQuestion; // Current game question
+    activeQuestion: ActiveQuestion; // Current game question
 
     constructor(host: WebSocket, id: string, title: string, questions: packets.QuestionData[]) {
         this.host = host;
@@ -29,13 +29,8 @@ export class Game {
     }
 
     // Check if there is a joined player with the same name
-    isNameTaken(id: string, name: string): boolean {
-        const game = getGame(id);
-
-        // If game doesn't exist
-        if (!game) return true;
-
-        for (const [playerId, playerData] of game.players) {
+    isNameTaken(name: string): boolean {
+        for (const [playerId, playerData] of this.players) {
             if (playerData.name.toLowerCase() === name.toLowerCase()) return true;
         }
 
@@ -67,11 +62,12 @@ export class Game {
     }
 
     // Add a player to this game
-    addPlayer(client: WebSocket, name: string) {
+    addPlayer(client: WebSocket, name: string): player.Player {
         // Create player object
         // Tell player the game state
         // Inform them of their player data
         // Tell all other players in the game that they exist
+        return null;
     }
 
     // Start the game
