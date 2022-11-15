@@ -1,7 +1,9 @@
-/** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  swcMinify: true,
-}
+  sassOptions: {
+    includePaths: ['./styles', './components'],
+    prependData: `@import "styles/design-system-utils.scss";`,
+  },
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;

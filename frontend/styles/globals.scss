@@ -1,0 +1,35 @@
+::-webkit-scrollbar {
+  display: none;
+}
+
+.button__1 {
+  @include button-text;
+  @include shadow-soft;
+
+  color: $white;
+  background-color: $onyx;
+  padding: rem(8) rem(31);
+  margin: rem(8);
+  text-align: center;
+  outline: none;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-family: $font-1;
+
+  transition: 200ms ease-in-out;
+
+  // Basic hover
+  &:hover {
+    transform: translateY(-2px);
+  }
+
+  a {
+    color: $white;
+  }
+}
+
+.button__column {
+  display: flex;
+  flex-direction: column;
+}

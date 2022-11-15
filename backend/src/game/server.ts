@@ -1,9 +1,9 @@
 /**
  * Main game server handler
  */
-import * as player from './player';
 import * as packets from '../packet/packets';
 import * as WebSocket from 'ws';
+import { Player } from './player';
 
 // Object that handles a game
 export class Game {
@@ -11,7 +11,7 @@ export class Game {
     id: string; // Game ID
     title: string; // Title of game
     questions: packets.QuestionData[]; // All questions
-    players: Map<string, player.Player>; // Player's in game
+    players: Map<string, Player>; // Player's in game
     startTime: number; // Start time in millis
     state: number; // GameState ID
     activeQuestion: ActiveQuestion; // Current game question
@@ -23,7 +23,7 @@ export class Game {
         this.questions = questions;
 
         // Default states
-        this.players = new Map<string, player.Player>();
+        this.players = new Map<string, Player>();
         this.startTime = Date.now();
         this.state = packets.GameState.WAITING;
     }
@@ -39,7 +39,7 @@ export class Game {
 
     // Broadcast packets to game
     broadcast(packet: packets.Packet, host: boolean): void {
-        this.players.forEach((playerData: player.Player, playerId: string) => {
+        this.players.forEach((playerData: Player, playerId: string) => {
             packets.sendPacket(playerData.socket, packet);
         });
 
@@ -50,7 +50,7 @@ export class Game {
     }
 
     broadcastExcluding(exclude: string, packet: packets.Packet, host: boolean) {
-        this.players.forEach((playerData: player.Player, playerId: string) => {
+        this.players.forEach((playerData: Player, playerId: string) => {
             // If not excluded id
             if (exclude !== playerId) packets.sendPacket(playerData.socket, packet);
         });
@@ -62,12 +62,14 @@ export class Game {
     }
 
     // Add a player to this game
-    addPlayer(client: WebSocket, name: string): player.Player {
+    addPlayer(client: WebSocket, name: string): Player {
         // Create player object
+        const playerId = this.generatePlayerId();
+        const player: Player = new Player(client, playerId, name);
         // Tell player the game state
         // Inform them of their player data
         // Tell all other players in the game that they exist
-        return null;
+        return player;
     }
 
     // Start the game
@@ -87,7 +89,7 @@ export class Game {
     }
 
     // Calculate score for a player for question
-    calculateScore(player: player.Player, question: ActiveQuestion) {}
+    calculateScore(player: Player, question: ActiveQuestion) {}
 
     // Skip past current question
     skipQuestion() {}
@@ -105,7 +107,7 @@ export class Game {
     setState(state: packets.GameState) {}
 
     // Remove player from the game
-    removePlayer(player: player.Player) {}
+    removePlayer(player: Player) {}
 
     // Run cleanup code on game
     stop() {}
