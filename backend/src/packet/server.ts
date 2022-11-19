@@ -73,8 +73,9 @@ export interface SAnswerResult {
 }
 
 // Updated scores for the game
+// Updated scores for the game
 export interface SScores {
-    scores: Map<number, string>; // Player scores
+    scores: Record<string, number>; // Player scores
 }
 
 // Server packet constructors
@@ -166,7 +167,7 @@ export const answerResult = (result: boolean): Packet => {
     };
 };
 
-export const scores = (scores: Map<string, string>): Packet => {
+export const scores = (scores: Record<string, number>): Packet => {
     return {
         id: SPID.SScores,
         data: {

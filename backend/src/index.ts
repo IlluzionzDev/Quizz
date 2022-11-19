@@ -24,7 +24,7 @@ app.use(cors());
 
 // Create web socket server at '/ws'
 const server = http.createServer(app);
-const wss = new WebSocket.WebSocketServer({ server, path: '/ws' });
+const wss = new WebSocket.WebSocketServer({ server });
 
 // Defines the type of packet handler function
 type PacketHandlerFunction = (client: WebSocket, data: any) => void;
@@ -33,9 +33,6 @@ type PacketHandlers = Record<CPID, PacketHandlerFunction>;
 
 // Client has connected to server
 wss.on('connection', (ws: WebSocket) => {
-    // Packet handler
-    ws.send('Connected to Quizz Server!');
-
     // Client instance
     const client = new Client(ws);
     client.connect();
@@ -81,6 +78,8 @@ class Client {
                 const handler = this.handlers[packetId];
                 handler(this.socket, packetData);
             }
+
+            console.log(`Received packet ${data.toString()}`)
         });
     }
 
