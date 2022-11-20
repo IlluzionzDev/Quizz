@@ -1,13 +1,16 @@
 .quiz__title {
     width: 100%;
 
-    border: 1px solid $gray-200;
-    border-radius: 5px;
+    border: none;
     padding: rem(20) rem(20);
 
     margin-bottom: rem(20);
 
     font: $font-1;
+    font-size: 2rem;
+    font-weight: 600;
+    margin-left: 0;
+    padding-left: 0;
 }
 
 .create-quiz {
@@ -23,8 +26,9 @@
 
 .questions {
 
+    margin: rem(20) 0;
+
     &__add {
-        margin-left: 0;
     }
 
     &__box {
@@ -38,5 +42,32 @@
         padding: rem(10) rem(20);
         margin: rem(20) 0;
         border-radius: 5px;
+    }
+
+    &__question {
+        margin: rem(10);
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        background-color: $gray-300;
+        border-radius: 5px;
+
+        &__title {
+            padding: 1rem 1rem;
+        }
+
+        &__edit {
+            margin-left: auto;
+            gap: 1rem;
+            padding: 1rem 1rem;
+            align-items: center;
+            justify-content: flex-end;
+            display: flex;
+            flex-direction: row;
+
+            &__item {
+                cursor: pointer;
+            }
+        }
     }
 }

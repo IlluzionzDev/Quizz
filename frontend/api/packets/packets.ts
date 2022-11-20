@@ -17,7 +17,7 @@ export enum GameState {
 export interface QuestionData {
     question: string; // The question being asked
     answers: string[]; // Answers for this question
-    correct: string[]; // All correct answers
+    correct: number[]; // All correct answers indexes
 }
 
 // Send a packet to the client
