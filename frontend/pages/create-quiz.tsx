@@ -1,16 +1,18 @@
 import styles from './create-quiz.module.scss';
-import { useClient } from 'api';
+import { send, useClient, useGameState } from 'api';
 import { createGame } from 'api/packets/client';
 import type { NextPage } from 'next';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import PlayerNav from '@components/layout/PlayerNav';
 import FullSection from '@components/layout/FullSection';
 import CreateQuestionModal from '@components/create/CreateQuestionModal';
-import { QuestionData } from 'api/packets/packets';
+import { GameState, QuestionData } from 'api/packets/packets';
 import { FaPen, FaTimes } from 'react-icons/fa';
+import { useRouter } from 'next/router';
 
 const CreateQuiz: NextPage = () => {
-    const client = useClient();
+    useClient();
+    const router = useRouter();
 
     // Store quiz title
     const [title, setTitle] = useState('');
@@ -27,20 +29,22 @@ const CreateQuiz: NextPage = () => {
     // If to display the creating question modal
     const [createQuestionModal, setCreateQuestionModal] = useState(false);
 
-    function quizTitle(e: React.FormEvent<HTMLInputElement>) {
-        setTitle(e.currentTarget.value);
-    }
-
     /**
      * Validate questions and create quiz if okay
      */
     function createQuiz() {
-        // Validations
+        // Make sure has a title
+        if (!title) return;
+        // Make sure has atleast one question
+        if (questions.length === 0) return;
 
-        client?.send(createGame(title, questions));
+        send(createGame(title, questions));
     }
 
-    // Modal for creating question
+    // When game created, enters waiting state so redirect to waiting room
+    useGameState(GameState.WAITING, () => {
+        router.push('/waiting');
+    });
 
     return (
         <FullSection>
@@ -70,9 +74,24 @@ const CreateQuiz: NextPage = () => {
                 question={question}
                 setQuestion={setQuestion}
             />
-            <PlayerNav backlink="/" title="Create Quiz" />
+            <PlayerNav
+                onBack={() => {
+                    router.push('/');
+                }}
+                backlink="Go Back"
+                title="Create Quiz"
+            />
             <div className={`container ${styles['create-quiz']}`}>
-                <input type="text" className={styles.quiz__title} placeholder="Enter Quiz Title" name="quiz_title" value={title} onChange={quizTitle} />
+                <input
+                    type="text"
+                    className={styles.quiz__title}
+                    placeholder="Enter Quiz Title"
+                    name="quiz_title"
+                    value={title}
+                    onChange={(e) => {
+                        setTitle(e.currentTarget.value);
+                    }}
+                />
 
                 <div className={styles.questions}>
                     <h3>Questions</h3>

@@ -1,19 +1,24 @@
-import Link from 'next/link';
 import styles from './PlayerNav.module.scss';
 
 type PlayerNavProps = {
+    onBack: Function;
     backlink: string;
     title: string;
 };
 
-const PlayerNav: React.FC<PlayerNavProps> = ({ backlink, title }) => (
+const PlayerNav: React.FC<PlayerNavProps> = ({ onBack, backlink, title }) => (
     <header className={`container ${styles.header}`}>
         <nav>
             <ul>
                 <li>
-                    <Link href={backlink} passHref>
-                        <button className="button button__solid">Go Back</button>
-                    </Link>
+                    <button
+                        className="button button__solid"
+                        onClick={(e) => {
+                            onBack();
+                        }}
+                    >
+                        {backlink}
+                    </button>
                 </li>
 
                 <li>{title}</li>

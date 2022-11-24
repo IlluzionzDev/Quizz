@@ -1,0 +1,22 @@
+.waiting {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    &__info {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        text-align: center;
+        width: 50%;
+
+        &__title {
+            font-family: $font-4;
+        }
+
+        &__id {
+            color: $secondary-100;
+        }
+    }
+}

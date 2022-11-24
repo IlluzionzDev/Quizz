@@ -113,7 +113,7 @@ export const answer = (id: number) => {
     };
 };
 
-export const kick = (id: string) => {
+export const kickPlayer = (id: string) => {
     return {
         id: CPID.CKick,
         data: {

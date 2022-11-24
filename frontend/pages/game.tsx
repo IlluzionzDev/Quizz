@@ -1,7 +1,7 @@
 import CenterSection from '@components/layout/CenterSection';
 import type { NextPage } from 'next';
 
-const JoinQuiz: NextPage = () => {
+const Game: NextPage = () => {
   return (
     <div>
       <CenterSection>Game Page</CenterSection>
@@ -9,4 +9,4 @@ const JoinQuiz: NextPage = () => {
   );
 };
 
-export default JoinQuiz;
+export default Game;

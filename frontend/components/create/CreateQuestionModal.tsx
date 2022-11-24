@@ -61,7 +61,6 @@ const CreateQuestionModal: React.FC<CreateQuestionModalProps> = ({ isOpen, onSub
                         <button
                             className="button button__solid"
                             onClick={() => {
-                                // TODO: Notify can't submit blank question
                                 onSubmit(question);
 
                                 // Clear state

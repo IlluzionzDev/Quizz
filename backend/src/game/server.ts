@@ -4,6 +4,7 @@
 import * as packets from '../packet/packets';
 import * as WebSocket from 'ws';
 import { Player } from './player';
+import { gameState, playerData, SPlayerDataType } from '../packet/server';
 
 // Object that handles a game
 export class Game {
@@ -66,14 +67,26 @@ export class Game {
         // Create player object
         const playerId = this.generatePlayerId();
         const player: Player = new Player(client, playerId, name);
+
+        // Add player to game
+        this.players.set(playerId, player);
+
         // Tell player the game state
+        packets.sendPacket(this.host, gameState(packets.GameState.WAITING));
+
         // Inform them of their player data
+        packets.sendPacket(this.host, playerData(playerId, player.name, player.score, SPlayerDataType.SELF));
+
         // Tell all other players in the game that they exist
+        this.broadcastExcluding(playerId, playerData(playerId, player.name, player.score, SPlayerDataType.ADD), true);
+
         return player;
     }
 
     // Start the game
-    start() {}
+    start() {
+        console.log('Starting game');
+    }
 
     // Main game loop for game logic
     gameLoop() {}
@@ -116,7 +129,7 @@ export class Game {
     private generatePlayerId() {
         const id: string = generateRandomId(6);
 
-        if (this.players.has(id)) return id;
+        if (!this.players.has(id)) return id;
         // Retry
         else return this.generatePlayerId();
     }
@@ -134,6 +147,7 @@ const games = new Map<string, Game>();
 
 // Get an active game from ID
 export const getGame = (id: string): Game | undefined => {
+    console.log(games);
     const game: Game | undefined = games.get(id);
     return game;
 };
@@ -142,7 +156,7 @@ export function newGame(host: WebSocket, title: string, questions: packets.Quest
     const id = generateRandomId(5);
     const game: Game = new Game(host, id, title, questions);
 
-    games[id] = game;
+    games.set(id, game);
 
     // Start game loop
 

@@ -79,7 +79,7 @@ class Client {
                 handler(this.socket, packetData);
             }
 
-            console.log(`Received packet ${data.toString()}`)
+            console.log(`Received packet ${data.toString()}`);
         });
     }
 
@@ -116,6 +116,7 @@ class Client {
 
     onRequestJoin(client: WebSocket, data: CRequestJoin) {
         const game = gameServer.getGame(data.id);
+        console.log(game);
         if (!game) {
             packets.sendPacket(client, error('Game does not exist'));
         } else {
@@ -124,7 +125,7 @@ class Client {
                 packets.sendPacket(client, error('Game already started'));
                 // Internal check if name is taken
             } else if (game.isNameTaken(data.name)) {
-                packets.sendPacket(client, error('Game already started'));
+                packets.sendPacket(client, error('Name is taken'));
             } else {
                 // Join game instance
                 this.player = game.addPlayer(client, data.name);
@@ -191,12 +192,12 @@ class Client {
     cleanUp() {
         // Stop host games
         if (this.hostGame != null) {
-            this.hostGame.stop()
-            this.hostGame = undefined
+            this.hostGame.stop();
+            this.hostGame = undefined;
         }
 
         if (this.game != null && this.player != null) {
-            this.game.removePlayer(this.player)
+            this.game.removePlayer(this.player);
             this.game = undefined;
             this.player = undefined;
         }
