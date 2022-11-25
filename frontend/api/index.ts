@@ -1,11 +1,11 @@
 // Handle connection to the server
 import { useAppDispatch, useAppSelector } from 'hooks';
 import { useRouter } from 'next/router';
-import { useEffect, useLayoutEffect } from 'react';
+import { MutableRefObject, useEffect, useLayoutEffect, useRef } from 'react';
 import { clearState, removePlayer, setGameData, setGameState, setOpen, setQuestion, updatePlayers, updateScore } from 'store/clientSlice';
 import { CStateChangeState, stateChange, kickPlayer } from './packets/client';
 import { GameState, Packet } from './packets/packets';
-import { SDisconnect, SError, SGameState, SJoinGame, SPID, SPlayerData, SPlayerDataType, SQuestion, SScores } from './packets/server';
+import { SDisconnect, SError, SGameState, SJoinGame, SPID, SPlayerData, SPlayerDataType, SQuestion, SScores, STimeSync } from './packets/server';
 
 // An empty function for handlers without a function
 const EMPTY_HANDLER = () => null;
@@ -15,9 +15,10 @@ type PacketHandlerFunction = (dispatch: Function, data: any) => void;
 // Defines the packet handlers map which is id -> handler
 type PacketHandlers = Record<SPID, PacketHandlerFunction>;
 
-/**
- * Open web socket
- */
+// WebSocket host server
+const host = process.env.HOST ?? 'ws://localhost:4000';
+
+// Web socket connection
 let socket: WebSocket | null;
 
 /**
@@ -189,9 +190,6 @@ export function kick(dispatch: Function, id: string) {
     send(kickPlayer(id)); // Send a kick player packet
 }
 
-// WebSocket host server
-const host = process.env.HOST ?? 'ws://localhost:4000';
-
 /**
  * Hook into our packet listener clients. Ensures we are
  * listening for packets and updating client state.
@@ -201,8 +199,6 @@ export function useClient() {
 
     // Load client after first render
     useLayoutEffect(() => {
-        console.log('Setting client');
-
         // Open client listener
         startListener(dispatch, host);
     }, []);
@@ -231,9 +227,7 @@ export function useRequireGame() {
 
 /**
  * A hook to listen when the game enters a state and perform an action
- *
- * TODO: Might be a better way to poll some data
- *
+ * *
  * @param client The client
  * @param state The state to run callback on
  * @param callback The callback function
@@ -241,20 +235,83 @@ export function useRequireGame() {
 export function useGameState(state: GameState, callback: Function) {
     const gameState = useAppSelector((state) => state.client.gameState);
 
-    // useEffect(() => {
-    //     const subscription = setInterval(() => {
-    //         if (gameState === state) {
-    //             callback();
-    //         }
-    //     }, 250);
-    //     return () => {
-    //         clearInterval(subscription);
-    //     };
-    // }, []);
-
     useEffect(() => {
         if (gameState === state) {
             callback();
         }
-    }, [gameState]);
+    }, [gameState, callback, state]);
+}
+
+/**
+ * Dynamically register a packet handler on a component
+ *
+ * @param id Packet id
+ * @param handler The function that accepts the packet data
+ */
+export function usePacketHandler<D>(id: SPID, handler: (dispatch: Function, data: D) => any) {
+    useEffect(() => {
+        handlers[id] = handler;
+
+        // Unregister handler after unmount
+        return () => {
+            handlers[id] = EMPTY_HANDLER;
+        };
+    }, []);
+}
+
+/**
+ * Creates a timer reactive reference value which is linked to and updated by
+ * the server synced time packets. This time will count down on its own
+ * automatically but will always trust server time sync over its own time
+ *
+ * @param socket The socket instance to use synced time from
+ * @param initialValue The initial time value to count from until time is synced
+ */
+export function useSyncedTimer(initialValue: number): MutableRefObject<number> {
+    // The actual value itself that should be displayed
+    const value = useRef<number>(initialValue);
+
+    // Stores the last time in milliseconds that the counter ran a countdown animation
+    let lastUpdateTime: number = -1;
+
+    /**
+     * Handles time sync packets (0x07) and updates
+     * the current time based on that
+     *
+     * @param data The time sync packet data
+     */
+    function onTimeSync(dispatch: Function, data: STimeSync) {
+        // Convert the remaining time to seconds and ceil it
+        value.current = Math.ceil(data.remaining / 1000);
+        // Set the last update time = now to prevent it updating again
+        // and causing an accidental out of sync
+        lastUpdateTime = performance.now();
+        update();
+    }
+
+    /**
+     * Run on browser animation frames used to update the time and count
+     * down the timer every second. This is used to continue counting
+     * so that the server doesn't have to send a large volume of time
+     * updates and can instead send only a few every couple of second's
+     * to sync up the times
+     */
+    function update() {
+        // The value should not be changed if It's going to be < 0
+        if (value.current - 1 >= 0) {
+            const time = performance.now(); // Retrieve the current time
+            const elapsed = time - lastUpdateTime; // Calculate the time passed since last update
+            if (elapsed >= 1000) {
+                // If 1 second has passed since the last update
+                lastUpdateTime = time; // Set the last update time
+                value.current--; // Decrease the countdown value
+            }
+            // Request the next animation frame
+            requestAnimationFrame(update);
+        }
+    }
+
+    // Listen for time sync packets with onTimeSync
+    usePacketHandler(SPID.STimeSync, onTimeSync);
+    return value;
 }

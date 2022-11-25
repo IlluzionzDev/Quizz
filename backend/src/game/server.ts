@@ -14,7 +14,7 @@ export class Game {
     questions: packets.QuestionData[]; // All questions
     players: Map<string, Player>; // Player's in game
     startTime: number; // Start time in millis
-    state: number; // GameState ID
+    state: packets.GameState; // GameState ID
     activeQuestion: ActiveQuestion; // Current game question
 
     constructor(host: WebSocket, id: string, title: string, questions: packets.QuestionData[]) {
@@ -120,7 +120,15 @@ export class Game {
     setState(state: packets.GameState) {}
 
     // Remove player from the game
-    removePlayer(player: Player) {}
+    removePlayer(player: Player) {
+        if (this.state !== packets.GameState.FINISHED) {
+            // Clear data from other players
+            this.broadcastExcluding(player.id, playerData(player.id, player.name, 0, SPlayerDataType.REMOVE), true);
+        }
+
+        // Remove from game
+        this.players.delete(player.id);
+    }
 
     // Run cleanup code on game
     stop() {}
@@ -147,7 +155,6 @@ const games = new Map<string, Game>();
 
 // Get an active game from ID
 export const getGame = (id: string): Game | undefined => {
-    console.log(games);
     const game: Game | undefined = games.get(id);
     return game;
 };

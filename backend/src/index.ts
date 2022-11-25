@@ -116,7 +116,6 @@ class Client {
 
     onRequestJoin(client: WebSocket, data: CRequestJoin) {
         const game = gameServer.getGame(data.id);
-        console.log(game);
         if (!game) {
             packets.sendPacket(client, error('Game does not exist'));
         } else {

@@ -71,7 +71,7 @@ const clientSlice = createSlice({
         },
 
         clearState: (state) => {
-            state.open = initialState.open;
+            state.open = true;
             state.gameData = initialState.gameData;
             state.players = initialState.players;
             state.gameState = initialState.gameState;

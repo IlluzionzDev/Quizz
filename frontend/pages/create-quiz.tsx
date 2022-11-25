@@ -9,6 +9,7 @@ import CreateQuestionModal from '@components/create/CreateQuestionModal';
 import { GameState, QuestionData } from 'api/packets/packets';
 import { FaPen, FaTimes } from 'react-icons/fa';
 import { useRouter } from 'next/router';
+import Container from '@components/layout/Container';
 
 const CreateQuiz: NextPage = () => {
     useClient();
@@ -81,71 +82,73 @@ const CreateQuiz: NextPage = () => {
                 backlink="Go Back"
                 title="Create Quiz"
             />
-            <div className={`container ${styles['create-quiz']}`}>
-                <input
-                    type="text"
-                    className={styles.quiz__title}
-                    placeholder="Enter Quiz Title"
-                    name="quiz_title"
-                    value={title}
-                    onChange={(e) => {
-                        setTitle(e.currentTarget.value);
-                    }}
-                />
+            <Container>
+                <div className={`${styles['create-quiz']}`}>
+                    <input
+                        type="text"
+                        className={styles.quiz__title}
+                        placeholder="Enter Quiz Title"
+                        name="quiz_title"
+                        value={title}
+                        onChange={(e) => {
+                            setTitle(e.currentTarget.value);
+                        }}
+                    />
 
-                <div className={styles.questions}>
-                    <h3>Questions</h3>
+                    <div className={styles.questions}>
+                        <h3>Questions</h3>
 
-                    <div className={`${styles.questions} ${styles.questions__box}`}>
-                        {questions.map((question, id) => {
-                            return (
-                                <div key={id} className={styles.questions__question}>
-                                    <div className={styles.questions__question__title}>{question.question}</div>
-                                    <div className={styles.questions__question__edit}>
-                                        <FaPen
-                                            className={styles.questions__question__edit__item}
-                                            onClick={(e) => {
-                                                const questionData = questions[id];
+                        <div className={`${styles.questions} ${styles.questions__box}`}>
+                            {questions.map((question, id) => {
+                                return (
+                                    <div key={id} className={styles.questions__question}>
+                                        <div className={styles.questions__question__title}>{question.question}</div>
+                                        <div className={styles.questions__question__edit}>
+                                            <FaPen
+                                                className={styles.questions__question__edit__item}
+                                                onClick={(e) => {
+                                                    const questionData = questions[id];
 
-                                                setEditingQuestion(id);
-                                                setQuestion(questionData);
+                                                    setEditingQuestion(id);
+                                                    setQuestion(questionData);
 
-                                                // Open model
-                                                setCreateQuestionModal(true);
-                                            }}
-                                        />
-                                        <FaTimes
-                                            className={styles.questions__question__edit__item}
-                                            onClick={(e) => {
-                                                const newQuestions = questions.filter((_, index) => {
-                                                    return index !== id;
-                                                });
-                                                setQuestions(newQuestions);
-                                            }}
-                                        />
+                                                    // Open model
+                                                    setCreateQuestionModal(true);
+                                                }}
+                                            />
+                                            <FaTimes
+                                                className={styles.questions__question__edit__item}
+                                                onClick={(e) => {
+                                                    const newQuestions = questions.filter((_, index) => {
+                                                        return index !== id;
+                                                    });
+                                                    setQuestions(newQuestions);
+                                                }}
+                                            />
+                                        </div>
                                     </div>
-                                </div>
-                            );
-                        })}
+                                );
+                            })}
 
-                        <button
-                            className={`button button__outline ${styles.questions__add}`}
-                            onClick={() => {
-                                // Make sure active session is cleared
-                                setQuestion({ question: '', answers: [], correct: [] });
+                            <button
+                                className={`button button__outline ${styles.questions__add}`}
+                                onClick={() => {
+                                    // Make sure active session is cleared
+                                    setQuestion({ question: '', answers: [], correct: [] });
 
-                                setCreateQuestionModal(true);
-                            }}
-                        >
-                            Add Question
-                        </button>
+                                    setCreateQuestionModal(true);
+                                }}
+                            >
+                                Add Question
+                            </button>
+                        </div>
                     </div>
-                </div>
 
-                <button className={`button button__solid ${styles.create__button}`} onClick={createQuiz}>
-                    Create Quiz
-                </button>
-            </div>
+                    <button className={`button button__solid ${styles.create__button}`} onClick={createQuiz}>
+                        Create Quiz
+                    </button>
+                </div>
+            </Container>
         </FullSection>
     );
 };
