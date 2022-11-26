@@ -4,7 +4,14 @@
 import * as packets from '../packet/packets';
 import * as WebSocket from 'ws';
 import { Player } from './player';
-import { gameState, playerData, SPlayerDataType } from '../packet/server';
+import { answerResult, disconnect, gameState, playerData, question, scores, SPlayerDataType, timeSync } from '../packet/server';
+
+// Question timers, TOOD: Refactor to each question etc
+const START_DELAY = 5 * 1000;
+const QUESTION_TIME = 10 * 1000;
+const SYNC_DELAY = 5 * 1000;
+const MARK_TIME = 3 * 1000;
+const BONUS_TIME = 5 * 1000;
 
 // Object that handles a game
 export class Game {
@@ -68,6 +75,11 @@ export class Game {
         const playerId = this.generatePlayerId();
         const player: Player = new Player(client, playerId, name);
 
+        // Inform player of all other player data
+        this.players.forEach((foundPlayer, id) => {
+            packets.sendPacket(player.socket, playerData(id, foundPlayer.name, 0, SPlayerDataType.ADD));
+        });
+
         // Add player to game
         this.players.set(playerId, player);
 
@@ -86,38 +98,187 @@ export class Game {
     // Start the game
     start() {
         console.log('Starting game');
+        this.setState(packets.GameState.STARTING);
+        this.startTime = Date.now();
     }
 
     // Main game loop for game logic
-    gameLoop() {}
+    gameLoop() {
+        let lastTimeSync = 0;
 
-    // See if an answer is correct for a current question
-    isCorrect(answerIndex: number): boolean {
-        return true;
+        // Run logic every second
+        const worker = setInterval(() => {
+            const gameState = this.state;
+
+            // Finish loop if game over
+            if (gameState === packets.GameState.FINISHED) clearInterval(worker);
+
+            const currentTime = Date.now();
+            // Millis before last time sync
+            let elapsedTimeSync = currentTime - lastTimeSync;
+
+            // Start countdown timer
+            if (gameState === packets.GameState.STARTING) {
+                // If we should ensure everyones time is actually the same
+                if (elapsedTimeSync >= SYNC_DELAY) {
+                    lastTimeSync = currentTime;
+                    // Amount of time since game started
+                    const elapsedSinceStart = currentTime - this.startTime;
+
+                    // If total time elapsed, start game
+                    if (elapsedSinceStart >= START_DELAY) {
+                        this.setState(packets.GameState.ACTIVE);
+                    } else {
+                        const remaining = START_DELAY - elapsedSinceStart;
+                        this.broadcast(timeSync(START_DELAY, remaining), true);
+                    }
+                }
+            }
+
+            // Loop question timers and mark questions
+            if (gameState === packets.GameState.ACTIVE) {
+                // Just starting, ask first question
+                if (this.activeQuestion == null) {
+                    this.nextQuestion();
+                    lastTimeSync = -1;
+                } else {
+                    // Amount of time since question started
+                    const elapsedSinceStart = currentTime - this.activeQuestion.startTime;
+
+                    // Asking time has passed
+                    if (elapsedSinceStart >= QUESTION_TIME) {
+                        // Marking question
+                        if (elapsedSinceStart >= QUESTION_TIME + MARK_TIME) {
+                            this.nextQuestion();
+                            lastTimeSync = -1;
+                        } else if (!this.activeQuestion.marked) {
+                            // Mark if not marked
+                            this.markQuestion(this.activeQuestion);
+                        }
+                    } else {
+                        // See if everyone has answered anyway so skip question
+                        if (this.allAnswered()) {
+                            this.skipQuestion();
+                        }
+
+                        // Ensure countdown timer is synced up
+                        if (elapsedTimeSync >= SYNC_DELAY) {
+                            lastTimeSync = currentTime;
+                            const remaining = QUESTION_TIME - elapsedSinceStart;
+                            this.broadcast(timeSync(QUESTION_TIME, remaining), true);
+                        }
+                    }
+                }
+            }
+        }, 1000);
     }
 
     // If all questions have been answered
     allAnswered(): boolean {
-        return true;
+        let notAnswered = false;
+
+        for (const [playerId, player] of this.players) {
+            if (!player.hasAnswered(this)) notAnswered = true;
+        }
+
+        return notAnswered;
     }
 
     // Calculate score for a player for question
-    calculateScore(player: Player, question: ActiveQuestion) {}
+    calculateScore(player: Player, question: ActiveQuestion) {
+        // Time took to answer question
+        const timePassed = player.answerTime - question.startTime;
+
+        // TODO: Refactor into question settings
+        const BASE_POINTS = 100;
+        const BONUS_POINTS = 200;
+
+        // If answered within bonus time
+        if (timePassed <= BONUS_TIME) {
+            const percent = Math.max(1 - timePassed / BONUS_TIME, 0);
+            const bonus = Math.round(percent * BONUS_POINTS);
+            return BASE_POINTS + bonus;
+        } else {
+            return BASE_POINTS;
+        }
+    }
 
     // Skip past current question
-    skipQuestion() {}
+    skipQuestion() {
+        if (this.activeQuestion != null) {
+            // Instance set time to comepletion
+            this.activeQuestion.startTime = Date.now() - QUESTION_TIME;
+        } else {
+            // Ensure we have question
+            this.nextQuestion();
+        }
+    }
 
     // Mark a question for all players
-    markQuestion(question: ActiveQuestion) {}
+    markQuestion(question: ActiveQuestion) {
+        this.players.forEach((player) => {
+            // Answered index, -1 if not answered
+            const answerIndex = player.getAnswer(this.activeQuestion.index);
+
+            // If correct
+            const correct = answerIndex !== -1 && question.isCorrect(answerIndex);
+
+            // Send result
+            packets.sendPacket(player.socket, answerResult(correct));
+
+            // Update score
+            if (correct) {
+                const score = this.calculateScore(player, question);
+                player.score += score;
+            }
+        });
+
+        // Broadcast updated scores to players
+        const playerScores: Record<string, number> = {};
+        this.players.forEach((player) => {
+            playerScores[player.id] = player.score;
+        });
+        this.broadcast(scores(playerScores), true);
+
+        // Flag as marked
+        question.marked = true;
+    }
 
     // Change to the next question or end the game
-    nextQuestion() {}
+    nextQuestion() {
+        const currentTime = Date.now();
+
+        // Index of next question
+        let nextIndex = 0;
+
+        // Update index
+        if (this.activeQuestion != null) {
+            nextIndex = this.activeQuestion.index + 1;
+        }
+
+        if (nextIndex >= this.questions.length) {
+            // End of questions, and game
+            this.gameOver();
+        } else {
+            // Update question through packet
+            const q = this.questions[nextIndex];
+            this.broadcast(question(q.question, q.answers), true);
+        }
+    }
 
     // Set game to game over, show scores etc
-    gameOver() {}
+    gameOver() {
+        this.setState(packets.GameState.FINISHED);
+
+        // Remove from games map
+        games.delete(this.id);
+    }
 
     // Set the current game state for all players
-    setState(state: packets.GameState) {}
+    setState(state: packets.GameState) {
+        this.state = state;
+        this.broadcast(gameState(state), true);
+    }
 
     // Remove player from the game
     removePlayer(player: Player) {
@@ -130,8 +291,19 @@ export class Game {
         this.players.delete(player.id);
     }
 
-    // Run cleanup code on game
-    stop() {}
+    // Safely stop and cleanup game
+    stop() {
+        this.setState(packets.GameState.FINISHED);
+
+        // Send disconnect to players
+        this.players.forEach((player) => {
+            this.removePlayer(player);
+            packets.sendPacket(player.socket, disconnect('Game ended by host.'));
+        });
+
+        // Remove from games map
+        games.delete(this.id);
+    }
 
     // Creates a mostly unique player id
     private generatePlayerId() {
@@ -144,10 +316,24 @@ export class Game {
 }
 
 // Data for current question in game
-interface ActiveQuestion {
+class ActiveQuestion {
     question: packets.QuestionData; // Active question
     index: number; // Index of question in total questions
+    startTime: number; // Millis when this question was asked
     marked: boolean; // If question is marked (current question is after this question)
+
+    constructor(question: packets.QuestionData, index: number, startTime: number, marked: boolean) {
+        this.question = question;
+        this.index = index;
+        this.startTime = startTime;
+        this.marked = marked;
+    }
+
+    // See if an answer is correct for a current question
+    isCorrect(answerIndex: number): boolean {
+        const correctAnswers = this.question.correct;
+        return answerIndex in correctAnswers;
+    }
 }
 
 // Current game sessions
@@ -165,7 +351,8 @@ export function newGame(host: WebSocket, title: string, questions: packets.Quest
 
     games.set(id, game);
 
-    // Start game loop
+    // Start game loop that runs game logic
+    game.gameLoop();
 
     return game;
 }

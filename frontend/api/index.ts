@@ -1,7 +1,7 @@
 // Handle connection to the server
 import { useAppDispatch, useAppSelector } from 'hooks';
 import { useRouter } from 'next/router';
-import { MutableRefObject, useEffect, useLayoutEffect, useRef } from 'react';
+import { MutableRefObject, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { clearState, removePlayer, setGameData, setGameState, setOpen, setQuestion, updatePlayers, updateScore } from 'store/clientSlice';
 import { CStateChangeState, stateChange, kickPlayer } from './packets/client';
 import { GameState, Packet } from './packets/packets';
@@ -124,9 +124,8 @@ function onQuestion(dispatch: Function, question: SQuestion) {
  * @param data The disconnect data contains the reason for disconnect
  */
 function onDisconnect(dispatch: Function, data: SDisconnect) {
+    // Resetting state will kick to home page
     resetState(dispatch);
-
-    // TODO: Route to home page
 }
 
 /**
@@ -198,7 +197,7 @@ export function useClient() {
     const dispatch = useAppDispatch();
 
     // Load client after first render
-    useLayoutEffect(() => {
+    useEffect(() => {
         // Open client listener
         startListener(dispatch, host);
     }, []);
@@ -267,9 +266,9 @@ export function usePacketHandler<D>(id: SPID, handler: (dispatch: Function, data
  * @param socket The socket instance to use synced time from
  * @param initialValue The initial time value to count from until time is synced
  */
-export function useSyncedTimer(initialValue: number): MutableRefObject<number> {
+export function useSyncedTimer(initialValue: number): number {
     // The actual value itself that should be displayed
-    const value = useRef<number>(initialValue);
+    const [value, setValue] = useState<number>(initialValue);
 
     // Stores the last time in milliseconds that the counter ran a countdown animation
     let lastUpdateTime: number = -1;
@@ -281,8 +280,9 @@ export function useSyncedTimer(initialValue: number): MutableRefObject<number> {
      * @param data The time sync packet data
      */
     function onTimeSync(dispatch: Function, data: STimeSync) {
+        console.log('Time Sync', value);
         // Convert the remaining time to seconds and ceil it
-        value.current = Math.ceil(data.remaining / 1000);
+        setValue(Math.ceil(data.remaining / 1000));
         // Set the last update time = now to prevent it updating again
         // and causing an accidental out of sync
         lastUpdateTime = performance.now();
@@ -297,14 +297,16 @@ export function useSyncedTimer(initialValue: number): MutableRefObject<number> {
      * to sync up the times
      */
     function update() {
+        console.log(value);
+
         // The value should not be changed if It's going to be < 0
-        if (value.current - 1 >= 0) {
+        if (value - 1 >= 0) {
             const time = performance.now(); // Retrieve the current time
             const elapsed = time - lastUpdateTime; // Calculate the time passed since last update
             if (elapsed >= 1000) {
                 // If 1 second has passed since the last update
                 lastUpdateTime = time; // Set the last update time
-                value.current--; // Decrease the countdown value
+                setValue((prev) => prev - 1); // Decrease the countdown value
             }
             // Request the next animation frame
             requestAnimationFrame(update);

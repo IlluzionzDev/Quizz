@@ -1,13 +1,13 @@
 import styles from './waiting.module.scss';
 import FullSection from '@components/layout/FullSection';
 import PlayerNav from '@components/layout/PlayerNav';
-import { useClient, useRequireGame, disconnect, send } from 'api';
+import { useClient, useRequireGame, disconnect, send, useSyncedTimer } from 'api';
 import { GameState } from 'api/packets/packets';
 import type { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { useRef, useState } from 'react';
 import Container from '@components/layout/Container';
-import { CStateChangeState, stateChange } from 'api/packets/client';
+import { CStateChangeState, kickPlayer, stateChange } from 'api/packets/client';
 import { useAppDispatch, useAppSelector } from 'hooks';
 
 const Waiting: NextPage = () => {
@@ -18,6 +18,8 @@ const Waiting: NextPage = () => {
 
     // Ensure we are in a game
     useRequireGame();
+
+    const timer = useSyncedTimer(10);
 
     const dispatch = useAppDispatch();
 
@@ -39,6 +41,10 @@ const Waiting: NextPage = () => {
      */
     function startGame() {
         send(stateChange(CStateChangeState.START));
+    }
+
+    function kick(playerId: string) {
+        send(kickPlayer(playerId));
     }
 
     return (
@@ -63,10 +69,21 @@ const Waiting: NextPage = () => {
                         ) : (
                             <p>Waiting for start...</p>
                         )}
+                        <p>{timer}</p>
                     </div>
                     <div className={styles.waiting__players}>
                         {Object.entries(players).map((player, id) => {
-                            return <div key={id}>{player[1].name}</div>;
+                            return (
+                                <div key={id} className={styles.waiting__player}>
+                                    <p>{player[1].name}</p>
+
+                                    {gameData?.owner && (
+                                        <div className={styles.waiting__player__kick}>
+                                            <button className={`button button__solid`} onClick={() => {kick(player[0]);}}>Kick</button>
+                                        </div>
+                                    )}
+                                </div>
+                            );
                         })}
                     </div>
                 </div>

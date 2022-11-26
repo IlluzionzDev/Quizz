@@ -7,7 +7,7 @@ import * as WebSocket from 'ws';
 import * as packets from './packet/packets';
 import * as gameServer from './game/server';
 import { CAnswer, CCheckNameTaken, CCreateGame, CKick, CPID, CRequestGameState, CRequestJoin, CStateChange, CStateChangeState } from './packet/client';
-import { error, gameState, joinGame, nameTakenResult } from './packet/server';
+import { disconnect, error, gameState, joinGame, nameTakenResult } from './packet/server';
 import { Player } from './game/player';
 
 // Initializes env variables
@@ -80,6 +80,11 @@ class Client {
             }
 
             console.log(`Received packet ${data.toString()}`);
+        });
+
+        this.socket.on('close', () => {
+            // Cleanup state
+            this.cleanUp();
         });
     }
 
@@ -183,13 +188,18 @@ class Client {
         // Kick a player from the game (Host only)
         if (this.hostGame != null) {
             const player = this.hostGame.players.get(data.id);
-            if (player) this.hostGame.removePlayer(player);
+            if (player) {
+                this.hostGame.removePlayer(player);
+
+                // Send disconnect to player
+                packets.sendPacket(player.socket, disconnect('Kicked from game!'));
+            }
         }
     }
 
     // Cleanup client games
     cleanUp() {
-        // Stop host games
+        // If this is the host disconnecting, stop the game
         if (this.hostGame != null) {
             this.hostGame.stop();
             this.hostGame = undefined;

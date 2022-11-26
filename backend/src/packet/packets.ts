@@ -9,6 +9,7 @@ export interface Packet {
 // Current state of game
 export enum GameState {
     WAITING = 0x00, // Players can join
+    STARTING, // Currently counting down to start
     ACTIVE, // In session
     FINISHED, // Game over
     NOT_FOUND // Game does not exist

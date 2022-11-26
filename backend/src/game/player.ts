@@ -36,5 +36,12 @@ export class Player {
     }
 
     // Answer the current game question
-    answer(game: Game, questionIndex: number) {}
+    answer(game: Game, questionIndex: number) {
+        this.answerTime = Date.now();
+
+        // Ensure is within question bounds
+        let answerIndex = Math.max(questionIndex, game.questions.length - 1);
+
+        this.answers.set(game.activeQuestion.index, answerIndex);
+    }
 }

@@ -19,4 +19,37 @@
             color: $secondary-100;
         }
     }
+
+    &__players {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        margin-top: rem(40);
+        padding: rem(10);
+
+        flex-wrap: wrap;
+
+        gap: 1rem;
+    }
+
+    // Backround display
+    &__player {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        padding: rem(20);
+        background-color: $gray-200;
+        border-radius: 10px;
+        color: $white;
+
+        flex: 40%;
+        max-width: 50%;
+
+        align-items: center;
+
+        // Admin edit options
+        &__kick {
+            margin-left: auto;
+        }
+    }
 }
