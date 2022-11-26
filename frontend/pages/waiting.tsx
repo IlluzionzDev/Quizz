@@ -1,7 +1,7 @@
 import styles from './waiting.module.scss';
 import FullSection from '@components/layout/FullSection';
 import PlayerNav from '@components/layout/PlayerNav';
-import { useClient, useRequireGame, disconnect, send, useSyncedTimer } from 'api';
+import { useClient, useRequireGame, disconnect, send, useSyncedTimer, useGameState } from 'api';
 import { GameState } from 'api/packets/packets';
 import type { NextPage } from 'next';
 import { useRouter } from 'next/router';
@@ -27,6 +27,11 @@ const Waiting: NextPage = () => {
     const gameData = useAppSelector((state) => state.client.gameData);
     const players = useAppSelector((state) => state.client.players);
 
+    // When game has started, redirect to game page
+    useGameState(GameState.ACTIVE, () => {
+        router.push('/game');
+    });
+
     /**
      * Disconnect client from the game
      */
@@ -43,6 +48,9 @@ const Waiting: NextPage = () => {
         send(stateChange(CStateChangeState.START));
     }
 
+    /**
+     * Kick a player from the game
+     */
     function kick(playerId: string) {
         send(kickPlayer(playerId));
     }
@@ -79,7 +87,14 @@ const Waiting: NextPage = () => {
 
                                     {gameData?.owner && (
                                         <div className={styles.waiting__player__kick}>
-                                            <button className={`button button__solid`} onClick={() => {kick(player[0]);}}>Kick</button>
+                                            <button
+                                                className={`button button__solid`}
+                                                onClick={() => {
+                                                    kick(player[0]);
+                                                }}
+                                            >
+                                                Kick
+                                            </button>
                                         </div>
                                     )}
                                 </div>

@@ -84,10 +84,10 @@ export class Game {
         this.players.set(playerId, player);
 
         // Tell player the game state
-        packets.sendPacket(this.host, gameState(packets.GameState.WAITING));
+        packets.sendPacket(player.socket, gameState(packets.GameState.WAITING));
 
         // Inform them of their player data
-        packets.sendPacket(this.host, playerData(playerId, player.name, player.score, SPlayerDataType.SELF));
+        packets.sendPacket(player.socket, playerData(playerId, player.name, player.score, SPlayerDataType.SELF));
 
         // Tell all other players in the game that they exist
         this.broadcastExcluding(playerId, playerData(playerId, player.name, player.score, SPlayerDataType.ADD), true);
@@ -181,7 +181,7 @@ export class Game {
             if (!player.hasAnswered(this)) notAnswered = true;
         }
 
-        return notAnswered;
+        return !notAnswered;
     }
 
     // Calculate score for a player for question
@@ -262,6 +262,7 @@ export class Game {
         } else {
             // Update question through packet
             const q = this.questions[nextIndex];
+            this.activeQuestion = new ActiveQuestion(q, nextIndex, currentTime, false);
             this.broadcast(question(q.question, q.answers), true);
         }
     }

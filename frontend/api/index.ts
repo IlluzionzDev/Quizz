@@ -220,7 +220,7 @@ export function useRequireGame() {
 
     useGameState(GameState.FINISHED, () => {
         // Route to game over page
-        router.push('/gameover');
+        router.push('/game-over');
     });
 }
 
@@ -280,7 +280,6 @@ export function useSyncedTimer(initialValue: number): number {
      * @param data The time sync packet data
      */
     function onTimeSync(dispatch: Function, data: STimeSync) {
-        console.log('Time Sync', value);
         // Convert the remaining time to seconds and ceil it
         setValue(Math.ceil(data.remaining / 1000));
         // Set the last update time = now to prevent it updating again
@@ -297,8 +296,6 @@ export function useSyncedTimer(initialValue: number): number {
      * to sync up the times
      */
     function update() {
-        console.log(value);
-
         // The value should not be changed if It's going to be < 0
         if (value - 1 >= 0) {
             const time = performance.now(); // Retrieve the current time

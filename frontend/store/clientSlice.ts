@@ -59,7 +59,8 @@ const clientSlice = createSlice({
         },
 
         updateScore: (state, action: PayloadAction<SPlayerData>) => {
-            state.players[action.payload.id].score = action.payload.score;
+            const playerData: SPlayerData = { id: action.payload.id, name: state.players[action.payload.id].name, score: action.payload.score, type: SPlayerDataType.ADD}
+            state.players[action.payload.id] = playerData;
         },
 
         setQuestion: (state, action: PayloadAction<SQuestion>) => {
