@@ -1,0 +1,41 @@
+.players {
+    display: flex;
+    flex-direction: column;
+    gap: rem(20);
+    padding: rem(20) 0;
+    width: 100%;
+
+    &__player {
+        width: 100%;
+        background-color: $gray-200;
+        color: $white;
+        border-radius: 5px;
+
+        padding: rem(10) rem(20);
+
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: rem(20);
+
+        &__score {
+            margin-left: auto;
+            background-color: $gray-100;
+            padding: rem(5) rem(10);
+            border-radius: 5px;
+        }
+
+        // Top 3 winners styling
+        &:nth-child(1) {
+            background-color: rgb(237, 198, 25);
+        }
+
+        &:nth-child(2) {
+            background-color: rgb(180, 180, 180);
+        }
+
+        &:nth-child(3) {
+            background-color: rgb(157, 121, 78);
+        }
+    }
+}

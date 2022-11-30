@@ -2,14 +2,22 @@ import styles from './create-quiz.module.scss';
 import { send, useClient, useGameState } from 'api';
 import { createGame } from 'api/packets/client';
 import type { NextPage } from 'next';
-import { useRef, useState } from 'react';
+import { createRef, useRef, useState } from 'react';
 import PlayerNav from '@components/layout/PlayerNav';
 import FullSection from '@components/layout/FullSection';
 import CreateQuestionModal from '@components/create/CreateQuestionModal';
 import { GameState, QuestionData } from 'api/packets/packets';
-import { FaPen, FaTimes } from 'react-icons/fa';
+import { FaPen, FaTimes, FaUpload } from 'react-icons/fa';
 import { useRouter } from 'next/router';
 import Container from '@components/layout/Container';
+
+/**
+ * Model of quiz configuration
+ */
+interface QuizConfig {
+    title: string;
+    questions: QuestionData[];
+}
 
 const CreateQuiz: NextPage = () => {
     useClient();
@@ -30,6 +38,14 @@ const CreateQuiz: NextPage = () => {
     // If to display the creating question modal
     const [createQuestionModal, setCreateQuestionModal] = useState(false);
 
+    // Element for importing quiz
+    const importQuiz = createRef<HTMLInputElement>();
+
+    // When game created, enters waiting state so redirect to waiting room
+    useGameState(GameState.WAITING, () => {
+        router.push('/waiting');
+    });
+
     /**
      * Validate questions and create quiz if okay
      */
@@ -42,10 +58,87 @@ const CreateQuiz: NextPage = () => {
         send(createGame(title, questions));
     }
 
-    // When game created, enters waiting state so redirect to waiting room
-    useGameState(GameState.WAITING, () => {
-        router.push('/waiting');
-    });
+    /**
+     * Load a quiz file into state
+     */
+    async function importFile() {
+        // Get file input
+        const input: HTMLInputElement = importQuiz.current!;
+
+        // File uploaded
+        if (input.files && input.files.length > 0) {
+            const file = input.files[0];
+
+            // Try load config
+            try {
+                const config = await loadQuiz(file);
+
+                setTitle(config.title);
+                setQuestions(config.questions);
+            } catch (e) {
+                console.error(e);
+            }
+        }
+    }
+
+    /**
+     * Export quiz to JSON file
+     */
+    function exportFile() {
+        // Get state to use
+        const quizTitle = title;
+        const quizQuestions = questions;
+
+        const data = JSON.stringify({ title: quizTitle, questions: quizQuestions });
+
+        // Download data file
+        const URL = window.webkitURL ?? window.URL;
+        const id = 'tmpDownload';
+
+        // Create temp clickable button
+        let element: HTMLAnchorElement =
+            (document.getElementById(id) as HTMLAnchorElement | null) ??
+            ((): HTMLAnchorElement => {
+                const element = document.createElement('a') as HTMLAnchorElement;
+                element.id = id;
+                return element;
+            })();
+        const safeName: string = title.replace(/[ ^\/]/g, '_');
+
+        // Create data blog
+        const blob = new Blob([data], { type: 'application/json' });
+
+        // Allow button to download element
+        element.download = safeName + '.json';
+        element.href = URL.createObjectURL(blob);
+        element.dataset.downloadurl = ['application/json', element.download, element.href].join(':');
+        element.style.display = 'none';
+
+        // Download
+        element.click();
+    }
+
+    /**
+     * Make a promise to load a quiz config from a JSON file
+     */
+    function loadQuiz(file: File): Promise<QuizConfig> {
+        return new Promise<QuizConfig>(async (resolve, reject) => {
+            const reader = new FileReader();
+
+            reader.onload = () => {
+                if (reader.result) {
+                    // Read file as json
+                    const raw: string = reader.result as string;
+                    const json: QuizConfig = JSON.parse(raw) as QuizConfig;
+                    resolve(json);
+                }
+            };
+
+            // Log loading error
+            reader.onerror = reject;
+            reader.readAsText(file);
+        });
+    }
 
     return (
         <FullSection>
@@ -146,6 +239,22 @@ const CreateQuiz: NextPage = () => {
 
                     <button className={`button button__solid ${styles.create__button}`} onClick={createQuiz}>
                         Create Quiz
+                    </button>
+
+                    <label>
+                        <button
+                            className="button button__outline"
+                            onClick={() => {
+                                importQuiz.current?.click();
+                            }}
+                        >
+                            Import Quiz
+                        </button>
+                        <input type="file" ref={importQuiz} onChange={importFile} style={{ display: 'none' }} />
+                    </label>
+
+                    <button className="button button__outline" onClick={exportFile}>
+                        Export Quiz
                     </button>
                 </div>
             </Container>

@@ -231,25 +231,25 @@
 }
 
 // Main typography selectors
-h1 {
-    @include display-1;
-}
+// h1 {
+//     @include display-1;
+// }
 
-h2 {
-    @include heading-2;
-}
+// h2 {
+//     @include heading-2;
+// }
 
-h3 {
-    @include heading-3;
-}
+// h3 {
+//     @include heading-3;
+// }
 
-p {
-    @include paragraph;
-}
+// p {
+//     @include paragraph;
+// }
 
-a {
-    @include link-text;
-}
+// a {
+//     @include link-text;
+// }
 
 // Hover animation for links
 .link {
@@ -307,7 +307,7 @@ body {
 
     // Default colours
     background-color: $white-100;
-    color: $onyx !important;
+    color: $onyx;
 
     // Default font
     font-family: $font-1;

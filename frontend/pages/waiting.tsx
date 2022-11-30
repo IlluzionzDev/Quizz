@@ -9,6 +9,7 @@ import { useRef, useState } from 'react';
 import Container from '@components/layout/Container';
 import { CStateChangeState, kickPlayer, stateChange } from 'api/packets/client';
 import { useAppDispatch, useAppSelector } from 'hooks';
+import { FaTimes } from 'react-icons/fa';
 
 const Waiting: NextPage = () => {
     const router = useRouter();
@@ -19,7 +20,7 @@ const Waiting: NextPage = () => {
     // Ensure we are in a game
     useRequireGame();
 
-    const timer = useSyncedTimer(10);
+    const timer = useSyncedTimer(5);
 
     const dispatch = useAppDispatch();
 
@@ -55,6 +56,20 @@ const Waiting: NextPage = () => {
         send(kickPlayer(playerId));
     }
 
+    let gameStateComponent = null;
+
+    if (gameState === GameState.STARTING) {
+        gameStateComponent = <p>Starting in {timer}s</p>;
+    } else if (gameData?.owner) {
+        gameStateComponent = (
+            <button className="button button__solid" onClick={startGame}>
+                Start Game
+            </button>
+        );
+    } else {
+        gameStateComponent = <p>Waiting for start...</p>;
+    }
+
     return (
         <FullSection>
             <PlayerNav
@@ -62,7 +77,7 @@ const Waiting: NextPage = () => {
                     disconnectClient();
                     router.push('/');
                 }}
-                backlink="Disconnect"
+                backlink={gameData?.owner ? 'End Game' : 'Disconnect'}
                 title="Waiting Room"
             />
             <Container>
@@ -70,14 +85,7 @@ const Waiting: NextPage = () => {
                     <div className={styles.waiting__info}>
                         <h1 className={styles.waiting__info__id}>{gameData?.id}</h1>
                         <h2 className={styles.waiting__info__title}>{gameData?.title}</h2>
-                        {gameData?.owner ? (
-                            <button className="button button__solid" onClick={startGame}>
-                                Start Game
-                            </button>
-                        ) : (
-                            <p>Waiting for start...</p>
-                        )}
-                        <p>{timer}</p>
+                        {gameStateComponent}
                     </div>
                     <div className={styles.waiting__players}>
                         {Object.entries(players).map((player, id) => {
@@ -87,14 +95,11 @@ const Waiting: NextPage = () => {
 
                                     {gameData?.owner && (
                                         <div className={styles.waiting__player__kick}>
-                                            <button
-                                                className={`button button__solid`}
+                                            <FaTimes
                                                 onClick={() => {
                                                     kick(player[0]);
                                                 }}
-                                            >
-                                                Kick
-                                            </button>
+                                            />
                                         </div>
                                     )}
                                 </div>

@@ -8,8 +8,8 @@ import { answerResult, disconnect, gameState, playerData, question, scores, SPla
 
 // Question timers, TOOD: Refactor to each question etc
 const START_DELAY = 5 * 1000;
-const QUESTION_TIME = 10 * 1000;
-const SYNC_DELAY = 5 * 1000;
+const QUESTION_TIME = 999 * 1000;
+const SYNC_DELAY = 3 * 1000;
 const MARK_TIME = 3 * 1000;
 const BONUS_TIME = 5 * 1000;
 
@@ -145,15 +145,18 @@ export class Game {
                     // Amount of time since question started
                     const elapsedSinceStart = currentTime - this.activeQuestion.startTime;
 
-                    // Asking time has passed
-                    if (elapsedSinceStart >= QUESTION_TIME) {
+                    // Amount of time after question as marked
+                    const elapsedSinceMark = currentTime - this.activeQuestion.markTime;
+
+                    // Asking time has passed or question skipped
+                    if (elapsedSinceStart >= QUESTION_TIME || this.activeQuestion.skiped) {
                         // Marking question
-                        if (elapsedSinceStart >= QUESTION_TIME + MARK_TIME) {
-                            this.nextQuestion();
-                            lastTimeSync = -1;
-                        } else if (!this.activeQuestion.marked) {
+                        if (!this.activeQuestion.marked) {
                             // Mark if not marked
                             this.markQuestion(this.activeQuestion);
+                        } else if (elapsedSinceMark >= MARK_TIME) {
+                            this.nextQuestion();
+                            lastTimeSync = -1;
                         }
                     } else {
                         // See if everyone has answered anyway so skip question
@@ -186,7 +189,7 @@ export class Game {
 
     // Calculate score for a player for question
     calculateScore(player: Player, question: ActiveQuestion) {
-        // Time took to answer question
+        // Millis took to answer question
         const timePassed = player.answerTime - question.startTime;
 
         // TODO: Refactor into question settings
@@ -206,8 +209,8 @@ export class Game {
     // Skip past current question
     skipQuestion() {
         if (this.activeQuestion != null) {
-            // Instance set time to comepletion
-            this.activeQuestion.startTime = Date.now() - QUESTION_TIME;
+            // Mark question as skiped
+            this.activeQuestion.skiped = true;
         } else {
             // Ensure we have question
             this.nextQuestion();
@@ -242,6 +245,7 @@ export class Game {
 
         // Flag as marked
         question.marked = true;
+        question.markTime = Date.now();
     }
 
     // Change to the next question or end the game
@@ -321,13 +325,17 @@ class ActiveQuestion {
     question: packets.QuestionData; // Active question
     index: number; // Index of question in total questions
     startTime: number; // Millis when this question was asked
+    markTime: number; // Millis when question was marked
     marked: boolean; // If question is marked (current question is after this question)
+    skiped: boolean; // If this question has been skiped
 
     constructor(question: packets.QuestionData, index: number, startTime: number, marked: boolean) {
         this.question = question;
         this.index = index;
         this.startTime = startTime;
         this.marked = marked;
+        this.skiped = false;
+        this.markTime = -1;
     }
 
     // See if an answer is correct for a current question

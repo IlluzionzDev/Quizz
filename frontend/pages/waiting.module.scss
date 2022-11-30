@@ -17,6 +17,7 @@
 
         &__id {
             color: $secondary-100;
+            font-size: 4rem;
         }
     }
 
@@ -49,7 +50,11 @@
 
         // Admin edit options
         &__kick {
+            display: flex;
+            flex-direction: row;
             margin-left: auto;
+            align-items: center;
+            color: $white;
         }
     }
 }

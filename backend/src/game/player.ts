@@ -40,7 +40,7 @@ export class Player {
         this.answerTime = Date.now();
 
         // Ensure is within question bounds
-        let answerIndex = Math.max(questionIndex, game.questions.length - 1);
+        let answerIndex = Math.min(questionIndex, game.questions.length - 1);
 
         this.answers.set(game.activeQuestion.index, answerIndex);
     }
