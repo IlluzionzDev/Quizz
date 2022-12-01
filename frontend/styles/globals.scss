@@ -51,9 +51,16 @@
 .button__column {
     display: flex;
     flex-direction: column;
+    gap: rem(20);
 }
 
 .button__row {
     display: flex;
     flex-direction: row;
+}
+
+.home__title {
+    font-size: 3rem;
+    font-weight: 700;
+    padding-bottom: rem(40);
 }

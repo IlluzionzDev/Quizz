@@ -43,17 +43,11 @@ $screen-xl-min: 80em;
     }
 }
 
-@font-face {
-    font-family: 'Helvetica';
-    src: local('Helvetica'), url(../fonts//Helvetica-Bold.ttf) format('ttf');
-}
-
 // Fonts
 $font-1: 'Poppins', sans-serif;
 $font-2: 'Mulish', sans-serif;
 $font-3: 'Source Sans Pro', sans-serif;
 $font-4: 'Lexend Deca', sans-serif;
-$font-5: 'Helvetica', sans-serif;
 
 // Colours
 $white: #ffffff;
