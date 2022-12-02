@@ -16,7 +16,7 @@ type PacketHandlerFunction = (dispatch: Function, data: any) => void;
 type PacketHandlers = Record<SPID, PacketHandlerFunction>;
 
 // WebSocket host server
-const host = process.env.HOST ?? 'ws://localhost:4000';
+const host = process.env.HOST || 'ws://localhost:4000';
 
 // Web socket connection
 let socket: WebSocket | null;
