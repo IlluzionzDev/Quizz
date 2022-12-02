@@ -50,8 +50,6 @@ const CreateQuiz: NextPage = () => {
      * Validate questions and create quiz if okay
      */
     function createQuiz() {
-        console.log('Test');
-
         // Make sure has a title
         if (!title) return;
         // Make sure has atleast one question
