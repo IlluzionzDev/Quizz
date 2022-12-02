@@ -15,11 +15,23 @@ type PacketHandlerFunction = (dispatch: Function, data: any) => void;
 // Defines the packet handlers map which is id -> handler
 type PacketHandlers = Record<SPID, PacketHandlerFunction>;
 
+function getHost(value: string | undefined): string {
+    if (!value || value === 'origin') {
+        let host = window.location.origin.replace(/^https/, 'wss').replace(/^http/, 'ws');
+        if (!host.endsWith('/')) host += '/';
+        host += 'ws';
+        return host;
+    } else {
+        return value;
+    }
+}
+
 // WebSocket host server
-const host = process.env.HOST || 'ws://52.64.253.66:4000';
+const host = getHost(process.env.HOST || 'ws://52.64.253.66:4000');
 
 // Web socket connection
 let socket: WebSocket | null;
+
 
 /**
  * Record of packet IDs to handlers
