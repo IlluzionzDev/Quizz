@@ -217,11 +217,6 @@ export function useRequireGame() {
         // Route to home page
         router.push('/');
     });
-
-    useGameState(GameState.FINISHED, () => {
-        // Route to game over page
-        router.push('/game-over');
-    });
 }
 
 /**

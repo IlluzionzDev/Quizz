@@ -4,11 +4,16 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "next build && next export",
     "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
+    "@fontsource/inter": "^4.5.14",
+    "@fontsource/lexend-deca": "^4.5.12",
+    "@fontsource/mulish": "^4.5.13",
+    "@fontsource/poppins": "^4.5.10",
+    "@fontsource/source-sans-pro": "^4.5.11",
     "@reduxjs/toolkit": "^1.9.0",
     "@types/react-redux": "^7.1.24",
     "framer-motion": "^6.3.3",

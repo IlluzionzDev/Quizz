@@ -1,13 +1,15 @@
 import styles from './game.module.scss';
 import CenterSection from '@components/layout/CenterSection';
 import FullSection from '@components/layout/FullSection';
-import { send, useClient, usePacketHandler, useRequireGame, useSyncedTimer } from 'api';
+import { send, useClient, useGameState, usePacketHandler, useRequireGame, useSyncedTimer } from 'api';
 import { answer } from 'api/packets/client';
 import { SAnswerResult, SPID, SPlayerData } from 'api/packets/server';
 import { useAppDispatch, useAppSelector } from 'hooks';
 import type { NextPage } from 'next';
 import { useEffect, useState } from 'react';
 import Container from '@components/layout/Container';
+import { useRouter } from 'next/router';
+import { GameState } from 'api/packets/packets';
 
 type GameNavProps = {
     selfData: SPlayerData | null;
@@ -34,6 +36,8 @@ const Game: NextPage = () => {
     // Question timer
     const timer = useSyncedTimer(10);
 
+    const router = useRouter();
+
     // Game state
     const dispatch = useAppDispatch();
     const gameState = useAppSelector((state) => state.client.gameState);
@@ -52,6 +56,12 @@ const Game: NextPage = () => {
         setAnswered(false);
         setResult(null);
     }, [question]);
+
+    // When game set to finished, redirect to game-over
+    useGameState(GameState.FINISHED, () => {
+        // Route to game over page
+        router.push('/game-over');
+    });
 
     /**
      * Select answer

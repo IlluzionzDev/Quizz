@@ -1,0 +1,17 @@
+version: '3'
+
+services:
+  backend:
+    build:
+      context: ./backend
+    ports: 
+      - 4000:4000
+    environment:
+      API_PORT: 4000
+  frontend:
+    build:
+      context: ./frontend
+    ports: 
+      - 3000:3000
+    environment:
+      HOST: 'ws://localhost:4000'
