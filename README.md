@@ -3,7 +3,7 @@ This is an *in development* real-time quizzing application. This application is 
 
 This repo contains both the backend and frontend code.
 
-You can find the latest deployed version at [https://quizz.jaminstraford.com](https://quizz.jaminstraford.com)
+You can find the latest deployed version at [https://quizz.jaminstratford.com](https://quizz.jaminstratford.com)
 
 ## Features
 Here are the current features in this application
