@@ -294,9 +294,10 @@ html {
 }
 
 // Dynamic screen scaling
-@media screen and (max-width:1920px) { html { font-size: calc(0.625rem + 0.41666666666666674vw); } }
-@media screen and (max-width:1440px) { html { font-size: calc(0.8126951092611863rem + 0.20811654526534862vw); } }
-@media screen and (max-width:479px) { html { font-size: calc(0.7494769874476988rem + 0.8368200836820083vw); } }
+  @media screen and (max-width:1280px) { html { font-size: calc(0.5713667820069206rem + 0.6920415224913493vw); } }
+  @media screen and (max-width:991px) { html { font-size: calc(0.5695067264573992rem + 0.896860986547085vw); } }
+  @media screen and (max-width:768px) { html { font-size: calc(0.6666666666666667rem + 0.6944444444444444vw); } }
+  @media screen and (max-width:480px) { html { font-size: calc(0.7496085594989561rem + 0.6263048016701461vw); } }
 
 body {
     // Make sure no horizontal scroll

@@ -1,10 +1,19 @@
+/*
+* This file contains all design system defintions such
+* as colors, spacing, shadows etc.
+* Util class definitions and basic components
+* are defined in design-system.scss
+*/
+
 // Convert px value to rem
 @function rem($value) {
     $remValue: calc(($value / 16)) + rem;
     @return $remValue;
 }
 
-// Breakpoints
+/*
+* Breakpoints
+*/
 
 // Small tablets and large smartphones (landscape view)
 $screen-sm-min: 30em;
@@ -43,197 +52,385 @@ $screen-xl-min: 80em;
     }
 }
 
-// Fonts
+/*
+* Fonts
+*/
 $font-1: 'Poppins', sans-serif;
-$font-2: 'Mulish', sans-serif;
-$font-3: 'Source Sans Pro', sans-serif;
-$font-4: 'Lexend Deca', sans-serif;
+$font-2: 'Inter', sans-serif;
 
-// Colours
+/*
+* Colours
+*/
+
+// Black & White
 $white: #ffffff;
-$white-100: #fefefe;
-$white-200: #fafafa;
-$gray-100: #696979;
-$gray-200: #a5a5af;
-$gray-300: #e1e1e4;
-$primary-100: #9381ff;
-$primary-200: #beb3ff;
-$primary-300: #e9e6ff;
-$secondary-100: #64b5f6;
-$secondary-200: #a2d3fa;
-$secondary-300: #e0f0fd;
-$black: #000000;
-$onyx: #32363f;
-$independence: #404866;
-$alice-blue: #ecf0f4;
-$shadow-blue: #8393a8;
+$black: #131313;
 
-// Shadows
-@mixin shadow-1 {
-    box-shadow: 5px 11px 18px -8px rgba(0, 0, 0, 0.25);
+// Grays
+$gray-100: #fafafa;
+$gray-200: #e6e6e6;
+$gray-300: #cccccc;
+$gray-400: #b3b3b3;
+$gray-500: #999999;
+$gray-600: #808080;
+$gray-700: #666666;
+$gray-800: #4c4c4c;
+$gray-900: #333333;
+
+// Neutrals
+$neutral-100: #e8e8ee;
+$neutral-200: #d2d2dd;
+$neutral-300: #bbbbcb;
+$neutral-400: #a5a5ba;
+$neutral-500: #8e8ea9;
+$neutral-600: #727287;
+$neutral-700: #555565;
+$neutral-800: #393944;
+$neutral-900: #1c1c22;
+
+// Primary
+$primary-100: #d9dffc;
+$primary-200: #b4c0f8;
+$primary-300: #8ea0f5;
+$primary-400: #6981f1;
+$primary-500: #4361ee;
+$primary-600: #364ebe;
+$primary-700: #283a8f;
+$primary-800: #1b275f;
+$primary-900: #0d1330;
+
+// Secondary
+$secondary-100: #daeafc;
+$secondary-200: #b6d5f9;
+$secondary-300: #91bff5;
+$secondary-400: #6daaf2;
+$secondary-500: #4895ef;
+$secondary-600: #3a77bf;
+$secondary-700: #2b598f;
+$secondary-800: #1d3c60;
+$secondary-900: #0e1e30;
+
+// Tertiary
+$tertiary-100: #e9e6ff;
+$tertiary-200: #d4cdff;
+$tertiary-300: #beb3ff;
+$tertiary-400: #a99aff;
+$tertiary-500: #9381ff;
+$tertiary-600: #7667cc;
+$tertiary-700: #584d99;
+$tertiary-800: #3b3466;
+$tertiary-900: #1d1a33;
+
+// Success
+$success-100: #cdf7ec;
+$success-200: #9befd9;
+$success-300: #6ae6c6;
+$success-400: #38deb3;
+$success-500: #06d6a0;
+$success-600: #05ab80;
+$success-700: #048060;
+$success-800: #025640;
+$success-900: #012b20;
+
+// Warning
+$warning-100: #fff6e0;
+$warning-200: #ffedc2;
+$warning-300: #ffe3a3;
+$warning-400: #ffda85;
+$warning-500: #ffd166;
+$warning-600: #cca752;
+$warning-700: #997d3d;
+$warning-800: #665429;
+$warning-900: #332a14;
+
+// Error
+$error-100: #fad7d9;
+$error-200: #f5afb4;
+$error-300: #ef888e;
+$error-400: #ea6069;
+$error-500: #e53843;
+$error-600: #b72d36;
+$error-700: #892228;
+$error-800: #5c161b;
+$error-900: #2e0b0d;
+
+/*
+* Shadows
+*/
+@mixin button-shadow($button-color) {
+    box-shadow: 5px 11px 18px -5px rgba($button-color, 0.1);
 }
 
-@mixin shadow-2 {
-    box-shadow: 5px 11px 18px -8px rgba(0, 0, 0, 0.4);
+@mixin dark-shadow {
+    box-shadow: 5px 11px 18px -5px rgba(0, 0, 0, 0.5);
 }
 
-@mixin shadow-3 {
-    box-shadow: 5px 11px 18px -8px rgba(0, 0, 0, 0.5);
+@mixin hover-shadow {
+    box-shadow: 5px 11px 18px -5px rgba(0, 0, 0, 0.2);
 }
 
-@mixin shadow-soft {
-    box-shadow: 0px 11px 18px -12px rgba(0, 0, 0, 0.25);
+@mixin border-shadow {
+    box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.5);
 }
 
-// Gradients
-@mixin primary-gradient-100 {
-    background: linear-gradient(90deg, $primary-100 0%, $secondary-100 100%);
+@mixin container-shadow {
+    box-shadow: 1px 4px 10px rgba(0, 0, 0, 0.2);
 }
 
-@mixin primary-gradient-200 {
-    background: linear-gradient(90deg, $primary-200 0%, $secondary-200 100%);
+@mixin table-shadow {
+    box-shadow: 0px 1px 4px rgba(28, 28, 34, 0.1);
 }
 
-@mixin primary-gradient-300 {
-    background: linear-gradient(90deg, $primary-300 0%, $secondary-300 100%);
-}
+/*
+* Gradient Backgrounds
+*/
 
+// Enable text gradient
 @mixin text-gradient {
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
-// Typography Styles plus base classes
-@mixin display-1 {
-    font-family: $font-3;
+/*
+* Typography styling
+*/
+@mixin hero {
+    font-family: $font-1;
     font-style: normal;
-    font-weight: 800;
-    font-size: rem(64);
-    line-height: rem(106);
-    letter-spacing: 0.02em;
+    font-weight: 700;
+    font-size: 80px;
+    line-height: 96px;
+
+    @include lg {
+        font-size: 72px;
+        line-height: 88px;
+    }
+
+    @include md {
+        font-size: 65px;
+        line-height: 80px;
+    }
+
+    @include sm {
+        font-size: 60px;
+        line-height: 72px;
+    }
 }
 
-@mixin display-2 {
-    font-family: $font-3;
+@mixin display {
+    font-family: $font-1;
     font-style: normal;
-    font-weight: 800;
-    font-size: rem(56);
-    line-height: rem(94);
-    letter-spacing: 0.02em;
+    font-weight: 700;
+    font-size: 48px;
+    line-height: 60px;
+
+    @include lg {
+        font-size: 38px;
+        line-height: 48px;
+    }
+
+    @include md {
+        font-size: 31px;
+        line-height: 40px;
+    }
+
+    @include sm {
+        font-size: 31px;
+        line-height: 40px;
+    }
 }
 
 @mixin heading-1 {
     font-family: $font-1;
     font-style: normal;
-    font-weight: bold;
-    font-size: rem(48);
-    line-height: rem(58);
+    font-weight: 700;
+    font-size: 32px;
+    line-height: 44px;
+
+    @include lg {
+        font-size: 38px;
+        line-height: 48px;
+    }
+
+    @include md {
+        font-size: 31px;
+        line-height: 40px;
+    }
+
+    @include sm {
+        font-size: 31px;
+        line-height: 40px;
+    }
+}
+
+@mixin heading-1-regular {
+    @include heading-1;
+    font-weight: 400;
 }
 
 @mixin heading-2 {
     font-family: $font-1;
     font-style: normal;
-    font-weight: bold;
-    font-size: rem(36);
-    line-height: rem(44);
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 32px;
+
+    @include lg {
+        font-size: 21px;
+        line-height: 28px;
+    }
+
+    @include md {
+        font-size: 20px;
+        line-height: 28px;
+    }
+
+    @include sm {
+        font-size: 20px;
+        line-height: 28px;
+    }
+}
+
+@mixin heading-2-regular {
+    @include heading-2;
+    font-weight: 400;
 }
 
 @mixin heading-3 {
     font-family: $font-1;
     font-style: normal;
-    font-weight: 600;
-    font-size: rem(24);
-    line-height: rem(29);
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 24px;
 }
 
-@mixin sub-heading-1 {
+@mixin heading-3-regular {
+    @include heading-3;
+    font-weight: 400;
+}
+
+@mixin heading-4 {
     font-family: $font-1;
     font-style: normal;
-    font-weight: 600;
-    font-size: rem(22);
-    line-height: rem(27);
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 24px;
 }
 
-@mixin body-1 {
-    font-family: $font-2;
-    font-style: normal;
-    font-weight: normal;
-    font-size: rem(18);
-    line-height: rem(24);
+@mixin heading-4-regular {
+    @include heading-4;
+    font-weight: 400;
 }
 
-@mixin body-2 {
-    font-family: $font-2;
-    font-style: normal;
-    font-weight: normal;
-    font-size: rem(16);
-    line-height: rem(22);
-}
-
-@mixin body-3 {
-    font-family: $font-2;
-    font-style: normal;
-    font-weight: normal;
-    font-size: rem(14);
-    line-height: rem(20);
-}
-
-@mixin paragraph {
-    font-family: $font-2;
-    font-style: normal;
-    font-weight: normal;
-    font-size: rem(16);
-    line-height: rem(20);
-}
-
-@mixin sub-text {
-    font-family: $font-2;
-    font-style: normal;
-    font-weight: normal;
-    font-size: rem(20);
-    line-height: rem(26);
-}
-
-@mixin small-text {
+@mixin heading-5 {
     font-family: $font-1;
     font-style: normal;
-    font-weight: bold;
-    font-size: rem(14);
-    line-height: rem(24);
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 20px;
 }
 
-@mixin small-heading-1 {
-    font-family: $font-1;
+@mixin heading-5-regular {
+    @include heading-5;
+    font-weight: 400;
+}
+
+@mixin body-xl {
+    font-family: $font-2;
     font-style: normal;
-    font-weight: bold;
-    font-size: rem(18);
-    line-height: rem(24);
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 24px;
 }
 
-@mixin small-heading-2 {
+@mixin body-xl-highlight {
+    @include body-xl;
+    font-weight: 700;
+}
+
+@mixin body-lg {
+    font-family: $font-2;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 24px;
+}
+
+@mixin body-lg-highlight {
+    @include body-lg;
+    font-weight: 700;
+}
+
+@mixin body-md {
+    font-family: $font-2;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+}
+
+@mixin body-md-highlight {
+    @include body-md;
+    font-weight: 700;
+}
+
+@mixin body-sm {
+    font-family: $font-2;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 16px;
+}
+
+@mixin body-sm-highlight {
+    @include body-sm;
+    font-weight: 700;
+}
+
+@mixin label-xl {
     font-family: $font-1;
     font-style: normal;
     font-weight: 500;
-    font-size: rem(18);
-    line-height: rem(24);
+    font-size: 16px;
+    line-height: 24px;
+}
+
+@mixin label-lg {
+    font-family: $font-1;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 24px;
+}
+
+@mixin label-md {
+    font-family: $font-1;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 20px;
+}
+
+@mixin label-sm {
+    font-family: $font-1;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 11px;
+    line-height: 20px;
+}
+
+@mixin label-xs {
+    font-family: $font-1;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 9px;
+    line-height: 16px;
 }
 
 @mixin button-text {
     font-family: $font-1;
     font-style: normal;
-    font-weight: bold;
-    font-size: rem(14);
-    line-height: rem(17);
-    letter-spacing: 0.025em;
-    text-transform: uppercase;
-}
-
-@mixin link-text {
-    font-family: $font-1;
-    font-style: normal;
-    font-weight: bold;
-    font-size: rem(14);
-    line-height: rem(17);
-    color: $primary-100;
-    text-decoration: none;
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 20px;
 }
