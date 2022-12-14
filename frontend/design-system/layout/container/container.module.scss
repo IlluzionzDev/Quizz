@@ -1,0 +1,16 @@
+.container {
+    width: 60vw;
+    margin: 0 auto;
+
+    @include xl {
+        width: 80vw;
+    }
+
+    @include lg {
+        width: 85vw;
+    }
+
+    @include md {
+        width: 90vw;
+    }
+}

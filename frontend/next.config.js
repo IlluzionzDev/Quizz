@@ -2,7 +2,7 @@ const nextConfig = {
     reactStrictMode: true,
     sassOptions: {
         includePaths: ['./styles', './components'],
-        prependData: `@import "styles/design-system-utils.scss";`
+        prependData: `@import "@design-system/design-system-utils.scss";`
     }
 };
 

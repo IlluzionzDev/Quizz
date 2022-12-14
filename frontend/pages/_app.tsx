@@ -1,5 +1,5 @@
-import '@styles/globals.scss';
-import '@styles/design-system.scss';
+// Import SCSS utils
+import '@design-system/design-system.scss';
 import type { AppProps } from 'next/app';
 import store from '../store/store';
 import { Provider } from 'react-redux';
@@ -11,11 +11,14 @@ import '@fontsource/poppins/500.css';
 import '@fontsource/poppins/400.css';
 import '@fontsource/inter/700.css';
 import '@fontsource/inter/400.css';
+import { ThemeProvider } from '@design-system/theme';
 
 export default function App({ Component, pageProps }: AppProps) {
     return (
-        <Provider store={store}>
-            <Component {...pageProps} />
-        </Provider>
+        <ThemeProvider>
+            <Provider store={store}>
+                <Component {...pageProps} />
+            </Provider>
+        </ThemeProvider>
     );
 }
