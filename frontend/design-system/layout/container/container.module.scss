@@ -13,4 +13,8 @@
     @include md {
         width: 90vw;
     }
+
+    @include sm {
+        width: 95vw;
+    }
 }

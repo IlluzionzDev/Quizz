@@ -1,0 +1,103 @@
+.hero {
+    @include hero;
+}
+
+.display {
+    @include display;
+}
+
+.heading-1 {
+    @include heading-1;
+}
+
+.heading-1-regular {
+    @include heading-1-regular;
+}
+
+.heading-2 {
+    @include heading-2;
+}
+
+.heading-2-regular {
+    @include heading-2-regular;
+}
+
+.heading-3 {
+    @include heading-3;
+}
+
+.heading-3-regular {
+    @include heading-3-regular;
+}
+
+.heading-4 {
+    @include heading-4;
+}
+
+.heading-4-regular {
+    @include heading-4-regular;
+}
+
+.heading-5 {
+    @include heading-5;
+}
+
+.heading-5-regular {
+    @include heading-5-regular;
+}
+
+.body-xl {
+    @include body-xl;
+}
+
+.body-xl-highlight {
+    @include body-xl-highlight;
+}
+
+.body-lg {
+    @include body-lg;
+}
+
+.body-lg-highlight {
+    @include body-lg-highlight;
+}
+
+.body-md {
+    @include body-md;
+}
+
+.body-md-highlight {
+    @include body-md-highlight;
+}
+
+.body-sm {
+    @include body-sm;
+}
+
+.body-sm-highlight {
+    @include body-sm-highlight;
+}
+
+.label-xl {
+    @include label-xl;
+}
+
+.label-lg {
+    @include label-lg;
+}
+
+.label-md {
+    @include label-md;
+}
+
+.label-sm {
+    @include label-sm;
+}
+
+.label-xs {
+    @include label-xs;
+}
+
+.button-text {
+    @include button-text;
+}

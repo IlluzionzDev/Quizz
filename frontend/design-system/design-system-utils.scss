@@ -59,102 +59,6 @@ $font-1: 'Poppins', sans-serif;
 $font-2: 'Inter', sans-serif;
 
 /*
-* Colours
-*/
-
-// Black & White
-$white: #ffffff;
-$black: #131313;
-
-// Grays
-$gray-100: #fafafa;
-$gray-200: #e6e6e6;
-$gray-300: #cccccc;
-$gray-400: #b3b3b3;
-$gray-500: #999999;
-$gray-600: #808080;
-$gray-700: #666666;
-$gray-800: #4c4c4c;
-$gray-900: #333333;
-
-// Neutrals
-$neutral-100: #e8e8ee;
-$neutral-200: #d2d2dd;
-$neutral-300: #bbbbcb;
-$neutral-400: #a5a5ba;
-$neutral-500: #8e8ea9;
-$neutral-600: #727287;
-$neutral-700: #555565;
-$neutral-800: #393944;
-$neutral-900: #1c1c22;
-
-// Primary
-$primary-100: #d9dffc;
-$primary-200: #b4c0f8;
-$primary-300: #8ea0f5;
-$primary-400: #6981f1;
-$primary-500: #4361ee;
-$primary-600: #364ebe;
-$primary-700: #283a8f;
-$primary-800: #1b275f;
-$primary-900: #0d1330;
-
-// Secondary
-$secondary-100: #daeafc;
-$secondary-200: #b6d5f9;
-$secondary-300: #91bff5;
-$secondary-400: #6daaf2;
-$secondary-500: #4895ef;
-$secondary-600: #3a77bf;
-$secondary-700: #2b598f;
-$secondary-800: #1d3c60;
-$secondary-900: #0e1e30;
-
-// Tertiary
-$tertiary-100: #e9e6ff;
-$tertiary-200: #d4cdff;
-$tertiary-300: #beb3ff;
-$tertiary-400: #a99aff;
-$tertiary-500: #9381ff;
-$tertiary-600: #7667cc;
-$tertiary-700: #584d99;
-$tertiary-800: #3b3466;
-$tertiary-900: #1d1a33;
-
-// Success
-$success-100: #cdf7ec;
-$success-200: #9befd9;
-$success-300: #6ae6c6;
-$success-400: #38deb3;
-$success-500: #06d6a0;
-$success-600: #05ab80;
-$success-700: #048060;
-$success-800: #025640;
-$success-900: #012b20;
-
-// Warning
-$warning-100: #fff6e0;
-$warning-200: #ffedc2;
-$warning-300: #ffe3a3;
-$warning-400: #ffda85;
-$warning-500: #ffd166;
-$warning-600: #cca752;
-$warning-700: #997d3d;
-$warning-800: #665429;
-$warning-900: #332a14;
-
-// Error
-$error-100: #fad7d9;
-$error-200: #f5afb4;
-$error-300: #ef888e;
-$error-400: #ea6069;
-$error-500: #e53843;
-$error-600: #b72d36;
-$error-700: #892228;
-$error-800: #5c161b;
-$error-900: #2e0b0d;
-
-/*
 * Shadows
 */
 @mixin button-shadow($button-color) {
@@ -184,8 +88,6 @@ $error-900: #2e0b0d;
 /*
 * Gradient Backgrounds
 */
-
-// Enable text gradient
 @mixin text-gradient {
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
