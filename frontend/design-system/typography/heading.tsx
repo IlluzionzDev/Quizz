@@ -16,7 +16,7 @@ export const Heading: React.FC<HeadingProps> = ({ children, element = 'h1', vari
     // Define styling
     const stylingName = variant + (regular ? '-regular' : '');
     const colors = {
-        color: color ? theme.colors[color] : undefined
+        color: color ? 'var(--' + color + ')' : undefined
     };
 
     return <Element style={colors} className={styles[stylingName]} {...rest}>{children}</Element>;

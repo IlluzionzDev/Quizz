@@ -11,10 +11,29 @@
     @return $remValue;
 }
 
+@function toRGB($color) {
+    @return rgb(red($color), green($color), blue($color));
+}
+
+/**
+* Design System Constants (from JS)
+*/
+$border-radius: 4px;
+$spacing-1: rem(4);
+$spacing-2: rem(8);
+$spacing-3: rem(12);
+$spacing-4: rem(16);
+$spacing-5: rem(20);
+$spacing-6: rem(24);
+$spacing-7: rem(32);
+$spacing-8: rem(40);
+$spacing-9: rem(48);
+$spacing-10: rem(56);
+$spacing-11: rem(64);
+
 /*
 * Breakpoints
 */
-
 // Small tablets and large smartphones (landscape view)
 $screen-sm-min: 30em;
 // Small tablets (portrait view)
@@ -62,7 +81,7 @@ $font-2: 'Inter', sans-serif;
 * Shadows
 */
 @mixin button-shadow($button-color) {
-    box-shadow: 5px 11px 18px -5px rgba($button-color, 0.1);
+    box-shadow: 5px 11px 18px -5px rgba($button-color, 40%);
 }
 
 @mixin dark-shadow {

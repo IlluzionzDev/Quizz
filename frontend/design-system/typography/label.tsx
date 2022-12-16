@@ -12,7 +12,7 @@ export const Label: React.FC<LabelProps> = ({ children, variant, color, ...rest}
     // Define styling
     const stylingName = variant === 'button' ? 'button-text' : 'label-' + variant;
     const colors = {
-        color: color ? theme.colors[color] : undefined
+        color: color ? 'var(--' + color + ')' : undefined
     };
 
     return (

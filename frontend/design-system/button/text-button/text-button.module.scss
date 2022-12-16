@@ -1,0 +1,46 @@
+.baseButton {
+    padding: $spacing-1 $spacing-4;
+    border-radius: $border-radius;
+    border: 1px solid transparent;
+    cursor: pointer;
+    width: fit-content;
+    height: fit-content;
+
+    display: flex;
+    flex-direction: row;
+    gap: $spacing-2;
+
+    align-items: center;
+
+    background: transparent;
+    color: var(--primary500);
+
+    // When button is disabled
+    &[aria-disabled='true'] {
+        cursor: default;
+        background-color: var(--neutral100);
+        border: 1px solid var(--neutral200);
+        color: var(--neutral600);
+    }
+
+    &:hover {
+        background-color: var(--primary100);
+    }
+
+    &:focus,
+    &:active {
+        background-color: var(--primary100);
+        border: 1px solid var(--primary200);
+    }
+}
+
+.iconWrapper {
+    height: 16px;
+    width: auto;
+
+    // Align icon in center of wrapper
+    display: flex;
+    flex-direction: row;
+    justify-self: center;
+    align-items: center;
+}

@@ -13,7 +13,7 @@ export const Body: React.FC<BodyProps> = ({ children, variant, color, highlight 
     // Define styling
     const stylingName = 'body-' + variant + (highlight ? '-highlight' : '');
     const colors = {
-        color: color ? theme.colors[color] : undefined
+        color: color ? 'var(--' + color + ')' : undefined
     };
 
     return (

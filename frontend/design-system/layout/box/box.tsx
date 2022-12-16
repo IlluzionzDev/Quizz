@@ -65,8 +65,8 @@ export const Box: React.FC<BoxProps> = ({
             style={{
                 ...inlineStyle,
                 backgroundColor: background ? 'var(--' + background + ')' : undefined,
-                color: color ? theme.colors[color] : undefined, // Default font color
-                borderColor: borderColor ? theme.colors[borderColor] : undefined,
+                color: color ? 'var(--' + color + ')' : undefined,
+                borderColor: borderColor ? 'var(--' + borderColor + ')' : undefined,
 
                 borderRadius: hasRadius ? theme.borderRadius : undefined,
 

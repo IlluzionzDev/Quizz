@@ -33,7 +33,7 @@ export const Flex: React.FC<FlexTypes> = ({
     return (
         <Box
             inlineStyle={{
-                alignContent: alignItems,
+                alignItems: alignItems,
                 justifyContent: justifyContent,
                 display: inline ? 'inline-flex' : 'flex',
 

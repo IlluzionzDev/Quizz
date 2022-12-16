@@ -34,7 +34,7 @@
 
     font: inherit;
 
-    // Base easing
+    // Base theme easing
     transition: background-color 200ms ease-in-out;
 }
 
@@ -182,6 +182,7 @@ html {
     --error900: #2e0b0d;
 }
 
+// TODO: Convert JS styles to css vars
 .darkTheme {
     // Black & White
     --white: #131313;
@@ -198,37 +199,37 @@ html {
     --gray900: #fafafa;
 
     // Neutrals
-    --neutral100: #e8e8ee;
-    --neutral200: #d2d2dd;
-    --neutral300: #bbbbcb;
-    --neutral400: #a5a5ba;
+    --neutral100: #1c1c22;
+    --neutral200: #393944;
+    --neutral300: #555565;
+    --neutral400: #727287;
     --neutral500: #8e8ea9;
-    --neutral600: #727287;
-    --neutral700: #555565;
-    --neutral800: #393944;
-    --neutral900: #1c1c22;
+    --neutral600: #a5a5ba;
+    --neutral700: #bbbbcb;
+    --neutral800: #d2d2dd;
+    --neutral900: #e8e8ee;
 
     // Primary
-    --primary100: #d9dffc;
-    --primary200: #b4c0f8;
-    --primary300: #8ea0f5;
-    --primary400: #6981f1;
+    --primary100: #0d1330;
+    --primary200: #1b275f;
+    --primary300: #283a8f;
+    --primary400: #364ebe;
     --primary500: #4361ee;
-    --primary600: #364ebe;
-    --primary700: #283a8f;
-    --primary800: #1b275f;
-    --primary900: #0d1330;
+    --primary600: #6981f1;
+    --primary700: #8ea0f5;
+    --primary800: #b4c0f8;
+    --primary900: #d9dffc;
 
     // Secondary
-    --secondary100: #daeafc;
-    --secondary200: #b6d5f9;
-    --secondary300: #91bff5;
-    --secondary400: #6daaf2;
+    --secondary100: #0e1e30;
+    --secondary200: #1d3c60;
+    --secondary300: #2b598f;
+    --secondary400: #3a77bf;
     --secondary500: #4895ef;
-    --secondary600: #3a77bf;
-    --secondary700: #2b598f;
-    --secondary800: #1d3c60;
-    --secondary900: #0e1e30;
+    --secondary600: #6daaf2;
+    --secondary700: #91bff5;
+    --secondary800: #b6d5f9;
+    --secondary900: #daeafc;
 
     // Tertiary
     --tertiary100: #1d1a33;
@@ -242,37 +243,37 @@ html {
     --tertiary900: #e9e6ff;
 
     // Success
-    --success100: #cdf7ec;
-    --success200: #9befd9;
-    --success300: #6ae6c6;
-    --success400: #38deb3;
+    --success100: #012b20;
+    --success200: #025640;
+    --success300: #048060;
+    --success400: #05ab80;
     --success500: #06d6a0;
-    --success600: #05ab80;
-    --success700: #048060;
-    --success800: #025640;
-    --success900: #012b20;
+    --success600: #38deb3;
+    --success700: #6ae6c6;
+    --success800: #9befd9;
+    --success900: #cdf7ec;
 
     // Warning
-    --warning100: #fff6e0;
-    --warning200: #ffedc2;
-    --warning300: #ffe3a3;
-    --warning400: #ffda85;
+    --warning100: #332a14;
+    --warning200: #665429;
+    --warning300: #997d3d;
+    --warning400: #cca752;
     --warning500: #ffd166;
-    --warning600: #cca752;
-    --warning700: #997d3d;
-    --warning800: #665429;
-    --warning900: #332a14;
+    --warning600: #ffda85;
+    --warning700: #ffe3a3;
+    --warning800: #ffedc2;
+    --warning900: #fff6e0;
 
     // Error
-    --error100: #fad7d9;
-    --error200: #f5afb4;
-    --error300: #ef888e;
-    --error400: #ea6069;
+    --error100: #2e0b0d;
+    --error200: #5c161b;
+    --error300: #892228;
+    --error400: #b72d36;
     --error500: #e53843;
-    --error600: #b72d36;
-    --error700: #892228;
-    --error800: #5c161b;
-    --error900: #2e0b0d;
+    --error600: #ea6069;
+    --error700: #ef888e;
+    --error800: #f5afb4;
+    --error900: #fad7d9;
 }
 
 body {
