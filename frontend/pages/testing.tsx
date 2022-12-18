@@ -1,15 +1,21 @@
 import FullSection from '@components/layout/FullSection';
 import { Button, IconButton, TextButton } from '@design-system/button';
+import { CheckboxInput } from '@design-system/input/checkbox';
+import { TextInput } from '@design-system/input/text';
 import { Box } from '@design-system/layout/box';
 import { Container } from '@design-system/layout/container';
 import { Flex } from '@design-system/layout/flex';
 import { useTheme } from '@design-system/theme';
 import { Body, Heading, Label } from '@design-system/typography';
 import { NextPage } from 'next';
+import { useState } from 'react';
 import { FaPlay, FaSun } from 'react-icons/fa';
 
 const Testing: NextPage = () => {
     const { theme, toggleTheme } = useTheme();
+
+    const [testCheck, setTestCheck] = useState(false);
+    const [testText, setTestText] = useState('');
 
     return (
         <div className="lightTheme">
@@ -17,7 +23,7 @@ const Testing: NextPage = () => {
                 <Container>
                     <Flex direction="column" padding={4} justifyContent="center" gap={3}>
                         <Heading element="h1" variant="heading-1" color="primary600">
-                            Test
+                            Component Testing
                         </Heading>
                         <Box>
                             <Label variant="xl">Example Label</Label>
@@ -52,8 +58,13 @@ const Testing: NextPage = () => {
                             <TextButton onClick={() => toggleTheme()} startIcon={<FaSun />}>
                                 Change Theme
                             </TextButton>
-                            <IconButton onClick={() => toggleTheme()}  icon={<FaSun />} />
+                            <IconButton onClick={() => toggleTheme()} icon={<FaSun />} />
                         </Flex>
+
+                        <Box>
+                            <CheckboxInput checked={testCheck} onChange={(e) => setTestCheck(e.currentTarget.checked)} />
+                            <TextInput value={testText} onChange={(e) => setTestText(e.currentTarget.value)} placeholder={'Test Text'} />
+                        </Box>
                     </Flex>
                 </Container>
             </FullSection>
