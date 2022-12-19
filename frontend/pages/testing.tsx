@@ -1,5 +1,7 @@
 import FullSection from '@components/layout/FullSection';
+import { Badge } from '@design-system/badge';
 import { Button, IconButton, TextButton } from '@design-system/button';
+import { TextField } from '@design-system/field';
 import { CheckboxInput } from '@design-system/input/checkbox';
 import { TextInput } from '@design-system/input/text';
 import { Box } from '@design-system/layout/box';
@@ -18,7 +20,7 @@ const Testing: NextPage = () => {
     const [testText, setTestText] = useState('');
 
     return (
-        <div className="lightTheme">
+        <div>
             <FullSection>
                 <Container>
                     <Flex direction="column" padding={4} justifyContent="center" gap={3}>
@@ -63,7 +65,10 @@ const Testing: NextPage = () => {
 
                         <Box>
                             <CheckboxInput checked={testCheck} onChange={(e) => setTestCheck(e.currentTarget.checked)} />
-                            <TextInput value={testText} onChange={(e) => setTestText(e.currentTarget.value)} placeholder={'Test Text'} />
+                            <TextField id="test" name="test" label="Test Field" value={testText} onChange={(e) => setTestText(e.currentTarget.value)} placeholder='Test Text' 
+                                error={testText.length <=3 ? 'Text must be greater than 3 characters' : ''}
+                            />
+                            <Badge variant='active'>Test</Badge>
                         </Box>
                     </Flex>
                 </Container>
