@@ -1,0 +1,58 @@
+.modalWrapper {
+    position: fixed;
+    z-index: 4;
+    inset: 0;
+
+    background: rgba(var(--neutral800RGB), 0.2);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modalContent {
+    position: relative;
+    width: 80vw;
+
+
+    @include table-shadow;
+}
+
+.modalBody {
+    // Allow scrolling in body
+    overflow: auto;
+    max-height: 60vh;
+
+    padding: $spacing-7;
+    background-color: var(--white);
+
+    /* width */
+    &::-webkit-scrollbar {
+        width: 10px;
+    }
+
+    /* Track */
+    &::-webkit-scrollbar-track {
+        background: #f1f1f1;
+    }
+
+    /* Handle */
+    &::-webkit-scrollbar-thumb {
+        background: #888;
+    }
+
+    /* Handle on hover */
+    &::-webkit-scrollbar-thumb:hover {
+        background: #555;
+    }
+}
+
+.modalHeader {
+    border-bottom: 1px solid var(--neutral100);
+    border-radius: $border-radius $border-radius 0 0;
+}
+
+.modalFooter {
+    border-top: 1px solid var(--neutral100);
+    border-radius: 0 0 $border-radius $border-radius;
+}

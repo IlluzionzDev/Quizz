@@ -12,7 +12,7 @@
 }
 
 @function toRGB($color) {
-    @return rgb(red($color), green($color), blue($color));
+    @return red($color), green($color), blue($color);
 }
 
 /**

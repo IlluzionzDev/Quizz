@@ -3,6 +3,7 @@ import { CSSProperties } from 'react';
 
 // Allow css rules
 export type BoxProps = {
+    className?: CSSProperties | string;
     inlineStyle?: CSSProperties;
     background?: string;
     color?: string;
@@ -34,6 +35,7 @@ export type BoxProps = {
  */
 export const Box: React.FC<BoxProps> = ({
     children,
+    className,
     inlineStyle,
     background,
     color,
@@ -62,6 +64,7 @@ export const Box: React.FC<BoxProps> = ({
 
     return (
         <div
+            className={className}
             style={{
                 ...inlineStyle,
                 backgroundColor: background ? 'var(--' + background + ')' : undefined,

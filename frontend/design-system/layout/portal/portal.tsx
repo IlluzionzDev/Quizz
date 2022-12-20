@@ -2,7 +2,6 @@ import { useLayoutEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 
 type PortalProps = {
-    children: any;
     wrapperId: string;
 };
 
@@ -36,6 +35,7 @@ export const Portal: React.FC<PortalProps> = ({ children, wrapperId }) => {
 function createWrapperAndAppendToBody(wrapperId: string) {
     const wrapperElement = document.createElement('div');
     wrapperElement.setAttribute('id', wrapperId);
+    wrapperElement.setAttribute('data-react-portal', 'true');
     document.body.appendChild(wrapperElement);
     return wrapperElement;
 }

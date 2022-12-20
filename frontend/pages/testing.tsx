@@ -7,6 +7,7 @@ import { TextInput } from '@design-system/input/text';
 import { Box } from '@design-system/layout/box';
 import { Container } from '@design-system/layout/container';
 import { Flex } from '@design-system/layout/flex';
+import { ModalBody, ModalFooter, ModalHeader, ModalLayout } from '@design-system/modal';
 import { useTheme } from '@design-system/theme';
 import { Body, Heading, Label } from '@design-system/typography';
 import { NextPage } from 'next';
@@ -18,6 +19,7 @@ const Testing: NextPage = () => {
 
     const [testCheck, setTestCheck] = useState(false);
     const [testText, setTestText] = useState('');
+    const [isVisible, setIsVisible] = useState(false);
 
     return (
         <div>
@@ -65,14 +67,43 @@ const Testing: NextPage = () => {
 
                         <Box>
                             <CheckboxInput checked={testCheck} onChange={(e) => setTestCheck(e.currentTarget.checked)} />
-                            <TextField id="test" name="test" label="Test Field" value={testText} onChange={(e) => setTestText(e.currentTarget.value)} placeholder='Test Text' 
-                                error={testText.length <=3 ? 'Text must be greater than 3 characters' : ''}
+                            <TextField
+                                id="test"
+                                name="test"
+                                label="Test Field"
+                                value={testText}
+                                onChange={(e) => setTestText(e.currentTarget.value)}
+                                placeholder="Test Text"
+                                error={testText.length <= 3 ? 'Text must be greater than 3 characters' : ''}
                             />
-                            <Badge variant='active'>Test</Badge>
+                            <Badge variant="active">Test</Badge>
+                            <Button variant="primary" onClick={() => setIsVisible((prev) => !prev)}>
+                                Open Modal
+                            </Button>
                         </Box>
                     </Flex>
                 </Container>
             </FullSection>
+            {isVisible && <ModalLayout onClose={() => setIsVisible((prev) => !prev)}>
+                <ModalHeader>Test</ModalHeader>
+                <ModalBody>Test Body</ModalBody>
+                <ModalFooter
+                    startActions={
+                        <>
+                            <Button variant="tertiary" onClick={() => setIsVisible((prev) => !prev)}>
+                                Cancel
+                            </Button>
+                        </>
+                    }
+                    endActions={
+                        <>
+                            <Button variant="primary" onClick={() => setIsVisible((prev) => !prev)}>
+                                Done
+                            </Button>
+                        </>
+                    }
+                />
+            </ModalLayout>}
         </div>
     );
 };
