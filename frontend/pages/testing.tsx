@@ -84,26 +84,41 @@ const Testing: NextPage = () => {
                     </Flex>
                 </Container>
             </FullSection>
-            {isVisible && <ModalLayout onClose={() => setIsVisible((prev) => !prev)}>
-                <ModalHeader>Test</ModalHeader>
-                <ModalBody>Test Body</ModalBody>
-                <ModalFooter
-                    startActions={
-                        <>
-                            <Button variant="tertiary" onClick={() => setIsVisible((prev) => !prev)}>
-                                Cancel
-                            </Button>
-                        </>
-                    }
-                    endActions={
-                        <>
-                            <Button variant="primary" onClick={() => setIsVisible((prev) => !prev)}>
-                                Done
-                            </Button>
-                        </>
-                    }
-                />
-            </ModalLayout>}
+            {isVisible && (
+                <ModalLayout onClose={() => setIsVisible((prev) => !prev)}>
+                    <ModalHeader>Test</ModalHeader>
+                    <ModalBody>
+                        <Heading element="h1" variant="heading-1">
+                            Modal Header
+                        </Heading>
+                        <Flex direction="column" gap={3}>
+                            {Array(50)
+                                .fill(null)
+                                .map((_, index) => (
+                                    <Box key={`box-${index}`} padding={5} background="neutral100" hasRadius>
+                                        Hello world
+                                    </Box>
+                                ))}
+                        </Flex>
+                    </ModalBody>
+                    <ModalFooter
+                        startActions={
+                            <>
+                                <Button variant="tertiary" onClick={() => setIsVisible((prev) => !prev)}>
+                                    Cancel
+                                </Button>
+                            </>
+                        }
+                        endActions={
+                            <>
+                                <Button variant="primary" onClick={() => setIsVisible((prev) => !prev)}>
+                                    Done
+                                </Button>
+                            </>
+                        }
+                    />
+                </ModalLayout>
+            )}
         </div>
     );
 };

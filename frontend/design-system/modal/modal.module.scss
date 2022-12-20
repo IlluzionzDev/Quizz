@@ -20,7 +20,7 @@
 
 .modalBody {
     // Allow scrolling in body
-    overflow: auto;
+    overflow-y: scroll;
     max-height: 60vh;
 
     padding: $spacing-7;
@@ -28,22 +28,26 @@
 
     /* width */
     &::-webkit-scrollbar {
-        width: 10px;
+        width: 8px;
+        display: inline;
     }
 
     /* Track */
     &::-webkit-scrollbar-track {
-        background: #f1f1f1;
+        background: transparent;
+        margin-top: rem(4);
+        margin-bottom: rem(4);
     }
 
     /* Handle */
     &::-webkit-scrollbar-thumb {
-        background: #888;
+        border-radius: $border-radius;
+        background: var(--neutral200);
     }
 
     /* Handle on hover */
     &::-webkit-scrollbar-thumb:hover {
-        background: #555;
+        background: var(--neutral100);
     }
 }
 

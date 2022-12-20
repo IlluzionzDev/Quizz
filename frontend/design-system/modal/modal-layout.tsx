@@ -11,8 +11,8 @@ export const ModalLayout: React.FC<ModalLayoutProps> = ({ children, onClose, ...
     return (
         <Portal wrapperId="modal">
             <ModalContext.Provider value={{ onClose }}>
-                <div className={styles.modalWrapper}>
-                    <DismissableLayer onEscapeKeyDown={onClose} onPointerDownOutside={onClose}>
+                <div className={styles.modalWrapper} onClick={onClose}>
+                    <DismissableLayer onEscapeKeyDown={onClose}>
                         <div className={styles.modalContent} role="dialog" onClick={(e) => e.stopPropagation()} {...rest}>
                             {children}
                         </div>

@@ -73,17 +73,17 @@ export const Box: React.FC<BoxProps> = ({
 
                 borderRadius: hasRadius ? theme.borderRadius : undefined,
 
-                padding: padding ? theme.spaces[padding] : undefined,
-                paddingBottom: paddingBottom ? theme.spaces[paddingBottom] : undefined,
-                paddingLeft: paddingLeft ? theme.spaces[paddingLeft] : undefined,
-                paddingTop: paddingTop ? theme.spaces[paddingTop] : undefined,
-                paddingRight: paddingRight ? theme.spaces[paddingRight] : undefined,
+                // Set all values with master padding
+                paddingBottom: paddingBottom ? theme.spaces[paddingBottom] : padding ? theme.spaces[padding] : undefined,
+                paddingLeft: paddingLeft ? theme.spaces[paddingLeft] : padding ? theme.spaces[padding] : undefined,
+                paddingTop: paddingTop ? theme.spaces[paddingTop] : padding ? theme.spaces[padding] : undefined,
+                paddingRight: paddingRight ? theme.spaces[paddingRight] : padding ? theme.spaces[padding] : undefined,
 
-                margin: margin ? theme.spaces[margin] : undefined,
-                marginBottom: marginBottom ? theme.spaces[marginBottom] : undefined,
-                marginLeft: marginLeft ? theme.spaces[marginLeft] : undefined,
-                marginTop: marginTop ? theme.spaces[marginTop] : undefined,
-                marginRight: marginRight ? theme.spaces[marginRight] : undefined,
+                // Set all values with master margin
+                marginBottom: marginBottom ? theme.spaces[marginBottom] : margin ? theme.spaces[margin] : undefined,
+                marginLeft: marginLeft ? theme.spaces[marginLeft] : margin ? theme.spaces[margin] : undefined,
+                marginTop: marginTop ? theme.spaces[marginTop] : margin ? theme.spaces[margin] : undefined,
+                marginRight: marginRight ? theme.spaces[marginRight] : margin ? theme.spaces[margin] : undefined,
 
                 flex,
                 flexShrink: shrink,
