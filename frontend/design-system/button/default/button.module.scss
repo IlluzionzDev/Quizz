@@ -42,6 +42,8 @@
     color: var(--white);
     background-color: var(--primary600);
 
+    @include button-shadow(var(--primary500RGB));
+
     &:hover {
         background-color: var(--primary500);
     }
@@ -88,6 +90,8 @@
     color: var(--white);
     background-color: var(--success600);
 
+    @include button-shadow(var(--success500RGB));
+
     &:hover {
         background-color: var(--success500);
     }
@@ -117,6 +121,8 @@
 .errorButton {
     color: var(--white);
     background-color: var(--error600);
+
+    @include button-shadow(var(--error500RGB));
 
     &:hover {
         background-color: var(--error500);

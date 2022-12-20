@@ -81,7 +81,7 @@ $font-2: 'Inter', sans-serif;
 * Shadows
 */
 @mixin button-shadow($button-color) {
-    box-shadow: 5px 11px 18px -5px rgba($button-color, 40%);
+    box-shadow: 5px 11px 18px -5px rgba($button-color, 30%);
 }
 
 @mixin dark-shadow {

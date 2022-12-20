@@ -1,4 +1,4 @@
-import FullSection from '@components/layout/FullSection';
+import { FullSection } from '@design-system/layout/section';
 import { Badge } from '@design-system/badge';
 import { Button, IconButton, TextButton } from '@design-system/button';
 import { TextField } from '@design-system/field';
