@@ -12,7 +12,5 @@ type FieldInputProps = {
 export const FieldInput: React.FC<FieldInputProps> = ({ disabled, value, ...rest }) => {
     const { id, name, error } = useField();
 
-    return (
-        <TextInput value={value} hasError={Boolean(error)} id={id} {...rest} />
-    );
+    return <TextInput value={value} hasError={Boolean(error)} id={id} {...rest} />;
 };

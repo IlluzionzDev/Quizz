@@ -18,9 +18,13 @@
     // When button is disabled
     &[aria-disabled='true'] {
         cursor: default;
-        background-color: var(--neutral100);
-        border: 1px solid var(--neutral200);
+        background-color: transparent;
+        border: 1px solid transparent;
         color: var(--neutral600);
+
+        &:hover {
+            background-color: transparent;
+        }
     }
 
     &:hover {

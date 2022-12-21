@@ -1,20 +1,20 @@
 .container {
-    width: 60vw;
+    width: 60%;
     margin: 0 auto;
 
     @include xl {
-        width: 80vw;
+        width: 80%;
     }
 
     @include lg {
-        width: 85vw;
+        width: 85%;
     }
 
     @include md {
-        width: 90vw;
+        width: 90%;
     }
 
     @include sm {
-        width: 95vw;
+        width: 95%;
     }
 }

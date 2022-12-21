@@ -8,6 +8,8 @@
 
     background: transparent;
 
+    width: 100%;
+
     @include body-md;
 
     &::placeholder {

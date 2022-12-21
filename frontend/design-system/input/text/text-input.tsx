@@ -1,9 +1,10 @@
 import { useField } from '@design-system/field/field-context';
 import classNames from 'classnames';
-import { ChangeEventHandler } from 'react';
+import { ChangeEventHandler, CSSProperties } from 'react';
 import styles from './text-input.module.scss';
 
 type TextInputProps = {
+    className?: CSSProperties | string;
     disabled?: boolean;
     value: string;
     hasError?: boolean;
@@ -12,7 +13,7 @@ type TextInputProps = {
 /**
  * The raw styled text input
  */
-export const TextInput: React.FC<TextInputProps> = ({ value, hasError, disabled, ...rest }) => {
+export const TextInput: React.FC<TextInputProps> = ({ className, value, hasError, disabled, ...rest }) => {
     const { id, name, error } = useField();
 
     let ariaDesc;
@@ -25,7 +26,7 @@ export const TextInput: React.FC<TextInputProps> = ({ value, hasError, disabled,
         <input 
         type="text" 
         name={name} 
-        className={classNames(styles.input, (hasError ? styles.error : ''))} 
+        className={classNames(styles.input, (hasError ? styles.error : ''), className)} 
         disabled={disabled} 
         aria-disabled={disabled}
         arai-describedby={ariaDesc}

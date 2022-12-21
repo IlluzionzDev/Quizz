@@ -1,0 +1,11 @@
+.mainSection {
+    width: 100%;
+}
+
+.questionsBox {
+    width: 100%;
+
+    background-color: red;
+
+    @include table-shadow;
+}
