@@ -18,7 +18,7 @@ export const ModalFooter: React.FC<ModalFooterType> = ({ startActions, endAction
                 <Flex direction="row" gap={1}>
                     {startActions}
                 </Flex>
-                <Flex direction="row" gap={1}>
+                <Flex direction="row" gap={2}>
                     {endActions}
                 </Flex>
             </Flex>

@@ -5,7 +5,7 @@ import type { NextPage } from 'next';
 import { createRef, useRef, useState } from 'react';
 import CreateQuestionModal from '@components/create/CreateQuestionModal';
 import { GameState, QuestionData } from 'api/packets/packets';
-import { FaArrowLeft, FaPen, FaTimes, FaUpload } from 'react-icons/fa';
+import { FaArrowLeft, FaArrowRight, FaDownload, FaPen, FaPlus, FaTimes, FaUpload } from 'react-icons/fa';
 import { useRouter } from 'next/router';
 import { CenterSection, FullSection } from '@design-system/layout/section';
 import Navigation from '@components/layout/navigation';
@@ -15,6 +15,7 @@ import { Flex } from '@design-system/layout/flex';
 import { Heading } from '@design-system/typography';
 import { TextField } from '@design-system/field';
 import { Box } from '@design-system/layout/box';
+import { EditQuestion, EditQuestionModal } from '@components/create/edit-question';
 
 /**
  * Model of quiz configuration
@@ -32,23 +33,22 @@ const CreateQuiz: NextPage = () => {
     const [title, setTitle] = useState('');
 
     // Store quiz questions
-    const [questions, setQuestions] = useState<QuestionData[]>([{
-        question: 'Test',
-        answers: [
-            'Answer 1',
-            'Answer 2'
-        ],
-        correct: [0]
-    }]);
-
-    // Active question editing session data
-    const [question, setQuestion] = useState<QuestionData>({ question: '', answers: [], correct: [] });
+    const [questions, setQuestions] = useState<QuestionData[]>([
+        {
+            question: 'Test',
+            answers: ['Answer One', 'Answer Two', 'Answer Three', 'Answer Four'],
+            correct: [0]
+        }
+    ]);
 
     // Index of question being editing, -1 if none
     const [editingQuestion, setEditingQuestion] = useState(-1);
 
     // If to display the creating question modal
     const [createQuestionModal, setCreateQuestionModal] = useState(false);
+
+    // If submitted to create quiz
+    const [submitted, setSubmitted] = useState(false);
 
     // Element for importing quiz
     const importQuiz = createRef<HTMLInputElement>();
@@ -62,6 +62,8 @@ const CreateQuiz: NextPage = () => {
      * Validate questions and create quiz if okay
      */
     function createQuiz() {
+        setSubmitted(true);
+
         // Make sure has a title
         if (!title) return;
         // Make sure has atleast one question
@@ -154,32 +156,33 @@ const CreateQuiz: NextPage = () => {
 
     return (
         <FullSection>
-            {/* <CreateQuestionModal
-                isOpen={createQuestionModal}
-                onClose={() => {
-                    setCreateQuestionModal(false);
+            {createQuestionModal && (
+                <EditQuestionModal
+                    onClose={() => {
+                        setCreateQuestionModal(false);
 
-                    // No longer editing after close
-                    setEditingQuestion(-1);
-                }}
-                onSubmit={(question: QuestionData) => {
-                    // Close modal
-                    setCreateQuestionModal(false);
+                        // No longer editing after close
+                        setEditingQuestion(-1);
+                    }}
+                    onSubmit={(question: QuestionData) => {
+                        // Close modal
+                        setCreateQuestionModal(false);
 
-                    const questionsArray = questions;
-                    if (editingQuestion == -1) {
-                        questionsArray.push(question);
-                    } else {
-                        questionsArray[editingQuestion] = question;
-                    }
-                    setQuestions(questionsArray);
+                        const questionsArray = questions;
+                        if (editingQuestion == -1) {
+                            questionsArray.push(question);
+                        } else {
+                            questionsArray[editingQuestion] = question;
+                        }
+                        setQuestions(questionsArray);
 
-                    // No longer editing after submit
-                    setEditingQuestion(-1);
-                }}
-                question={question}
-                setQuestion={setQuestion}
-            /> */}
+                        // No longer editing after submit
+                        setEditingQuestion(-1);
+                    }}
+                    // Parse fresh question data or clone exising question data for editing
+                    question={editingQuestion === -1 ? { question: '', answers: [], correct: [] } : structuredClone(questions[editingQuestion])}
+                />
+            )}
             <Navigation
                 backlink={
                     <TextButton onClick={() => router.push('/')} startIcon={<FaArrowLeft />}>
@@ -188,125 +191,74 @@ const CreateQuiz: NextPage = () => {
                 }
             />
             <CenterSection>
-                <Flex direction="column" padding={7} gap={7} alignItems="center" className={styles.mainSection}>
-                    <Heading element="h1" variant="heading-1">
-                        Create Quiz
-                    </Heading>
-                    <TextField id="quizTitle" name="quiz title" value={title} onChange={(e) => setTitle(e.currentTarget.value)} placeholder="Title" label="Enter Quiz Title" />
-                    <Box background='white' className={styles.questionsBox} padding={4} hasRadius>
-                        {questions.map((question, id) => {
-                            return (
-                                <div key={id} className={styles.questions__question}>
-                                    <div className={styles.questions__question__title}>{question.question}</div>
-                                    <div className={styles.questions__question__edit}>
-                                        <FaPen
-                                            className={styles.questions__question__edit__item}
-                                            onClick={(e) => {
-                                                const questionData = questions[id];
-
-                                                setEditingQuestion(id);
-                                                setQuestion(questionData);
-
-                                                // Open model
-                                                setCreateQuestionModal(true);
-                                            }}
-                                        />
-                                        <FaTimes
-                                            className={styles.questions__question__edit__item}
-                                            onClick={(e) => {
-                                                const newQuestions = questions.filter((_, index) => {
-                                                    return index !== id;
-                                                });
-                                                setQuestions(newQuestions);
-                                            }}
-                                        />
-                                    </div>
-                                </div>
-                            );
-                        })}
-                    </Box>
-                </Flex>
-                {/* <div className={`${styles['create-quiz']}`}>
-                    <input
-                        type="text"
-                        className={styles.quiz__title}
-                        placeholder="Enter Quiz Title"
-                        name="quiz_title"
-                        value={title}
-                        onChange={(e) => {
-                            setTitle(e.currentTarget.value);
-                        }}
-                    />
-
-                    <div className={styles.questions}>
-                        <h3>Questions</h3>
-
-                        <div className={`${styles.questions} ${styles.questions__box}`}>
+                <Container>
+                    <Flex direction="column" padding={7} gap={7} alignItems="center" className={styles.mainSection}>
+                        <Heading element="h1" variant="heading-1">
+                            Create Quiz
+                        </Heading>
+                        <TextField
+                            error={submitted && title.length == 0 ? 'Please enter quiz title' : ''}
+                            id="quizTitle"
+                            name="quiz title"
+                            value={title}
+                            onChange={(e) => {
+                                setTitle(e.currentTarget.value);
+                                if (submitted) setSubmitted(false);
+                            }}
+                            placeholder="Title"
+                            label="Enter Quiz Title"
+                        />
+                        <Flex background="white" className={styles.questionsBox} padding={4} direction="column" gap={3} hasRadius>
                             {questions.map((question, id) => {
                                 return (
-                                    <div key={id} className={styles.questions__question}>
-                                        <div className={styles.questions__question__title}>{question.question}</div>
-                                        <div className={styles.questions__question__edit}>
-                                            <FaPen
-                                                className={styles.questions__question__edit__item}
-                                                onClick={(e) => {
-                                                    const questionData = questions[id];
+                                    <EditQuestion
+                                        key={id}
+                                        question={question}
+                                        onEdit={(question: QuestionData) => {
+                                            setEditingQuestion(id);
 
-                                                    setEditingQuestion(id);
-                                                    setQuestion(questionData);
-
-                                                    // Open model
-                                                    setCreateQuestionModal(true);
-                                                }}
-                                            />
-                                            <FaTimes
-                                                className={styles.questions__question__edit__item}
-                                                onClick={(e) => {
-                                                    const newQuestions = questions.filter((_, index) => {
-                                                        return index !== id;
-                                                    });
-                                                    setQuestions(newQuestions);
-                                                }}
-                                            />
-                                        </div>
-                                    </div>
+                                            // Open model
+                                            setCreateQuestionModal(true);
+                                        }}
+                                        onDelete={(question: QuestionData) => {
+                                            const newQuestions = questions.filter((_, index) => {
+                                                return index !== id;
+                                            });
+                                            setQuestions(newQuestions);
+                                        }}
+                                    />
                                 );
                             })}
-
-                            <button
-                                className={`button button__outline ${styles.questions__add}`}
+                            <Flex direction="row" justifyContent="flex-end">
+                                <TextButton
+                                    onClick={() => {
+                                        setCreateQuestionModal(true);
+                                    }}
+                                    startIcon={<FaPlus />}
+                                >
+                                    Add Question
+                                </TextButton>
+                            </Flex>
+                        </Flex>
+                        <Flex gap={2}>
+                            <input type="file" ref={importQuiz} onChange={importFile} style={{ display: 'none' }} />
+                            <TextButton
                                 onClick={() => {
-                                    // Make sure active session is cleared
-                                    setQuestion({ question: '', answers: [], correct: [] });
-
-                                    setCreateQuestionModal(true);
+                                    importQuiz.current?.click();
                                 }}
+                                endIcon={<FaUpload />}
                             >
-                                Add Question
-                            </button>
-                        </div>
-                    </div>
-
-                    <button className={`button button__solid ${styles.create__button}`} onClick={createQuiz}>
-                        Create Quiz
-                    </button>
-
-                    <label>
-                        <button
-                            className="button button__outline"
-                            onClick={() => {
-                                importQuiz.current?.click();
-                            }}
-                        >
-                            Import Quiz
-                        </button>
-                        <input type="file" ref={importQuiz} onChange={importFile} style={{ display: 'none' }} />
-                    </label>
-
-                    <button className="button button__outline" onClick={exportFile}>
-                        Export Quiz
-                    </button>
-                </div> */}
+                                Import
+                            </TextButton>
+                            <TextButton onClick={exportFile} endIcon={<FaDownload />}>
+                                Export
+                            </TextButton>
+                            <TextButton onClick={createQuiz} endIcon={<FaArrowRight />}>
+                                Create Quiz
+                            </TextButton>
+                        </Flex>
+                    </Flex>
+                </Container>
             </CenterSection>
         </FullSection>
     );

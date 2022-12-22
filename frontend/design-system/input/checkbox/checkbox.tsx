@@ -1,4 +1,4 @@
-import { Box } from '@design-system/layout/box';
+import { Flex } from '@design-system/layout/flex';
 import { ChangeEventHandler, useRef } from 'react';
 import { FaCheck } from 'react-icons/fa';
 import styles from './checkbox.module.scss';
@@ -16,9 +16,9 @@ export const CheckboxInput: React.FC<CheckboxInputProps> = ({ checked, disabled,
     const checkBox = useRef<HTMLInputElement>(null);
 
     return (
-        <Box>
+        <Flex>
             {checked && <FaCheck className={styles.check} aria-disabled={disabled} onClick={() => checkBox?.current?.click()} />}
             <input type="checkbox" ref={checkBox} className={styles.checkbox} name="test" checked={checked} onChange={onChange} disabled={disabled} {...rest} />
-        </Box>
+        </Flex>
     );
 };

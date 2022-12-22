@@ -36,6 +36,8 @@
 
     // Base theme easing
     transition: background-color 200ms ease-in-out;
+
+    vertical-align: baseline;
 }
 
 // Make sure bounding boxes work
@@ -281,10 +283,10 @@ html {
 // TODO: Convert JS styles to css vars
 .darkTheme {
     // Black & White
-    --white: #242424;
+    --white: #151515;
     --black: #ffffff;
 
-    --gray100: #333333;
+    --gray100: #1f1f1f;
     --gray200: #4c4c4c;
     --gray300: #666666;
     --gray400: #808080;

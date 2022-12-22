@@ -12,10 +12,25 @@
 
 .modalContent {
     position: relative;
-    width: 80vw;
-
+    width: 60vw;
 
     @include table-shadow;
+
+    @include xl {
+        width: 70vw;
+    }
+
+    @include lg {
+        width: 80vw;
+    }
+
+    @include md {
+        width: 90vw;
+    }
+
+    @include sm {
+        width: 95vw;
+    }
 }
 
 .modalBody {

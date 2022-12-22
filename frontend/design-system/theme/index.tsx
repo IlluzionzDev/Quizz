@@ -1,5 +1,7 @@
+import { IconButton } from '@design-system/button';
 import React, { createContext, useContext, useState } from 'react';
 import { useEffect } from 'react';
+import { FaMoon, FaSun } from 'react-icons/fa';
 import { darkTheme } from './dark-theme';
 import { lightTheme } from './light-theme';
 
@@ -33,6 +35,12 @@ export const ThemeProvider: React.FC = ({ children }) => {
 
     return <ThemeContext.Provider value={{ isDarkTheme, toggleTheme }}>{children}</ThemeContext.Provider>;
 };
+
+export const ThemeSwitcher = () => {
+    const { isDarkTheme, toggleTheme } = useContext(ThemeContext);
+
+    return <IconButton onClick={toggleTheme} icon={(isDarkTheme ? <FaSun /> : <FaMoon />)}/>
+}
 
 // Use theme constants
 export function useTheme() {
