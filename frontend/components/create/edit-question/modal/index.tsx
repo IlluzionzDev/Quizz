@@ -46,7 +46,12 @@ export const EditQuestionModal: React.FC<EditQuestionModalProps> = ({ question, 
                         }}
                     />
                     <Flex direction="column" gap={2}>
-                        <Label variant="lg">Answers</Label>
+                        <Flex direction="row" gap={2} alignItems="center">
+                            <Label variant="lg">Answers</Label>
+                            <Label variant="md" color={questionData.answers.length >= 4 ? 'neutral900' : 'neutral500'}>
+                                {questionData.answers.length}/4
+                            </Label>
+                        </Flex>
                         <Flex direction="column" gap={4}>
                             {questionData.answers.map((answer, id) => {
                                 const checked = questionData.correct.includes(id);
@@ -74,14 +79,14 @@ export const EditQuestionModal: React.FC<EditQuestionModalProps> = ({ question, 
                                                 value={answer}
                                                 placeholder="Enter Answer"
                                                 onChange={(e) => {
-                                                    const modifiedAnswers = question.answers.map((a, i) => {
+                                                    const modifiedAnswers = questionData.answers.map((a, i) => {
                                                         if (i == id) {
                                                             return e.currentTarget.value;
                                                         } else {
                                                             return a;
                                                         }
                                                     });
-                                                    setQuestionData({ question: question.question, answers: modifiedAnswers, correct: question.correct });
+                                                    setQuestionData({ question: questionData.question, answers: modifiedAnswers, correct: questionData.correct });
                                                 }}
                                             />
                                         </Flex>
@@ -89,10 +94,10 @@ export const EditQuestionModal: React.FC<EditQuestionModalProps> = ({ question, 
                                             <FaTrash
                                                 className={styles.answerDelete}
                                                 onClick={(e) => {
-                                                    const newAnswers = question.answers.filter((_, index) => {
+                                                    const newAnswers = questionData.answers.filter((_, index) => {
                                                         return index !== id;
                                                     });
-                                                    setQuestionData({ question: question.question, answers: newAnswers, correct: question.correct });
+                                                    setQuestionData({ question: questionData.question, answers: newAnswers, correct: questionData.correct });
                                                 }}
                                             />
                                         </Flex>
@@ -111,14 +116,32 @@ export const EditQuestionModal: React.FC<EditQuestionModalProps> = ({ question, 
                 }
                 endActions={
                     <>
-                        <Button variant="secondary" startIcon={<FaPlus />}>
+                        <Button
+                            variant="secondary"
+                            startIcon={<FaPlus />}
+                            disabled={questionData.answers.length >= 4}
+                            onClick={() => {
+                                // Max 4 answers
+                                if (questionData.answers.length >= 4) return;
+
+                                setQuestionData({ question: questionData.question, answers: [...questionData.answers, ''], correct: questionData.correct });
+                            }}
+                        >
                             Add Answer
                         </Button>
                         <Button
                             variant="primary"
+                            disabled={questionData.answers.includes('') || questionData.answers.length <= 0 || questionData.question.length === 0 || questionData.correct.length <= 0}
                             onClick={() => {
                                 setSubmitted(true);
 
+                                // Make sure at least is correct
+                                if (questionData.correct.length <= 0) return;
+                                // Make sure all answers are filled
+                                if (questionData.answers.includes('')) return;
+                                // Make sure has at least 1 answer
+                                if (questionData.answers.length <= 0) return;
+                                // Make sure question has name
                                 if (questionData.question.length === 0) return;
 
                                 onSubmit(questionData);
