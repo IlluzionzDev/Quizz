@@ -53,57 +53,65 @@ export const EditQuestionModal: React.FC<EditQuestionModalProps> = ({ question, 
                             </Label>
                         </Flex>
                         <Flex direction="column" gap={4}>
-                            {questionData.answers.map((answer, id) => {
-                                const checked = questionData.correct.includes(id);
+                            {questionData.answers.length != 0 ? (
+                                questionData.answers.map((answer, id) => {
+                                    const checked = questionData.correct.includes(id);
 
-                                return (
-                                    <Flex key={id} direction="row" justifyContent="space-between" background="neutral100" alignItems="center" paddingTop={2} paddingBottom={2} paddingLeft={6} paddingRight={6} hasRadius>
-                                        <Flex direction="row" gap={4} alignItems="center">
-                                            <CheckboxInput
-                                                checked={checked}
-                                                onChange={(e) => {
-                                                    var correctAnswers = questionData.correct;
-                                                    if (checked) {
-                                                        correctAnswers = correctAnswers.filter((value) => {
-                                                            return value !== id;
-                                                        });
-                                                    } else {
-                                                        correctAnswers.push(id);
-                                                    }
-                                                    setQuestionData({ question: questionData.question, answers: questionData.answers, correct: correctAnswers });
-                                                }}
-                                            />
-                                            <input
-                                                className={styles.answerInput}
-                                                type="text"
-                                                value={answer}
-                                                placeholder="Enter Answer"
-                                                onChange={(e) => {
-                                                    const modifiedAnswers = questionData.answers.map((a, i) => {
-                                                        if (i == id) {
-                                                            return e.currentTarget.value;
+                                    return (
+                                        <Flex key={id} direction="row" justifyContent="space-between" background="neutral100" alignItems="center" paddingTop={2} paddingBottom={2} paddingLeft={6} paddingRight={6} hasRadius>
+                                            <Flex direction="row" gap={4} alignItems="center">
+                                                <CheckboxInput
+                                                    checked={checked}
+                                                    onChange={(e) => {
+                                                        var correctAnswers = questionData.correct;
+                                                        if (checked) {
+                                                            correctAnswers = correctAnswers.filter((value) => {
+                                                                return value !== id;
+                                                            });
                                                         } else {
-                                                            return a;
+                                                            correctAnswers.push(id);
                                                         }
-                                                    });
-                                                    setQuestionData({ question: questionData.question, answers: modifiedAnswers, correct: questionData.correct });
-                                                }}
-                                            />
+                                                        setQuestionData({ question: questionData.question, answers: questionData.answers, correct: correctAnswers });
+                                                    }}
+                                                />
+                                                <input
+                                                    className={styles.answerInput}
+                                                    type="text"
+                                                    value={answer}
+                                                    placeholder="Enter Answer"
+                                                    onChange={(e) => {
+                                                        const modifiedAnswers = questionData.answers.map((a, i) => {
+                                                            if (i == id) {
+                                                                return e.currentTarget.value;
+                                                            } else {
+                                                                return a;
+                                                            }
+                                                        });
+                                                        setQuestionData({ question: questionData.question, answers: modifiedAnswers, correct: questionData.correct });
+                                                    }}
+                                                />
+                                            </Flex>
+                                            <Flex alignItems="center">
+                                                <FaTrash
+                                                    className={styles.answerDelete}
+                                                    onClick={(e) => {
+                                                        const newAnswers = questionData.answers.filter((_, index) => {
+                                                            return index !== id;
+                                                        });
+                                                        setQuestionData({ question: questionData.question, answers: newAnswers, correct: questionData.correct });
+                                                    }}
+                                                />
+                                            </Flex>
                                         </Flex>
-                                        <Flex alignItems="center">
-                                            <FaTrash
-                                                className={styles.answerDelete}
-                                                onClick={(e) => {
-                                                    const newAnswers = questionData.answers.filter((_, index) => {
-                                                        return index !== id;
-                                                    });
-                                                    setQuestionData({ question: questionData.question, answers: newAnswers, correct: questionData.correct });
-                                                }}
-                                            />
-                                        </Flex>
-                                    </Flex>
-                                );
-                            })}
+                                    );
+                                })
+                            ) : (
+                                <Flex justifyContent="center">
+                                    <Label variant="lg" color="neutral200">
+                                        No Answers...
+                                    </Label>
+                                </Flex>
+                            )}
                         </Flex>
                     </Flex>
                 </Flex>

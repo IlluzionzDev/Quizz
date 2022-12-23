@@ -1,12 +1,10 @@
 import styles from './game-over.module.scss';
-import CenterSection from '@components/layout/CenterSection';
-import FullSection from '@components/layout/FullSection';
-import PlayerNav from '@components/layout/PlayerNav';
 import { disconnect, useClient, useRequireGame } from 'api';
 import { SPlayerData } from 'api/packets/server';
 import { useAppDispatch, useAppSelector } from 'hooks';
 import type { NextPage } from 'next';
 import { useRouter } from 'next/router';
+import { CenterSection, FullSection } from '@design-system/layout/section';
 
 const GameOver: NextPage = () => {
     useClient();
@@ -35,14 +33,6 @@ const GameOver: NextPage = () => {
 
     return (
         <FullSection>
-            <PlayerNav
-                backlink={gameData?.owner ? 'End Game' : 'Home'}
-                title="Results"
-                onBack={() => {
-                    router.push('/');
-                    disconnect(dispatch);
-                }}
-            />
             <CenterSection>
                 <h1>Results</h1>
                 <div className={styles.players}>

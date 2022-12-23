@@ -27,7 +27,7 @@ const JoinQuiz: NextPage = () => {
     const [name, setName] = useState('');
     // If the code entered matches a valid game
     const [validGame, setValidGame] = useState(false);
-    const [validName, setValidName] = useState(false);
+    const [validName, setValidName] = useState(true);
 
     const [submittedCode, setSubmittedCode] = useState(false);
 

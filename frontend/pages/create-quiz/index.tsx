@@ -12,7 +12,7 @@ import Navigation from '@components/layout/navigation';
 import { TextButton } from '@design-system/button';
 import { Container } from '@design-system/layout/container';
 import { Flex } from '@design-system/layout/flex';
-import { Heading } from '@design-system/typography';
+import { Heading, Label } from '@design-system/typography';
 import { TextField } from '@design-system/field';
 import { Box } from '@design-system/layout/box';
 import { EditQuestion, EditQuestionModal } from '@components/create/edit-question';
@@ -209,26 +209,32 @@ const CreateQuiz: NextPage = () => {
                             label="Enter Quiz Title"
                         />
                         <Flex background="white" className={styles.questionsBox} padding={4} direction="column" gap={3} hasRadius>
-                            {questions.map((question, id) => {
-                                return (
-                                    <EditQuestion
-                                        key={id}
-                                        question={question}
-                                        onEdit={(question: QuestionData) => {
-                                            setEditingQuestion(id);
+                            {questions.length != 0 ? (
+                                questions.map((question, id) => {
+                                    return (
+                                        <EditQuestion
+                                            key={id}
+                                            question={question}
+                                            onEdit={(question: QuestionData) => {
+                                                setEditingQuestion(id);
 
-                                            // Open model
-                                            setCreateQuestionModal(true);
-                                        }}
-                                        onDelete={(question: QuestionData) => {
-                                            const newQuestions = questions.filter((_, index) => {
-                                                return index !== id;
-                                            });
-                                            setQuestions(newQuestions);
-                                        }}
-                                    />
-                                );
-                            })}
+                                                // Open model
+                                                setCreateQuestionModal(true);
+                                            }}
+                                            onDelete={(question: QuestionData) => {
+                                                const newQuestions = questions.filter((_, index) => {
+                                                    return index !== id;
+                                                });
+                                                setQuestions(newQuestions);
+                                            }}
+                                        />
+                                    );
+                                })
+                            ) : (
+                                <Flex justifyContent='center'>
+                                    <Label variant='lg' color='neutral200'>No Questions...</Label>
+                                </Flex>
+                            )}
                             <Flex direction="row" justifyContent="flex-end">
                                 <TextButton
                                     onClick={() => {

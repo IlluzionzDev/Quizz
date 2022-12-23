@@ -1,0 +1,67 @@
+.gameNav {
+    @include table-shadow;
+
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+.answerBox {
+    width: 100%;
+}
+
+.answer {
+    cursor: pointer;
+
+    width: 100%;
+
+    background: var(--neutral100);
+    transition: 0.25s ease-in-out;
+    border: 1px solid transparent;
+
+    &:hover {
+        transform: scale(1.005);
+        background: var(--primary100);
+        border: 1px solid var(--primary500);
+
+        @include button-shadow(var(--primary500RGB));
+    }
+
+    &[aria-selected='true'] {
+        transform: scale(1.005);
+        background: var(--primary200);
+        border: 1px solid var(--primary600);
+
+        cursor: default;
+
+        @include button-shadow(var(--primary500RGB));
+    }
+
+    &[aria-correct='true'] {
+        transform: scale(1.005);
+        background: var(--success200);
+        border: 1px solid var(--success600);
+
+        cursor: default;
+
+        @include button-shadow(var(--success500RGB));
+    }
+
+    &[aria-incorrect='true'] {
+        transform: scale(1.005);
+        background: var(--error200);
+        border: 1px solid var(--error600);
+
+        cursor: default;
+
+        @include button-shadow(var(--error500RGB));
+    }
+}
+
+.correctIcon {
+    color: var(--success800);
+}
+
+.incorrectIcon {
+    color: var(--error800);
+}
