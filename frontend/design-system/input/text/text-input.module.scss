@@ -1,0 +1,36 @@
+.input {
+    border: 1px solid var(--gray200);
+    border-radius: $border-radius;
+
+    padding: $spacing-2 $spacing-4;
+
+    color: var(--neutral900);
+
+    background: transparent;
+
+    width: 100%;
+
+    @include body-md;
+
+    &::placeholder {
+        color: var(--gray600);
+    }
+
+    &:focus {
+        border: 1px solid var(--primary600);
+    }
+
+    &:disabled {
+        background-color: var(--neutral100);
+
+        color: var(--neutral600);
+
+        &::placeholder {
+            color: var(--neutral600);
+        }
+    }
+}
+
+.error {
+    border: 1px solid var(--error500);
+}

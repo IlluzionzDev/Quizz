@@ -1,0 +1,488 @@
+// My custom design system
+// This file defines all the basic variables for the design system
+// as well as colours, typography, and some basic components. Also sets up
+// some basic selectors. Layouts are not made here.
+/*
+* Custom Design System file
+* Contains util classes for the design system and
+* basic selectors. Variables imported from util file.
+*
+* Also contains master selectors for a consistent html base
+* and removing default styling.
+*/
+
+// Uncomment for normal css. When using NextJS must use the fontsource npm package
+// @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+// @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+// Design system variables
+@import 'design-system-utils.scss';
+
+// Comment out to show default scrollbar
+::-webkit-scrollbar {
+    display: none;
+}
+
+// Remove default styling
+* {
+    -webkit-font-smoothing: antialiased;
+    outline: none;
+    margin: 0;
+    padding: 0;
+    text-decoration: none;
+    list-style: none;
+
+    font: inherit;
+
+    // Base theme easing
+    transition: background-color 200ms ease-in-out;
+
+    vertical-align: baseline;
+}
+
+// Make sure bounding boxes work
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+// Styling of text selection
+::-moz-selection,
+::selection {
+    color: var(--white);
+    background: var(--gray100);
+}
+
+// Style root node and set base font size
+html {
+    overflow-x: hidden;
+    pointer-events: all;
+    margin: 0;
+    padding: 0;
+    scroll-behavior: smooth;
+
+    // Default XL font size
+    font-size: 1.4rem;
+}
+
+// Dynamic screen scaling
+@media screen and (max-width: 1280px) {
+    html {
+        font-size: calc(0.5713667820069206rem + 0.6920415224913493vw);
+    }
+}
+@media screen and (max-width: 991px) {
+    html {
+        font-size: calc(0.5695067264573992rem + 0.896860986547085vw);
+    }
+}
+@media screen and (max-width: 768px) {
+    html {
+        font-size: calc(0.6666666666666667rem + 0.6944444444444444vw);
+    }
+}
+@media screen and (max-width: 480px) {
+    html {
+        font-size: calc(0.7496085594989561rem + 0.6263048016701461vw);
+    }
+}
+
+/**
+* Theme colours
+*/
+:root {
+    // Black & White
+    --white: #ffffff;
+    --black: #131313;
+
+    // Grays
+    --gray100: #fafafa;
+    --gray200: #e6e6e6;
+    --gray300: #cccccc;
+    --gray400: #b3b3b3;
+    --gray500: #999999;
+    --gray600: #808080;
+    --gray700: #666666;
+    --gray800: #4c4c4c;
+    --gray900: #333333;
+
+    // Neutrals
+    --neutral100: #e8e8ee;
+    --neutral200: #d2d2dd;
+    --neutral300: #bbbbcb;
+    --neutral400: #a5a5ba;
+    --neutral500: #8e8ea9;
+    --neutral600: #727287;
+    --neutral700: #555565;
+    --neutral800: #393944;
+    --neutral900: #1c1c22;
+
+    // Primary
+    --primary100: #d9dffc;
+    --primary200: #b4c0f8;
+    --primary300: #8ea0f5;
+    --primary400: #6981f1;
+    --primary500: #4361ee;
+    --primary600: #364ebe;
+    --primary700: #283a8f;
+    --primary800: #1b275f;
+    --primary900: #0d1330;
+
+    // Secondary
+    --secondary100: #daeafc;
+    --secondary200: #b6d5f9;
+    --secondary300: #91bff5;
+    --secondary400: #6daaf2;
+    --secondary500: #4895ef;
+    --secondary600: #3a77bf;
+    --secondary700: #2b598f;
+    --secondary800: #1d3c60;
+    --secondary900: #0e1e30;
+
+    // Tertiary
+    --tertiary100: #e9e6ff;
+    --tertiary200: #d4cdff;
+    --tertiary300: #beb3ff;
+    --tertiary400: #a99aff;
+    --tertiary500: #9381ff;
+    --tertiary600: #7667cc;
+    --tertiary700: #584d99;
+    --tertiary800: #3b3466;
+    --tertiary900: #1d1a33;
+
+    // Success
+    --success100: #cdf7ec;
+    --success200: #9befd9;
+    --success300: #6ae6c6;
+    --success400: #38deb3;
+    --success500: #06d6a0;
+    --success600: #05ab80;
+    --success700: #048060;
+    --success800: #025640;
+    --success900: #012b20;
+
+    // Warning
+    --warning100: #fff6e0;
+    --warning200: #ffedc2;
+    --warning300: #ffe3a3;
+    --warning400: #ffda85;
+    --warning500: #ffd166;
+    --warning600: #cca752;
+    --warning700: #997d3d;
+    --warning800: #665429;
+    --warning900: #332a14;
+
+    // Error
+    --error100: #fad7d9;
+    --error200: #f5afb4;
+    --error300: #ef888e;
+    --error400: #ea6069;
+    --error500: #e53843;
+    --error600: #b72d36;
+    --error700: #892228;
+    --error800: #5c161b;
+    --error900: #2e0b0d;
+
+    /**
+    * Raw RGB Values for opacity functions
+    */
+
+    // Black & White
+    --whiteRGB: #{toRGB(#ffffff)};
+    --blackRGB: #{toRGB(#131313)};
+
+    // Grays
+    --gray100RGB: #{toRGB(#fafafa)};
+    --gray200RGB: #{toRGB(#e6e6e6)};
+    --gray300RGB: #{toRGB(#cccccc)};
+    --gray400RGB: #{toRGB(#b3b3b3)};
+    --gray500RGB: #{toRGB(#999999)};
+    --gray600RGB: #{toRGB(#808080)};
+    --gray700RGB: #{toRGB(#666666)};
+    --gray800RGB: #{toRGB(#4c4c4c)};
+    --gray900RGB: #{toRGB(#333333)};
+
+    // Neutrals
+    --neutral100RGB: #{toRGB(#e8e8ee)};
+    --neutral200RGB: #{toRGB(#d2d2dd)};
+    --neutral300RGB: #{toRGB(#bbbbcb)};
+    --neutral400RGB: #{toRGB(#a5a5ba)};
+    --neutral500RGB: #{toRGB(#8e8ea9)};
+    --neutral600RGB: #{toRGB(#727287)};
+    --neutral700RGB: #{toRGB(#555565)};
+    --neutral800RGB: #{toRGB(#393944)};
+    --neutral900RGB: #{toRGB(#1c1c22)};
+
+    // Primary
+    --primary100RGB: #{toRGB(#d9dffc)};
+    --primary200RGB: #{toRGB(#b4c0f8)};
+    --primary300RGB: #{toRGB(#8ea0f5)};
+    --primary400RGB: #{toRGB(#6981f1)};
+    --primary500RGB: #{toRGB(#4361ee)};
+    --primary600RGB: #{toRGB(#364ebe)};
+    --primary700RGB: #{toRGB(#283a8f)};
+    --primary800RGB: #{toRGB(#1b275f)};
+    --primary900RGB: #{toRGB(#0d1330)};
+
+    // Secondary
+    --secondary100RGB: #{toRGB(#daeafc)};
+    --secondary200RGB: #{toRGB(#b6d5f9)};
+    --secondary300RGB: #{toRGB(#91bff5)};
+    --secondary400RGB: #{toRGB(#6daaf2)};
+    --secondary500RGB: #{toRGB(#4895ef)};
+    --secondary600RGB: #{toRGB(#3a77bf)};
+    --secondary700RGB: #{toRGB(#2b598f)};
+    --secondary800RGB: #{toRGB(#1d3c60)};
+    --secondary900RGB: #{toRGB(#0e1e30)};
+
+    // Tertiary
+    --tertiary100RGB: #{toRGB(#e9e6ff)};
+    --tertiary200RGB: #{toRGB(#d4cdff)};
+    --tertiary300RGB: #{toRGB(#beb3ff)};
+    --tertiary400RGB: #{toRGB(#a99aff)};
+    --tertiary500RGB: #{toRGB(#9381ff)};
+    --tertiary600RGB: #{toRGB(#7667cc)};
+    --tertiary700RGB: #{toRGB(#584d99)};
+    --tertiary800RGB: #{toRGB(#3b3466)};
+    --tertiary900RGB: #{toRGB(#1d1a33)};
+
+    // Success
+    --success100RGB: #{toRGB(#cdf7ec)};
+    --success200RGB: #{toRGB(#9befd9)};
+    --success300RGB: #{toRGB(#6ae6c6)};
+    --success400RGB: #{toRGB(#38deb3)};
+    --success500RGB: #{toRGB(#06d6a0)};
+    --success600RGB: #{toRGB(#05ab80)};
+    --success700RGB: #{toRGB(#048060)};
+    --success800RGB: #{toRGB(#025640)};
+    --success900RGB: #{toRGB(#012b20)};
+
+    // Warning
+    --warning100RGB: #{toRGB(#fff6e0)};
+    --warning200RGB: #{toRGB(#ffedc2)};
+    --warning300RGB: #{toRGB(#ffe3a3)};
+    --warning400RGB: #{toRGB(#ffda85)};
+    --warning500RGB: #{toRGB(#ffd166)};
+    --warning600RGB: #{toRGB(#cca752)};
+    --warning700RGB: #{toRGB(#997d3d)};
+    --warning800RGB: #{toRGB(#665429)};
+    --warning900RGB: #{toRGB(#332a14)};
+
+    // Error
+    --error100RGB: #{toRGB(#fad7d9)};
+    --error200RGB: #{toRGB(#f5afb4)};
+    --error300RGB: #{toRGB(#ef888e)};
+    --error400RGB: #{toRGB(#ea6069)};
+    --error500RGB: #{toRGB(#e53843)};
+    --error600RGB: #{toRGB(#b72d36)};
+    --error700RGB: #{toRGB(#892228)};
+    --error800RGB: #{toRGB(#5c161b)};
+    --error900RGB: #{toRGB(#2e0b0d)};
+}
+
+// TODO: Convert JS styles to css vars
+.darkTheme {
+    // Black & White
+    --white: #151515;
+    --black: #ffffff;
+
+    --gray100: #1f1f1f;
+    --gray200: #4c4c4c;
+    --gray300: #666666;
+    --gray400: #808080;
+    --gray500: #999999;
+    --gray600: #b3b3b3;
+    --gray700: #cccccc;
+    --gray800: #e6e6e6;
+    --gray900: #fafafa;
+
+    // Neutrals
+    --neutral100: #1c1c22;
+    --neutral200: #393944;
+    --neutral300: #555565;
+    --neutral400: #727287;
+    --neutral500: #8e8ea9;
+    --neutral600: #a5a5ba;
+    --neutral700: #bbbbcb;
+    --neutral800: #d2d2dd;
+    --neutral900: #e8e8ee;
+
+    // Primary
+    --primary100: #0d1330;
+    --primary200: #1b275f;
+    --primary300: #283a8f;
+    --primary400: #364ebe;
+    --primary500: #4361ee;
+    --primary600: #6981f1;
+    --primary700: #8ea0f5;
+    --primary800: #b4c0f8;
+    --primary900: #d9dffc;
+
+    // Secondary
+    --secondary100: #0e1e30;
+    --secondary200: #1d3c60;
+    --secondary300: #2b598f;
+    --secondary400: #3a77bf;
+    --secondary500: #4895ef;
+    --secondary600: #6daaf2;
+    --secondary700: #91bff5;
+    --secondary800: #b6d5f9;
+    --secondary900: #daeafc;
+
+    // Tertiary
+    --tertiary100: #1d1a33;
+    --tertiary200: #3b3466;
+    --tertiary300: #584d99;
+    --tertiary400: #7667cc;
+    --tertiary500: #9381ff;
+    --tertiary600: #a99aff;
+    --tertiary700: #beb3ff;
+    --tertiary800: #d4cdff;
+    --tertiary900: #e9e6ff;
+
+    // Success
+    --success100: #012b20;
+    --success200: #025640;
+    --success300: #048060;
+    --success400: #05ab80;
+    --success500: #06d6a0;
+    --success600: #38deb3;
+    --success700: #6ae6c6;
+    --success800: #9befd9;
+    --success900: #cdf7ec;
+
+    // Warning
+    --warning100: #332a14;
+    --warning200: #665429;
+    --warning300: #997d3d;
+    --warning400: #cca752;
+    --warning500: #ffd166;
+    --warning600: #ffda85;
+    --warning700: #ffe3a3;
+    --warning800: #ffedc2;
+    --warning900: #fff6e0;
+
+    // Error
+    --error100: #2e0b0d;
+    --error200: #5c161b;
+    --error300: #892228;
+    --error400: #b72d36;
+    --error500: #e53843;
+    --error600: #ea6069;
+    --error700: #ef888e;
+    --error800: #f5afb4;
+    --error900: #fad7d9;
+
+    /**
+    * Raw RGB Values for opacity functions
+    */
+
+    // Black & White
+    --whiteRGB: #{toRGB(#131313)};
+    --blackRGB: #{toRGB(#ffffff)};
+
+    --gray100RGB: #{toRGB(#333333)};
+    --gray200RGB: #{toRGB(#4c4c4c)};
+    --gray300RGB: #{toRGB(#666666)};
+    --gray400RGB: #{toRGB(#808080)};
+    --gray500RGB: #{toRGB(#999999)};
+    --gray600RGB: #{toRGB(#b3b3b3)};
+    --gray700RGB: #{toRGB(#cccccc)};
+    --gray800RGB: #{toRGB(#e6e6e6)};
+    --gray900RGB: #{toRGB(#fafafa)};
+
+    // Neutrals
+    --neutral100RGB: #{toRGB(#1c1c22)};
+    --neutral200RGB: #{toRGB(#393944)};
+    --neutral300RGB: #{toRGB(#555565)};
+    --neutral400RGB: #{toRGB(#727287)};
+    --neutral500RGB: #{toRGB(#8e8ea9)};
+    --neutral600RGB: #{toRGB(#a5a5ba)};
+    --neutral700RGB: #{toRGB(#bbbbcb)};
+    --neutral800RGB: #{toRGB(#d2d2dd)};
+    --neutral900RGB: #{toRGB(#e8e8ee)};
+
+    // Primary
+    --primary100RGB: #{toRGB(#0d1330)};
+    --primary200RGB: #{toRGB(#1b275f)};
+    --primary300RGB: #{toRGB(#283a8f)};
+    --primary400RGB: #{toRGB(#364ebe)};
+    --primary500RGB: #{toRGB(#4361ee)};
+    --primary600RGB: #{toRGB(#6981f1)};
+    --primary700RGB: #{toRGB(#8ea0f5)};
+    --primary800RGB: #{toRGB(#b4c0f8)};
+    --primary900RGB: #{toRGB(#d9dffc)};
+
+    // Secondary
+    --secondary100RGB: #{toRGB(#0e1e30)};
+    --secondary200RGB: #{toRGB(#1d3c60)};
+    --secondary300RGB: #{toRGB(#2b598f)};
+    --secondary400RGB: #{toRGB(#3a77bf)};
+    --secondary500RGB: #{toRGB(#4895ef)};
+    --secondary600RGB: #{toRGB(#6daaf2)};
+    --secondary700RGB: #{toRGB(#91bff5)};
+    --secondary800RGB: #{toRGB(#b6d5f9)};
+    --secondary900RGB: #{toRGB(#daeafc)};
+
+    // Tertiary
+    --tertiary100RGB: #{toRGB(#1d1a33)};
+    --tertiary200RGB: #{toRGB(#3b3466)};
+    --tertiary300RGB: #{toRGB(#584d99)};
+    --tertiary400RGB: #{toRGB(#7667cc)};
+    --tertiary500RGB: #{toRGB(#9381ff)};
+    --tertiary600RGB: #{toRGB(#a99aff)};
+    --tertiary700RGB: #{toRGB(#beb3ff)};
+    --tertiary800RGB: #{toRGB(#d4cdff)};
+    --tertiary900RGB: #{toRGB(#e9e6ff)};
+
+    // Success
+    --success100RGB: #{toRGB(#012b20)};
+    --success200RGB: #{toRGB(#025640)};
+    --success300RGB: #{toRGB(#048060)};
+    --success400RGB: #{toRGB(#05ab80)};
+    --success500RGB: #{toRGB(#06d6a0)};
+    --success600RGB: #{toRGB(#38deb3)};
+    --success700RGB: #{toRGB(#6ae6c6)};
+    --success800RGB: #{toRGB(#9befd9)};
+    --success900RGB: #{toRGB(#cdf7ec)};
+
+    // Warning
+    --warning100RGB: #{toRGB(#332a14)};
+    --warning200RGB: #{toRGB(#665429)};
+    --warning300RGB: #{toRGB(#997d3d)};
+    --warning400RGB: #{toRGB(#cca752)};
+    --warning500RGB: #{toRGB(#ffd166)};
+    --warning600RGB: #{toRGB(#ffda85)};
+    --warning700RGB: #{toRGB(#ffe3a3)};
+    --warning800RGB: #{toRGB(#ffedc2)};
+    --warning900RGB: #{toRGB(#fff6e0)};
+
+    // Error
+    --error100RGB: #{toRGB(#2e0b0d)};
+    --error200RGB: #{toRGB(#5c161b)};
+    --error300RGB: #{toRGB(#892228)};
+    --error400RGB: #{toRGB(#b72d36)};
+    --error500RGB: #{toRGB(#e53843)};
+    --error600RGB: #{toRGB(#ea6069)};
+    --error700RGB: #{toRGB(#ef888e)};
+    --error800RGB: #{toRGB(#f5afb4)};
+    --error900RGB: #{toRGB(#fad7d9)};
+}
+
+body {
+    // Make sure no horizontal scroll
+    overflow-x: hidden;
+    position: relative;
+    margin: 0;
+    padding: 0;
+
+    min-height: 100vh;
+
+    // Default colours
+    background-color: var(--gray100);
+    color: var(--black);
+
+    // Default font
+    font-family: $font-1;
+}

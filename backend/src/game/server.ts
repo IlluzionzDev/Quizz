@@ -8,7 +8,7 @@ import { answerResult, disconnect, gameState, playerData, question, scores, SPla
 
 // Question timers, TOOD: Refactor to each question etc
 const START_DELAY = 5 * 1000;
-const QUESTION_TIME = 999 * 1000;
+const QUESTION_TIME = 20 * 1000;
 const SYNC_DELAY = 3 * 1000;
 const MARK_TIME = 3 * 1000;
 const BONUS_TIME = 5 * 1000;

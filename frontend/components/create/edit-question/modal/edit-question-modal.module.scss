@@ -1,0 +1,14 @@
+.answerInput {
+    border: none;
+    background: transparent;
+
+    @include label-lg;
+
+    &::placeholder {
+        color: var(--gray600);
+    }
+}
+
+.answerDelete {
+    cursor: pointer;
+}

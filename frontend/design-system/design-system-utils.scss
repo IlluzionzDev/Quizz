@@ -1,0 +1,357 @@
+/*
+* This file contains all design system defintions such
+* as colors, spacing, shadows etc.
+* Util class definitions and basic components
+* are defined in design-system.scss
+*/
+
+// Convert px value to rem
+@function rem($value) {
+    $remValue: calc(($value / 16)) + rem;
+    @return $remValue;
+}
+
+@function toRGB($color) {
+    @return red($color), green($color), blue($color);
+}
+
+/**
+* Design System Constants (from JS)
+*/
+$border-radius: 4px;
+$spacing-1: rem(4);
+$spacing-2: rem(8);
+$spacing-3: rem(12);
+$spacing-4: rem(16);
+$spacing-5: rem(20);
+$spacing-6: rem(24);
+$spacing-7: rem(32);
+$spacing-8: rem(40);
+$spacing-9: rem(48);
+$spacing-10: rem(56);
+$spacing-11: rem(64);
+
+/*
+* Breakpoints
+*/
+// Small tablets and large smartphones (landscape view)
+$screen-sm-min: 30em;
+// Small tablets (portrait view)
+$screen-md-min: 48em;
+// Tablets and small desktops
+$screen-lg-min: 62em;
+// Large tablets and desktops
+$screen-xl-min: 80em;
+
+// Small devices
+@mixin sm {
+    @media (max-width: #{$screen-sm-min}) {
+        @content;
+    }
+}
+
+// Medium devices
+@mixin md {
+    @media (max-width: #{$screen-md-min}) {
+        @content;
+    }
+}
+
+// Large devices
+@mixin lg {
+    @media (max-width: #{$screen-lg-min}) {
+        @content;
+    }
+}
+
+// Extra large devices
+@mixin xl {
+    @media (max-width: #{$screen-xl-min}) {
+        @content;
+    }
+}
+
+/*
+* Fonts
+*/
+$font-1: 'Poppins', sans-serif;
+$font-2: 'Inter', sans-serif;
+
+/*
+* Shadows
+*/
+@mixin button-shadow($button-color) {
+    box-shadow: 5px 11px 18px -5px rgba($button-color, 30%);
+}
+
+@mixin dark-shadow {
+    box-shadow: 5px 11px 18px -5px rgba(0, 0, 0, 0.5);
+}
+
+@mixin hover-shadow {
+    box-shadow: 5px 11px 18px -5px rgba(0, 0, 0, 0.2);
+}
+
+@mixin border-shadow {
+    box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.5);
+}
+
+@mixin container-shadow {
+    box-shadow: 1px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+@mixin table-shadow {
+    box-shadow: 0px 1px 4px rgba(28, 28, 34, 0.1);
+}
+
+/*
+* Gradient Backgrounds
+*/
+@mixin text-gradient {
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/*
+* Typography styling
+*/
+@mixin hero {
+    font-family: $font-1;
+    font-style: normal;
+    font-weight: 700;
+    font-size: rem(80);
+    line-height: rem(96);
+
+    @include lg {
+        font-size: rem(72);
+        line-height: rem(88);
+    }
+
+    @include md {
+        font-size: rem(65);
+        line-height: rem(80);
+    }
+
+    @include sm {
+        font-size: rem(60);
+        line-height: rem(72);
+    }
+}
+
+@mixin display {
+    font-family: $font-1;
+    font-style: normal;
+    font-weight: 700;
+    font-size: rem(48);
+    line-height: rem(60);
+
+    @include lg {
+        font-size: rem(38);
+        line-height: rem(48);
+    }
+
+    @include md {
+        font-size: rem(31);
+        line-height: rem(40);
+    }
+
+    @include sm {
+        font-size: rem(31);
+        line-height: rem(40);
+    }
+}
+
+@mixin heading-1 {
+    font-family: $font-1;
+    font-style: normal;
+    font-weight: 700;
+    font-size: rem(32);
+    line-height: rem(44);
+
+    @include lg {
+        font-size: rem(38);
+        line-height: rem(48);
+    }
+
+    @include md {
+        font-size: rem(31);
+        line-height: rem(40);
+    }
+
+    @include sm {
+        font-size: rem(31);
+        line-height: rem(40);
+    }
+}
+
+@mixin heading-1-regular {
+    @include heading-1;
+    font-weight: 400;
+}
+
+@mixin heading-2 {
+    font-family: $font-1;
+    font-style: normal;
+    font-weight: 700;
+    font-size: rem(24);
+    line-height: rem(32);
+
+    @include lg {
+        font-size: rem(21);
+        line-height: rem(28);
+    }
+
+    @include md {
+        font-size: rem(20);
+        line-height: rem(28);
+    }
+
+    @include sm {
+        font-size: rem(20);
+        line-height: rem(28);
+    }
+}
+
+@mixin heading-2-regular {
+    @include heading-2;
+    font-weight: 400;
+}
+
+@mixin heading-3 {
+    font-family: $font-1;
+    font-style: normal;
+    font-weight: 700;
+    font-size: rem(18);
+    line-height: rem(24);
+}
+
+@mixin heading-3-regular {
+    @include heading-3;
+    font-weight: 400;
+}
+
+@mixin heading-4 {
+    font-family: $font-1;
+    font-style: normal;
+    font-weight: 700;
+    font-size: rem(16);
+    line-height: rem(24);
+}
+
+@mixin heading-4-regular {
+    @include heading-4;
+    font-weight: 400;
+}
+
+@mixin heading-5 {
+    font-family: $font-1;
+    font-style: normal;
+    font-weight: 700;
+    font-size: rem(14);
+    line-height: rem(20);
+}
+
+@mixin heading-5-regular {
+    @include heading-5;
+    font-weight: 400;
+}
+
+@mixin body-xl {
+    font-family: $font-2;
+    font-style: normal;
+    font-weight: 400;
+    font-size: rem(18);
+    line-height: rem(24);
+}
+
+@mixin body-xl-highlight {
+    @include body-xl;
+    font-weight: 700;
+}
+
+@mixin body-lg {
+    font-family: $font-2;
+    font-style: normal;
+    font-weight: 400;
+    font-size: rem(16);
+    line-height: rem(24);
+}
+
+@mixin body-lg-highlight {
+    @include body-lg;
+    font-weight: 700;
+}
+
+@mixin body-md {
+    font-family: $font-2;
+    font-style: normal;
+    font-weight: 400;
+    font-size: rem(14);
+    line-height: rem(20);
+}
+
+@mixin body-md-highlight {
+    @include body-md;
+    font-weight: 700;
+}
+
+@mixin body-sm {
+    font-family: $font-2;
+    font-style: normal;
+    font-weight: 400;
+    font-size: rem(12);
+    line-height: rem(16);
+}
+
+@mixin body-sm-highlight {
+    @include body-sm;
+    font-weight: 700;
+}
+
+@mixin label-xl {
+    font-family: $font-1;
+    font-style: normal;
+    font-weight: 500;
+    font-size: rem(16);
+    line-height: rem(24);
+}
+
+@mixin label-lg {
+    font-family: $font-1;
+    font-style: normal;
+    font-weight: 500;
+    font-size: rem(14);
+    line-height: rem(24);
+}
+
+@mixin label-md {
+    font-family: $font-1;
+    font-style: normal;
+    font-weight: 500;
+    font-size: rem(12);
+    line-height: rem(20);
+}
+
+@mixin label-sm {
+    font-family: $font-1;
+    font-style: normal;
+    font-weight: 500;
+    font-size: rem(11);
+    line-height: rem(20);
+}
+
+@mixin label-xs {
+    font-family: $font-1;
+    font-style: normal;
+    font-weight: 500;
+    font-size: rem(9);
+    line-height: rem(16);
+}
+
+@mixin button-text {
+    font-family: $font-1;
+    font-style: normal;
+    font-weight: 600;
+    font-size: rem(12);
+    line-height: rem(20);
+}

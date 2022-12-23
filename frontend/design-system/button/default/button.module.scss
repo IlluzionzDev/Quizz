@@ -1,0 +1,151 @@
+// Base button styling
+.baseButton {
+    padding: $spacing-2 $spacing-4;
+    border-radius: $border-radius;
+    border: 1px solid transparent;
+    cursor: pointer;
+    width: fit-content;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: $spacing-2;
+
+    // When button is disabled
+    &[aria-disabled='true'] {
+        cursor: default;
+        background-color: var(--neutral100);
+        border: 1px solid var(--neutral200);
+        color: var(--neutral600);
+    }
+}
+
+// Button icons
+.iconWrapper {
+    height: 16px;
+    width: auto;
+
+    // Align icon in center of wrapper
+    display: flex;
+    flex-direction: row;
+    justify-self: center;
+    align-items: center;
+}
+
+// Make button occupy full width
+.fullWidth {
+    width: 100%;
+}
+
+// Primary button styling
+.primaryButton {
+    color: var(--white);
+    background-color: var(--primary600);
+
+    @include button-shadow(var(--primary500RGB));
+
+    &:hover {
+        background-color: var(--primary500);
+    }
+
+    &:focus,
+    &:active {
+        background-color: var(--primary700);
+    }
+}
+
+.secondaryButton {
+    color: var(--primary600);
+    background-color: var(--primary100);
+    border: 1px solid var(--primary200);
+
+    &:hover {
+        background-color: var(--white);
+    }
+
+    &:focus,
+    &:active {
+        background-color: var(--primary200);
+        border: 1px solid var(--primary300);
+    }
+}
+
+.tertiaryButton {
+    color: var(--neutral800);
+    background-color: transparent;
+    border: 1px solid var(--neutral200);
+
+    &:hover {
+        background-color: var(--neutral100);
+    }
+
+    &:focus,
+    &:active {
+        background-color: var(--neutral200);
+        border: 1px solid var(--neutral300);
+    }
+}
+
+.successButton {
+    color: var(--white);
+    background-color: var(--success600);
+
+    @include button-shadow(var(--success500RGB));
+
+    &:hover {
+        background-color: var(--success500);
+    }
+
+    &:focus,
+    &:active {
+        background-color: var(--success700);
+    }
+}
+
+.success-lightButton {
+    color: var(--success600);
+    background-color: var(--success100);
+    border: 1px solid var(--success200);
+
+    &:hover {
+        background-color: var(--white);
+    }
+
+    &:focus,
+    &:active {
+        background-color: var(--success200);
+        border: 1px solid var(--success300);
+    }
+}
+
+.errorButton {
+    color: var(--white);
+    background-color: var(--error600);
+
+    @include button-shadow(var(--error500RGB));
+
+    &:hover {
+        background-color: var(--error500);
+    }
+
+    &:focus,
+    &:active {
+        background-color: var(--error700);
+    }
+}
+
+.error-lightButton {
+    color: var(--error600);
+    background-color: var(--error100);
+    border: 1px solid var(--error200);
+
+    &:hover {
+        background-color: var(--white);
+    }
+
+    &:focus,
+    &:active {
+        background-color: var(--error200);
+        border: 1px solid var(--error300);
+    }
+}

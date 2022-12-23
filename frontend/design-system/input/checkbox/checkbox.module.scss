@@ -1,0 +1,51 @@
+.checkbox {
+    height: rem(20);
+    width: rem(20);
+    cursor: pointer;
+
+    padding: 0.5rem;
+
+    border-radius: $border-radius;
+    border: 1px solid var(--neutral300);
+    background: transparent;
+
+    &:checked {
+        background-color: var(--primary600);
+        border: 1px solid var(--primary600);
+    }
+
+    &:disabled {
+        cursor: default;
+        background-color: var(--neutral200);
+        border: 1px solid var(--neutral300);
+    }
+
+    &:focus {
+        border: 1px solid var(--primary300);
+    }
+
+    // We use our own styling
+    appearance: none;
+}
+
+// Style check icon
+.check {
+    cursor: pointer;
+
+    // Put ontop
+    position: absolute;
+
+    // Same size as box
+    height: rem(20);
+    width: rem(20);
+
+    // Center in box
+    transform: scale(0.5);
+
+    color: var(--white);
+
+    // Disabled icon
+    &[aria-disabled='true'] {
+        color: var(--neutral600);
+    }
+}
