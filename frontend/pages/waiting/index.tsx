@@ -79,7 +79,7 @@ const Waiting: NextPage = () => {
         <FullSection>
             <Navigation
                 backlink={
-                    <TextButton color="error500" onClick={() => disconnectClient()}>
+                    <TextButton onClick={() => disconnectClient()}>
                         {gameData?.owner ? 'End Game' : 'Disconnect'}
                     </TextButton>
                 }
@@ -99,7 +99,7 @@ const Waiting: NextPage = () => {
                         {gameStateComponent}
                     </Flex>
 
-                    <Flex direction="row" padding={11} className={styles.players}>
+                    <Flex direction="row" padding={11} className={styles.players} gap={3}>
                         {Object.entries(players).length != 0 ? (
                             Object.entries(players).map((player, id) => {
                                 return (

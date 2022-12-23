@@ -1,6 +1,6 @@
 import styles from './game.module.scss';
 import { send, useClient, useGameState, usePacketHandler, useRequireGame, useSyncedTimer } from 'api';
-import { answer } from 'api/packets/client';
+import { answer, CStateChangeState, stateChange } from 'api/packets/client';
 import { SAnswerResult, SPID, SPlayerData } from 'api/packets/server';
 import { useAppDispatch, useAppSelector } from 'hooks';
 import type { NextPage } from 'next';
@@ -14,7 +14,7 @@ import { Heading, Label } from '@design-system/typography';
 import { Badge } from '@design-system/badge';
 import { Box } from '@design-system/layout/box';
 import Navigation from '@components/layout/navigation';
-import { TextButton } from '@design-system/button';
+import { Button, TextButton } from '@design-system/button';
 import { TightContainer } from '@design-system/layout/container/container';
 import { FaCheck, FaTimes } from 'react-icons/fa';
 
@@ -72,6 +72,10 @@ const Game: NextPage = () => {
         router.push('/game-over');
     });
 
+    function skipQuestion() {
+        send(stateChange(CStateChangeState.SKIP));
+    }
+
     /**
      * Select answer
      */
@@ -109,26 +113,64 @@ const Game: NextPage = () => {
     if (gameData?.owner) {
         return (
             <FullSection>
-                <Container>
+                <Navigation backlink={<TextButton onClick={() => router.push('/')}>End Game</TextButton>} />
+                <TightContainer>
                     <Flex direction="column" paddingTop={11} gap={2} alignItems="center">
-                        <Flex></Flex>
-                        <Flex>
+                        <Flex direction="column" gap={7} alignItems="center">
+                            <Heading element="h1" variant="heading-1">
+                                {gameData.title}
+                            </Heading>
+                            <Flex direction="column" gap={1} alignItems="center">
+                                <Heading element="h2" variant="heading-2" regular>
+                                    Current Question
+                                </Heading>
+                                <Label variant="xl" color="primary600">
+                                    {question?.question}
+                                </Label>
+                                <Label variant="xl">{timer}s</Label>
+                                <Flex paddingTop={4}>
+                                    <Button variant="secondary" onClick={() => skipQuestion()}>
+                                        Skip Question
+                                    </Button>
+                                </Flex>
+                            </Flex>
+                        </Flex>
+                        <Flex direction="column" gap={4} paddingTop={11} paddingBottom={11} alignItems="center" className={styles.playerBox}>
                             {topPlayers().map((player, id) => {
                                 return (
-                                    <div key={id} className={styles.host__players__player}>
-                                        {player.name}
-                                        <div className={styles.host__players__player__score}>{player.score}</div>
-                                    </div>
+                                    <Flex key={id} direction="row" background="neutral100" className={styles.player} alignItems="center" justifyContent="space-between" hasRadius paddingLeft={6} paddingRight={6} paddingTop={3} paddingBottom={3}>
+                                        <Label variant="lg">{player.name}</Label>
+                                        <Badge variant="active">{player.score}</Badge>
+                                    </Flex>
                                 );
                             })}
                         </Flex>
                     </Flex>
-                </Container>
+                </TightContainer>
             </FullSection>
         );
     } else if (question == null) {
         // No question, nothing to render
-        return <FullSection></FullSection>;
+        return (
+            <FullSection>
+                <CenterSection>
+                    <TightContainer>
+                        <Flex direction="column" alignItems="center" paddingTop={11} gap={2}>
+                            <Flex direction="column" gap={1}>
+                                <Heading element="h1" variant="heading-1" color="primary600">
+                                    Loading Question...
+                                </Heading>
+                                <Label variant="xl">0s</Label>
+                            </Flex>
+                            <Flex direction="column" gap={4} paddingTop={11} paddingBottom={11} alignItems="center" className={styles.answerBox}>
+                                <Label variant='lg' color='neutral200'>Loading Answers...</Label>
+                            </Flex>
+                        </Flex>
+                    </TightContainer>
+                </CenterSection>
+                <GameNav selfData={selfData} />
+            </FullSection>
+        );
     } else if (result !== null) {
         // Display results of chosen answer
         return (

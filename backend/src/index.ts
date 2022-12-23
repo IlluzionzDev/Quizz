@@ -160,8 +160,6 @@ class Client {
             case CStateChangeState.SKIP:
                 if (this.hostGame == null) {
                     packets.sendPacket(client, error('Failed to update game state. You are not the host.'));
-                } else if (this.hostGame.state !== packets.GameState.WAITING) {
-                    packets.sendPacket(client, error('Game already started'));
                 } else {
                     // Skip current question
                     this.hostGame.skipQuestion();

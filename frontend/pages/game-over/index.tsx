@@ -5,6 +5,13 @@ import { useAppDispatch, useAppSelector } from 'hooks';
 import type { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { CenterSection, FullSection } from '@design-system/layout/section';
+import Navigation from '@components/layout/navigation';
+import { TextButton } from '@design-system/button';
+import { Flex } from '@design-system/layout/flex';
+import { Heading, Label } from '@design-system/typography';
+import { Badge } from '@design-system/badge';
+import { Container } from '@design-system/layout/container';
+import { TightContainer } from '@design-system/layout/container/container';
 
 const GameOver: NextPage = () => {
     useClient();
@@ -33,20 +40,29 @@ const GameOver: NextPage = () => {
 
     return (
         <FullSection>
+            <Navigation backlink={<TextButton onClick={() => disconnect(dispatch)}>{gameData?.owner ? 'End Game' : 'Leave'}</TextButton>} />
             <CenterSection>
-                <h1>Results</h1>
-                <div className={styles.players}>
-                    {topPlayers().map((player, id) => {
-                        return (
-                            <div key={id} className={styles.players__player}>
-                                <p>#{id + 1}</p>
-                                <p>{player.name}</p>
+                <TightContainer>
+                    <Flex direction="column" gap={11}>
+                        <Heading element="h1" variant="heading-1">
+                            {gameData?.title}
+                        </Heading>
+                        <Flex direction="column" paddingTop={5} className={styles.players} gap={4} alignItems="center">
+                            {topPlayers().map((player, id) => {
+                                return (
+                                    <Flex key={id} direction="row" background="neutral100" className={styles.player} alignItems="center" justifyContent="space-between" hasRadius paddingLeft={6} paddingRight={6} paddingTop={3} paddingBottom={3}>
+                                        <Flex direction="row" gap={2}>
+                                            <Label variant="lg">#{id + 1}</Label>
+                                            <Label variant="lg">{player.name}</Label>
+                                        </Flex>
 
-                                <div className={styles.players__player__score}>{player.score}</div>
-                            </div>
-                        );
-                    })}
-                </div>
+                                        <Badge variant="active">{player.score}</Badge>
+                                    </Flex>
+                                );
+                            })}
+                        </Flex>
+                    </Flex>
+                </TightContainer>
             </CenterSection>
         </FullSection>
     );

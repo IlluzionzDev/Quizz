@@ -105,20 +105,29 @@ const JoinQuiz: NextPage = () => {
                         <Heading element="h1" variant="heading-1">
                             Join Quiz
                         </Heading>
-                        <TextField
-                            error={submittedCode && !validName ? 'Name already taken' : ''}
-                            value={name}
-                            onChange={(e) => {
-                                setName(e.currentTarget.value);
-                                // Remove error after changing
-                                if (submittedCode) setSubmittedCode(false);
+                        <form
+                            onSubmit={(e) => {
+                                e.preventDefault();
+
+                                checkName();
+                                setSubmittedCode(true);
                             }}
-                            label="Enter Name"
-                            id="playerName"
-                            name="player name"
-                            placeholder="Name"
-                            maxLength={16}
-                        />
+                        >
+                            <TextField
+                                error={submittedCode && !validName ? 'Name already taken' : ''}
+                                value={name}
+                                onChange={(e) => {
+                                    setName(e.currentTarget.value);
+                                    // Remove error after changing
+                                    if (submittedCode) setSubmittedCode(false);
+                                }}
+                                label="Enter Name"
+                                id="playerName"
+                                name="player name"
+                                placeholder="Name"
+                                maxLength={16}
+                            />
+                        </form>
                         <TextButton
                             endIcon={<FaArrowRight />}
                             disabled={gameCode.length != 5}
@@ -135,20 +144,30 @@ const JoinQuiz: NextPage = () => {
                         <Heading element="h1" variant="heading-1">
                             Join Quiz
                         </Heading>
-                        <TextField
-                            error={submittedCode && !validGame ? 'Game does not exist' : ''}
-                            value={gameCode}
-                            onChange={(e) => {
-                                setGameCode(e.currentTarget.value);
-                                // Remove error after changing
-                                if (submittedCode) setSubmittedCode(false);
+                        <form
+                            onSubmit={(e) => {
+                                e.preventDefault();
+
+                                checkGameExists();
+                                setSubmittedCode(true);
                             }}
-                            label="Enter Quiz Code"
-                            id="gameCode"
-                            name="game code"
-                            placeholder="XXXXX"
-                            maxLength={5}
-                        />
+                        >
+                            <TextField
+                                error={submittedCode && !validGame ? 'Game does not exist' : ''}
+                                value={gameCode}
+                                onChange={(e) => {
+                                    setGameCode(e.currentTarget.value);
+                                    // Remove error after changing
+                                    if (submittedCode) setSubmittedCode(false);
+                                }}
+                                label="Enter Quiz Code"
+                                id="gameCode"
+                                name="game code"
+                                placeholder="XXXXX"
+                                maxLength={5}
+                            />
+                        </form>
+
                         <TextButton
                             endIcon={<FaArrowRight />}
                             disabled={gameCode.length != 5}
