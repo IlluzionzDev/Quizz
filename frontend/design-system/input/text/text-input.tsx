@@ -8,7 +8,7 @@ type TextInputProps = {
     disabled?: boolean;
     value: string;
     hasError?: boolean;
-} & React.HTMLAttributes<HTMLInputElement>;
+} & React.InputHTMLAttributes<HTMLInputElement>;
 
 /**
  * The raw styled text input

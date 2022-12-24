@@ -15,7 +15,7 @@ type TextFieldProps = {
     id: string;
     label?: string;
     error?: string;
-} & React.HTMLAttributes<HTMLInputElement>;
+} & React.InputHTMLAttributes<HTMLInputElement>;
 
 /**
  * Master component for a field of text

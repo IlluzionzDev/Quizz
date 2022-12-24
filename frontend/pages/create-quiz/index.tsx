@@ -3,7 +3,6 @@ import { send, useClient, useGameState } from 'api';
 import { createGame } from 'api/packets/client';
 import type { NextPage } from 'next';
 import { createRef, useRef, useState } from 'react';
-import CreateQuestionModal from '@components/create/CreateQuestionModal';
 import { GameState, QuestionData } from 'api/packets/packets';
 import { FaArrowLeft, FaArrowRight, FaDownload, FaPen, FaPlus, FaTimes, FaUpload } from 'react-icons/fa';
 import { useRouter } from 'next/router';
@@ -16,6 +15,7 @@ import { Heading, Label } from '@design-system/typography';
 import { TextField } from '@design-system/field';
 import { Box } from '@design-system/layout/box';
 import { EditQuestion, EditQuestionModal } from '@components/create/edit-question';
+import clone from 'clone';
 
 /**
  * Model of quiz configuration
@@ -180,7 +180,7 @@ const CreateQuiz: NextPage = () => {
                         setEditingQuestion(-1);
                     }}
                     // Parse fresh question data or clone exising question data for editing
-                    question={editingQuestion === -1 ? { question: '', answers: [], correct: [] } : structuredClone(questions[editingQuestion])}
+                    question={editingQuestion === -1 ? { question: '', answers: [], correct: [] } : clone(questions[editingQuestion])}
                 />
             )}
             <Navigation
