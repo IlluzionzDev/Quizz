@@ -1,5 +1,5 @@
 // Handle connection to the server
-import { HOST } from 'constants';
+import { HOST } from 'quiz-constants';
 import { useAppDispatch, useAppSelector } from 'hooks';
 import { useRouter } from 'next/router';
 import { MutableRefObject, useEffect, useLayoutEffect, useRef, useState } from 'react';

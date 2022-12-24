@@ -4,7 +4,7 @@ import { useField } from "./field-context";
 type FieldInputProps = {
     disabled?: boolean;
     value: string;
-};
+} & React.InputHTMLAttributes<HTMLInputElement>;
 
 /**
  * Expose all variables to a field
