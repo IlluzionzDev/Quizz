@@ -33,7 +33,7 @@ const GameOver: NextPage = () => {
 
         return playerData
             .sort((a, b) => {
-                return a.score - b.score;
+                return b.score - a.score;
             })
             .slice(0, 3);
     }
