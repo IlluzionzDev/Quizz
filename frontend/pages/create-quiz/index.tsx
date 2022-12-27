@@ -33,13 +33,7 @@ const CreateQuiz: NextPage = () => {
     const [title, setTitle] = useState('');
 
     // Store quiz questions
-    const [questions, setQuestions] = useState<QuestionData[]>([
-        {
-            question: 'Test',
-            answers: ['Answer One', 'Answer Two', 'Answer Three', 'Answer Four'],
-            correct: [0]
-        }
-    ]);
+    const [questions, setQuestions] = useState<QuestionData[]>([]);
 
     // Index of question being editing, -1 if none
     const [editingQuestion, setEditingQuestion] = useState(-1);
@@ -231,8 +225,10 @@ const CreateQuiz: NextPage = () => {
                                     );
                                 })
                             ) : (
-                                <Flex justifyContent='center'>
-                                    <Label variant='lg' color='neutral200'>No Questions...</Label>
+                                <Flex justifyContent="center">
+                                    <Label variant="lg" color="neutral200">
+                                        No Questions...
+                                    </Label>
                                 </Flex>
                             )}
                             <Flex direction="row" justifyContent="flex-end">

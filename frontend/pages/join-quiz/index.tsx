@@ -61,7 +61,6 @@ const JoinQuiz: NextPage = () => {
      * Sends a packet to request game state to see if this game does exists
      */
     const checkGameExists = () => {
-        setValidGame(false);
         send(requestGameState(gameCode));
     };
 
