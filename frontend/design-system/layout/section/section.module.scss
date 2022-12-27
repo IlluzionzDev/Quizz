@@ -1,7 +1,7 @@
 .fullSection {
     position: relative;
     display: flex;
-    height: 100vh;
+    height: var(--vh);
     width: 100vw;
     flex-direction: column;
     margin: auto auto;

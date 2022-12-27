@@ -13,8 +13,20 @@ import '@fontsource/inter/700.css';
 import '@fontsource/inter/400.css';
 import { ThemeProvider } from '@design-system/theme';
 import Head from 'next/head';
+import { useEffect } from 'react';
 
 export default function App({ Component, pageProps }: AppProps) {
+    useEffect(() => {
+        // Set var(--vh) to actual view height of viewport
+        const setHeight = () => {
+            document.documentElement.style.setProperty('--vh', window.innerHeight + 'px');
+        };
+
+        // Update viewport on resize
+        window.addEventListener('resize', setHeight);
+        setHeight();
+    }, []);
+
     return (
         <ThemeProvider>
             <Provider store={store}>
