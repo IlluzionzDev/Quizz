@@ -478,7 +478,8 @@ body {
     margin: 0;
     padding: 0;
 
-    min-height: 100vh;
+    min-height: 100%;
+    min-height: -webkit-fill-available;
 
     // Default colours
     background-color: var(--gray100);
