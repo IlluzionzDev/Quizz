@@ -12,11 +12,16 @@ import '@fontsource/poppins/400.css';
 import '@fontsource/inter/700.css';
 import '@fontsource/inter/400.css';
 import { ThemeProvider } from '@design-system/theme';
+import Head from 'next/head';
 
 export default function App({ Component, pageProps }: AppProps) {
     return (
         <ThemeProvider>
             <Provider store={store}>
+                <Head>
+                    <title>Quizz | Quiz your friends in real-time</title>
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, height=device-height" />
+                </Head>
                 <Component {...pageProps} />
             </Provider>
         </ThemeProvider>
