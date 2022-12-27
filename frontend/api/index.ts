@@ -66,6 +66,7 @@ function startListener(dispatch: Function, host: string) {
 
     socket.onclose = () => {
         dispatch(setOpen(false));
+        startListener(dispatch, HOST);
     };
 
     socket.onerror = console.error; // Directly print all errors to the console
@@ -296,7 +297,10 @@ export function useSyncedTimer(initialValue: number): number {
             if (elapsed >= 1000) {
                 // If 1 second has passed since the last update
                 lastUpdateTime = time; // Set the last update time
-                setValue((prev) => prev - 1); // Decrease the countdown value
+                setValue((prev) => {
+                    if (prev != 0) return prev - 1;
+                    return prev;
+                });
             }
             // Request the next animation frame
             requestAnimationFrame(update);

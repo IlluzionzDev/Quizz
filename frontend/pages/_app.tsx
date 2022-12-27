@@ -1,7 +1,7 @@
 // Import SCSS utils
 import '@design-system/design-system.scss';
 import type { AppProps } from 'next/app';
-import store from '../store/store';
+import store from 'store';
 import { Provider } from 'react-redux';
 
 // Font stlying

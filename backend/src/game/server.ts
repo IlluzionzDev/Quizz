@@ -223,6 +223,8 @@ export class Game {
             // Answered index, -1 if not answered
             const answerIndex = player.getAnswer(this.activeQuestion.index);
 
+            console.log('Answer Index', answerIndex);
+
             // If correct
             const correct = answerIndex !== -1 && question.isCorrect(answerIndex);
 
@@ -341,7 +343,7 @@ class ActiveQuestion {
     // See if an answer is correct for a current question
     isCorrect(answerIndex: number): boolean {
         const correctAnswers = this.question.correct;
-        return answerIndex in correctAnswers;
+        return correctAnswers.includes(answerIndex);
     }
 }
 

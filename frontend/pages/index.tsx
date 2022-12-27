@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/link-passhref */
 import { Button } from '@design-system/button';
 import { Box } from '@design-system/layout/box';
 import { Container } from '@design-system/layout/container';
@@ -27,13 +28,13 @@ const Home: NextPage = () => {
                             <Body variant="xl">Quizz allows you to create quizzes and then quiz your friends in real-time. Compete for the highest score and see who is all knowing.</Body>
                         </Flex>
                         <Flex direction="row" gap={6} justifyContent="center">
-                            <Link href="/join-quiz" passHref>
+                            <Link href="/join-quiz">
                                 <Button variant="primary" startIcon={<FaPlay />}>
                                     Join Quiz
                                 </Button>
                             </Link>
 
-                            <Link href="/create-quiz" passHref>
+                            <Link href="/create-quiz">
                                 <Button variant="primary" startIcon={<FaPen />}>
                                     Create Quiz
                                 </Button>

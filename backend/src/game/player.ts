@@ -32,7 +32,8 @@ export class Player {
     // Check if player has answered the question for the current game
     hasAnswered(game: Game): boolean {
         const activeQuestion = game.activeQuestion;
-        return this.getAnswer(activeQuestion.index) !== -1;
+        // Fall back if active question not set
+        return activeQuestion ? this.getAnswer(activeQuestion.index) !== -1 : false;
     }
 
     // Answer the current game question
@@ -40,7 +41,7 @@ export class Player {
         this.answerTime = Date.now();
 
         // Ensure is within question bounds
-        let answerIndex = Math.min(questionIndex, game.questions.length - 1);
+        let answerIndex = Math.min(questionIndex, game.activeQuestion.question.answers.length - 1);
 
         this.answers.set(game.activeQuestion.index, answerIndex);
     }
