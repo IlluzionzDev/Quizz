@@ -38,7 +38,7 @@ export class Game {
 
     // Check if there is a joined player with the same name
     isNameTaken(name: string): boolean {
-        for (const [playerId, playerData] of this.players) {
+        for (const [_, playerData] of this.players) {
             if (playerData.name.toLowerCase() === name.toLowerCase()) return true;
         }
 
@@ -97,7 +97,7 @@ export class Game {
 
     // Start the game
     start() {
-        console.log('Starting game');
+        console.log(`Starting game with id ${this.id}`);
         this.setState(packets.GameState.STARTING);
         this.startTime = Date.now();
     }
@@ -108,6 +108,7 @@ export class Game {
 
         // Run logic every second
         const worker = setInterval(() => {
+            // Snapshot game state for this loop
             const gameState = this.state;
 
             // Finish loop if game over
@@ -180,7 +181,7 @@ export class Game {
     allAnswered(): boolean {
         let notAnswered = false;
 
-        for (const [playerId, player] of this.players) {
+        for (const [_, player] of this.players) {
             if (!player.hasAnswered(this)) notAnswered = true;
         }
 
@@ -222,8 +223,6 @@ export class Game {
         this.players.forEach((player) => {
             // Answered index, -1 if not answered
             const answerIndex = player.getAnswer(this.activeQuestion.index);
-
-            console.log('Answer Index', answerIndex);
 
             // If correct
             const correct = answerIndex !== -1 && question.isCorrect(answerIndex);
@@ -371,7 +370,7 @@ export function newGame(host: WebSocket, title: string, questions: packets.Quest
 // Generate a random game ID code
 export const generateRandomId = (length: number) => {
     var result = '';
-    var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
     var charactersLength = characters.length;
     for (var i = 0; i < length; i++) {
         result += characters.charAt(Math.floor(Math.random() * charactersLength));

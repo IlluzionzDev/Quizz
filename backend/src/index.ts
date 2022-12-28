@@ -22,7 +22,7 @@ const app = express();
 // Middlewares
 app.use(cors());
 
-// Create web socket server at '/ws'
+// Create web socket server
 const server = http.createServer(app);
 const wss = new WebSocket.WebSocketServer({ server });
 
@@ -77,13 +77,16 @@ class Client {
             if (packetId in this.handlers) {
                 const handler = this.handlers[packetId];
                 handler(this.socket, packetData);
+            } else {
+                console.error(`Recieved invalid packet with id ${packet.id}`);
             }
 
+            // Backend packet logging
             console.log(`Received packet ${data.toString()}`);
         });
 
         this.socket.on('close', () => {
-            // Cleanup state
+            // When client is closed, remove all player instances
             this.cleanUp();
         });
     }
@@ -112,11 +115,7 @@ class Client {
 
     onRequestGameState(client: WebSocket, data: CRequestGameState) {
         const game = gameServer.getGame(data.id);
-        if (!game) {
-            packets.sendPacket(client, gameState(packets.GameState.NOT_FOUND));
-        } else {
-            packets.sendPacket(client, gameState(game.state));
-        }
+        packets.sendPacket(client, gameState(game ? game.state : packets.GameState.NOT_FOUND));
     }
 
     onRequestJoin(client: WebSocket, data: CRequestJoin) {
@@ -127,7 +126,7 @@ class Client {
             // Check if game exists and can use this name
             if (game.state != packets.GameState.WAITING) {
                 packets.sendPacket(client, error('Game already started'));
-                // Internal check if name is taken
+                // Server check if name is taken
             } else if (game.isNameTaken(data.name)) {
                 packets.sendPacket(client, error('Name is taken'));
             } else {
