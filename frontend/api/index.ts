@@ -298,7 +298,7 @@ export function useSyncedTimer(initialValue: number): number {
                 // If 1 second has passed since the last update
                 lastUpdateTime = time; // Set the last update time
                 setValue((prev) => {
-                    if (prev != 0) return prev - 1;
+                    if (prev != 0) return prev - 1; // Timer can't go negative
                     return prev;
                 });
             }
