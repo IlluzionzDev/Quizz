@@ -1,18 +1,19 @@
+import { HTMLMotionProps, motion } from 'framer-motion';
 import { FieldContext } from './field-context';
 
 type FieldProps = {
     id: string;
     name: string;
     error?: string;
-} & React.HTMLAttributes<HTMLDivElement>;
+} & HTMLMotionProps<'div'>;
 
 /**
  * Expose all variables to a field
  */
 export const Field: React.FC<FieldProps> = ({ children, id, name, error, ...rest }) => {
     return (
-        <div style={{ textAlign: 'left' }} {...rest}>
+        <motion.div style={{ textAlign: 'left' }} {...rest}>
             <FieldContext.Provider value={{ id, name, error }}>{children}</FieldContext.Provider>
-        </div>
+        </motion.div>
     );
 };

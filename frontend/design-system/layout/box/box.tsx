@@ -1,4 +1,5 @@
 import { useTheme } from '@design-system/theme';
+import { HTMLMotionProps, motion } from 'framer-motion';
 import { CSSProperties } from 'react';
 
 // Allow css rules
@@ -25,7 +26,7 @@ export type BoxProps = {
     shrink?: string;
     grow?: string;
     basis?: string;
-} & React.HTMLAttributes<HTMLDivElement>;
+} & HTMLMotionProps<'div'>;
 
 /**
  * A div container that maintains the specs of our design system.
@@ -61,7 +62,7 @@ export const Box: React.FC<BoxProps> = ({
     const { theme, toggleTheme } = useTheme();
 
     return (
-        <div
+        <motion.div
             style={{
                 ...inlineStyle,
                 backgroundColor: background ? 'var(--' + background + ')' : undefined,
@@ -90,6 +91,6 @@ export const Box: React.FC<BoxProps> = ({
             {...rest}
         >
             {children}
-        </div>
+        </motion.div>
     );
 };

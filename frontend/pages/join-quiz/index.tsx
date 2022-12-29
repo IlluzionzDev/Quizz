@@ -15,7 +15,7 @@ import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
 import { Flex } from '@design-system/layout/flex';
 import { Heading } from '@design-system/typography';
 import { TextField } from '@design-system/field';
-import { motion } from 'framer-motion';
+import { AnimatePresence, motion, Variants } from 'framer-motion';
 
 const JoinQuiz: NextPage = () => {
     // Start packet listener
@@ -90,108 +90,130 @@ const JoinQuiz: NextPage = () => {
 
     usePacketHandler(SPID.SNameTakenResult, onNameTakenResult);
 
-    return (
-        <motion.div
-            initial={{ x: 300, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            transition={{
+    // Animations
+    const loadInAnimation: Variants = {
+        hidden: {
+            opacity: 0,
+            y: -50
+        },
+        show: {
+            opacity: 1,
+            y: 0,
+            transition: {
+                staggerChildren: 0.05,
                 type: 'spring',
                 stiffness: 260,
                 damping: 20
-            }}
-        >
-            <FullSection>
-                <Navigation
-                    backlink={
-                        <TextButton onClick={() => router.push('/')} startIcon={<FaArrowLeft />}>
-                            Go Back
-                        </TextButton>
-                    }
-                />
-                <CenterSection>
-                    {validGame ? (
-                        <Flex direction="column" padding={7} gap={7} alignItems="center">
-                            <Heading element="h1" variant="heading-1">
-                                Join Quiz
-                            </Heading>
-                            <form
-                                onSubmit={(e) => {
-                                    e.preventDefault();
+            }
+        }
+    };
 
-                                    checkName();
-                                    setSubmittedCode(true);
-                                }}
-                            >
-                                <TextField
-                                    error={submittedCode && !validName ? 'Name already taken' : ''}
-                                    value={name}
-                                    onChange={(e) => {
-                                        setName(e.currentTarget.value);
-                                        // Remove error after changing
-                                        if (submittedCode) setSubmittedCode(false);
-                                    }}
-                                    label="Enter Name"
-                                    id="playerName"
-                                    name="player name"
-                                    placeholder="Name"
-                                    maxLength={16}
-                                />
-                            </form>
-                            <TextButton
-                                endIcon={<FaArrowRight />}
-                                disabled={gameCode.length != 5}
-                                onClick={() => {
-                                    checkName();
-                                    setSubmittedCode(true);
-                                }}
-                            >
-                                Join Game
-                            </TextButton>
-                        </Flex>
-                    ) : (
-                        <Flex direction="column" padding={7} gap={7} alignItems="center">
-                            <Heading element="h1" variant="heading-1">
-                                Join Quiz
-                            </Heading>
-                            <form
-                                onSubmit={(e) => {
-                                    e.preventDefault();
+    return (
+        <FullSection>
+            <Navigation
+                backlink={
+                    <TextButton onClick={() => router.push('/')} startIcon={<FaArrowLeft />}>
+                        Go Back
+                    </TextButton>
+                }
+            />
+            <CenterSection>
+                <motion.div variants={loadInAnimation} initial="hidden" animate="show">
+                    <AnimatePresence>
+                        {validGame ? (
+                            <motion.div initial={{ opacity: 0, x: -50 }} animate={{ opacity: 1, x: 0 }} transition={{ ease: 'easeInOut', duration: 0.6 }}>
+                                <Flex direction="column" padding={7} gap={7} alignItems="center">
+                                    <Heading element="h1" variant="heading-1">
+                                        Join Quiz
+                                    </Heading>
+                                    <form
+                                        onSubmit={(e) => {
+                                            e.preventDefault();
 
-                                    checkGameExists();
-                                    setSubmittedCode(true);
-                                }}
-                            >
-                                <TextField
-                                    error={submittedCode && !validGame ? 'Game does not exist' : ''}
-                                    value={gameCode}
-                                    onChange={(e) => {
-                                        setGameCode(e.currentTarget.value);
-                                        // Remove error after changing
-                                        if (submittedCode) setSubmittedCode(false);
-                                    }}
-                                    label="Enter Quiz Code"
-                                    id="gameCode"
-                                    name="game code"
-                                    placeholder="XXXXX"
-                                    maxLength={5}
-                                />
-                            </form>
+                                            checkName();
+                                            setSubmittedCode(true);
+                                        }}
+                                    >
+                                        <TextField
+                                            error={submittedCode && !validName ? 'Name already taken' : ''}
+                                            value={name}
+                                            onChange={(e) => {
+                                                setName(e.currentTarget.value);
+                                                // Remove error after changing
+                                                if (submittedCode) setSubmittedCode(false);
+                                            }}
+                                            label="Enter Name"
+                                            id="playerName"
+                                            name="player name"
+                                            placeholder="Name"
+                                            maxLength={16}
+                                        />
+                                    </form>
+                                    <TextButton
+                                        endIcon={<FaArrowRight />}
+                                        disabled={gameCode.length != 5}
+                                        onClick={() => {
+                                            checkName();
+                                            setSubmittedCode(true);
+                                        }}
+                                    >
+                                        Join Game
+                                    </TextButton>
+                                </Flex>
+                            </motion.div>
+                        ) : (
+                            <motion.div initial={{ x: 0, opacity: 1 }} exit={{ x: 50, opacity: 0 }}>
+                                <Flex direction="column" padding={7} gap={7} alignItems="center">
+                                    <motion.div variants={loadInAnimation}>
+                                        <Heading element="h1" variant="heading-1">
+                                            Join Quiz
+                                        </Heading>
+                                    </motion.div>
+                                    <form
+                                        onSubmit={(e) => {
+                                            e.preventDefault();
 
-                            <TextButton
-                                endIcon={<FaArrowRight />}
-                                disabled={gameCode.length != 5}
-                                onClick={() => {
-                                    checkGameExists();
-                                    setSubmittedCode(true);
-                                }}
-                            >
-                                Next
-                            </TextButton>
-                        </Flex>
-                    )}
-                </CenterSection>
-            </FullSection>
-        </motion.div>
+                                            checkGameExists();
+                                            setSubmittedCode(true);
+                                        }}
+                                    >
+                                        <motion.div variants={loadInAnimation}>
+                                            <TextField
+                                                error={submittedCode && !validGame ? 'Game does not exist' : ''}
+                                                value={gameCode}
+                                                onChange={(e) => {
+                                                    setGameCode(e.currentTarget.value);
+                                                    // Remove error after changing
+                                                    if (submittedCode) setSubmittedCode(false);
+                                                }}
+                                                label="Enter Quiz Code"
+                                                id="gameCode"
+                                                name="game code"
+                                                placeholder="XXXXX"
+                                                maxLength={5}
+                                            />
+                                        </motion.div>
+                                    </form>
+
+                                    <motion.div initial={{ y: 50, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ type: 'spring', stiffness: 260, damping: 20, delay: 0.15 }}>
+                                        <TextButton
+                                            endIcon={<FaArrowRight />}
+                                            disabled={gameCode.length != 5}
+                                            onClick={() => {
+                                                checkGameExists();
+                                                setSubmittedCode(true);
+                                            }}
+                                        >
+                                            Next
+                                        </TextButton>
+                                    </motion.div>
+                                </Flex>
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
+                </motion.div>
+            </CenterSection>
+        </FullSection>
     );
 };
 

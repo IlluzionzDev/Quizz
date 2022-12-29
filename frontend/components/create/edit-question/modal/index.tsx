@@ -54,13 +54,26 @@ export const EditQuestionModal: React.FC<EditQuestionModalProps> = ({ question, 
                                     {questionData.answers.length}/4
                                 </Label>
                             </Flex>
-                            <Flex direction="column" gap={4}>
+                            <Flex direction="column" gap={2}>
                                 {questionData.answers.length != 0 ? (
                                     questionData.answers.map((answer, id) => {
                                         const checked = questionData.correct.includes(id);
 
                                         return (
-                                            <Flex key={id} direction="row" justifyContent="space-between" background="neutral100" alignItems="center" paddingTop={2} paddingBottom={2} paddingLeft={6} paddingRight={6} hasRadius>
+                                            <Flex
+                                                key={id}
+                                                direction="row"
+                                                justifyContent="space-between"
+                                                background="neutral100"
+                                                alignItems="center"
+                                                paddingTop={2}
+                                                paddingBottom={2}
+                                                paddingLeft={6}
+                                                paddingRight={6}
+                                                hasRadius
+                                                initial={{ opacity: 0, y: -50 }}
+                                                animate={{ opacity: 1, y: 0 }}
+                                            >
                                                 <Flex direction="row" gap={4} alignItems="center">
                                                     <CheckboxInput
                                                         checked={checked}

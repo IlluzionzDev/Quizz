@@ -16,7 +16,7 @@ import { TextField } from '@design-system/field';
 import { Box } from '@design-system/layout/box';
 import { EditQuestion, EditQuestionModal } from '@components/create/edit-question';
 import clone from 'clone';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, motion, Variants } from 'framer-motion';
 
 /**
  * Model of quiz configuration
@@ -149,71 +149,117 @@ const CreateQuiz: NextPage = () => {
         });
     }
 
-    return (
-        <motion.div
-            initial={{ x: 300, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            transition={{
+    const loadInTop: Variants = {
+        hidden: {
+            opacity: 0,
+            y: -50
+        },
+        show: {
+            opacity: 1,
+            y: 0,
+            transition: {
+                staggerChildren: 0.05,
                 type: 'spring',
                 stiffness: 260,
                 damping: 20
-            }}
-        >
-            <FullSection>
-                {createQuestionModal && (
-                    <EditQuestionModal
-                        onClose={() => {
-                            setCreateQuestionModal(false);
+            }
+        }
+    };
 
-                            // No longer editing after close
-                            setEditingQuestion(-1);
-                        }}
-                        onSubmit={(question: QuestionData) => {
-                            // Close modal
-                            setCreateQuestionModal(false);
+    const loadInBottom: Variants = {
+        hidden: {
+            opacity: 0,
+            y: 50
+        },
+        show: {
+            opacity: 1,
+            y: 0,
+            transition: {
+                staggerChildren: 0.05,
+                type: 'spring',
+                stiffness: 260,
+                damping: 20
+            }
+        }
+    };
 
-                            const questionsArray = questions;
-                            if (editingQuestion == -1) {
-                                questionsArray.push(question);
-                            } else {
-                                questionsArray[editingQuestion] = question;
-                            }
-                            setQuestions(questionsArray);
+    const questionAnimation = {
+        hidden: {
+            y: -50,
+            opacity: 0
+        },
+        show: {
+            y: 0,
+            opacity: 1,
+            transition: {
+                staggerChildren: 0.05,
+                type: 'spring',
+                stiffness: 260,
+                damping: 20
+            }
+        }
+    };
 
-                            // No longer editing after submit
-                            setEditingQuestion(-1);
-                        }}
-                        // Parse fresh question data or clone exising question data for editing
-                        question={editingQuestion === -1 ? { question: '', answers: [], correct: [] } : clone(questions[editingQuestion])}
-                    />
-                )}
+    return (
+        <FullSection>
+            {createQuestionModal && (
+                <EditQuestionModal
+                    onClose={() => {
+                        setCreateQuestionModal(false);
 
-                <Navigation
-                    backlink={
-                        <TextButton onClick={() => router.push('/')} startIcon={<FaArrowLeft />}>
-                            Go Back
-                        </TextButton>
-                    }
+                        // No longer editing after close
+                        setEditingQuestion(-1);
+                    }}
+                    onSubmit={(question: QuestionData) => {
+                        // Close modal
+                        setCreateQuestionModal(false);
+
+                        const questionsArray = questions;
+                        if (editingQuestion == -1) {
+                            questionsArray.push(question);
+                        } else {
+                            questionsArray[editingQuestion] = question;
+                        }
+                        setQuestions(questionsArray);
+
+                        // No longer editing after submit
+                        setEditingQuestion(-1);
+                    }}
+                    // Parse fresh question data or clone exising question data for editing
+                    question={editingQuestion === -1 ? { question: '', answers: [], correct: [] } : clone(questions[editingQuestion])}
                 />
-                <CenterSection>
-                    <Container>
-                        <Flex direction="column" padding={7} gap={7} alignItems="center" className={styles.mainSection}>
-                            <Heading element="h1" variant="heading-1">
-                                Create Quiz
-                            </Heading>
-                            <TextField
-                                error={submitted && title.length == 0 ? 'Please enter quiz title' : ''}
-                                id="quizTitle"
-                                name="quiz title"
-                                value={title}
-                                onChange={(e) => {
-                                    setTitle(e.currentTarget.value);
-                                    if (submitted) setSubmitted(false);
-                                }}
-                                placeholder="Title"
-                                label="Enter Quiz Title"
-                            />
-                            <Flex background="white" className={styles.questionsBox} padding={4} direction="column" gap={3} hasRadius>
+            )}
+
+            <Navigation
+                backlink={
+                    <TextButton onClick={() => router.push('/')} startIcon={<FaArrowLeft />}>
+                        Go Back
+                    </TextButton>
+                }
+            />
+            <CenterSection>
+                <Container>
+                    <Flex direction="column" padding={7} gap={7} alignItems="center" className={styles.mainSection} variants={loadInTop} initial="hidden" animate="show">
+                        <Heading element="h1" variant="heading-1" variants={loadInTop}>
+                            Create Quiz
+                        </Heading>
+                        <TextField
+                            motion={{
+                                variants: { loadInTop }
+                            }}
+                            error={submitted && title.length == 0 ? 'Please enter quiz title' : ''}
+                            id="quizTitle"
+                            name="quiz title"
+                            value={title}
+                            onChange={(e) => {
+                                setTitle(e.currentTarget.value);
+                                if (submitted) setSubmitted(false);
+                            }}
+                            placeholder="Title"
+                            label="Enter Quiz Title"
+                        />
+                        <Flex background="white" className={styles.questionsBox} padding={4} direction="column" gap={3} hasRadius variants={loadInTop}>
+                            <Flex direction="column" gap={3} variants={questionAnimation} initial="hidden" animate="show">
                                 {questions.length != 0 ? (
                                     questions.map((question, id) => {
                                         return (
@@ -232,6 +278,7 @@ const CreateQuiz: NextPage = () => {
                                                     });
                                                     setQuestions(newQuestions);
                                                 }}
+                                                variants={questionAnimation}
                                             />
                                         );
                                     })
@@ -242,39 +289,42 @@ const CreateQuiz: NextPage = () => {
                                         </Label>
                                     </Flex>
                                 )}
-                                <Flex direction="row" justifyContent="flex-end">
-                                    <TextButton
-                                        onClick={() => {
-                                            setCreateQuestionModal(true);
-                                        }}
-                                        startIcon={<FaPlus />}
-                                    >
-                                        Add Question
-                                    </TextButton>
-                                </Flex>
                             </Flex>
-                            <Flex gap={2}>
-                                <input type="file" ref={importQuiz} onChange={importFile} style={{ display: 'none' }} />
+
+                            <Flex direction="row" justifyContent="flex-end">
                                 <TextButton
                                     onClick={() => {
-                                        importQuiz.current?.click();
+                                        setCreateQuestionModal(true);
                                     }}
-                                    endIcon={<FaUpload />}
+                                    startIcon={<FaPlus />}
                                 >
-                                    Import
-                                </TextButton>
-                                <TextButton onClick={exportFile} endIcon={<FaDownload />}>
-                                    Export
-                                </TextButton>
-                                <TextButton onClick={createQuiz} endIcon={<FaArrowRight />}>
-                                    Create Quiz
+                                    Add Question
                                 </TextButton>
                             </Flex>
                         </Flex>
-                    </Container>
-                </CenterSection>
-            </FullSection>
-        </motion.div>
+
+                        <Flex gap={2} variants={loadInBottom} initial="hidden" animate="show">
+                            <input type="file" ref={importQuiz} onChange={importFile} style={{ display: 'none' }} />
+                            <TextButton
+                                variants={loadInBottom}
+                                onClick={() => {
+                                    importQuiz.current?.click();
+                                }}
+                                endIcon={<FaUpload />}
+                            >
+                                Import
+                            </TextButton>
+                            <TextButton variants={loadInBottom} onClick={exportFile} endIcon={<FaDownload />}>
+                                Export
+                            </TextButton>
+                            <TextButton variants={loadInBottom} onClick={createQuiz} endIcon={<FaArrowRight />}>
+                                Create Quiz
+                            </TextButton>
+                        </Flex>
+                    </Flex>
+                </Container>
+            </CenterSection>
+        </FullSection>
     );
 };
 

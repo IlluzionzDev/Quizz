@@ -23,12 +23,29 @@ const Home: NextPage = () => {
                 <TightContainer>
                     <Flex direction="column" gap={9}>
                         <Flex direction="column" gap={2}>
-                            <motion.div initial={{ opacity: 0, y: -50 }} animate={{ opacity: 1, y: 0 }} transition={{ ease: 'easeInOut', duration: 0.6 }}>
+                            <motion.div
+                                initial={{ opacity: 0, y: -50 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{
+                                    type: 'spring',
+                                    stiffness: 260,
+                                    damping: 20
+                                }}
+                            >
                                 <Heading element="h1" variant="display">
                                     Quiz your friends in real-time
                                 </Heading>
                             </motion.div>
-                            <motion.div initial={{ opacity: 0, y: -50 }} animate={{ opacity: 1, y: 0 }} transition={{ ease: 'easeInOut', duration: 0.6, delay: 0.05 }}>
+                            <motion.div
+                                initial={{ opacity: 0, y: -50 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{
+                                    type: 'spring',
+                                    stiffness: 260,
+                                    damping: 20,
+                                    delay: 0.05
+                                }}
+                            >
                                 <Body variant="xl">Quizz allows you to create quizzes and then quiz your friends in real-time. Compete for the highest score and see who is all knowing.</Body>
                             </motion.div>
                         </Flex>

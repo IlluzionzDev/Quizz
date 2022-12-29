@@ -27,8 +27,12 @@ export const Button: React.FC<ButtonProps> = ({ children, variant, startIcon, en
         scale: disabled ? 1 : 1.05
     }
 
+    const buttonTap = {
+        scale: disabled ? 1 : 0.95
+    };
+
     return (
-        <motion.div transition={{ type: 'spring', bounce: 0.5, duration: 0.4 }} initial={{ scale: 1 }} whileHover={buttonHover}>
+        <motion.div transition={{ type: 'spring', bounce: 0.5, duration: 0.4 }} initial={{ scale: 1 }} whileHover={buttonHover} whileTap={buttonTap}>
             <button className={classNames(styles.baseButton, styles[variantStyle], fullWidth ? styles.fullWidth : '')} disabled={disabled} aria-disabled={disabled} {...rest}>
                 {startIcon && <Box className={styles.iconWrapper}>{startIcon}</Box>}
                 <Label variant="button">{children}</Label>
