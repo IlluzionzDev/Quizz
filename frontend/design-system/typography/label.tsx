@@ -1,5 +1,6 @@
 import { useTheme } from '@design-system/theme';
 import classNames from 'classnames';
+import { HTMLMotionProps, motion } from 'framer-motion';
 import { CSSProperties } from 'react';
 import styles from './typography.module.scss';
 
@@ -7,7 +8,7 @@ type LabelProps = {
     variant: 'xl' | 'lg' | 'md' | 'sm' | 'xs' | 'button';
     color?: string;
     className?: CSSProperties | string;
-} & React.HTMLAttributes<HTMLSpanElement>;
+} & HTMLMotionProps<'span'>;
 
 export const Label: React.FC<LabelProps> = ({ children, className, variant, color, ...rest}) => {
     const { theme, toggleTheme } = useTheme();
@@ -19,8 +20,8 @@ export const Label: React.FC<LabelProps> = ({ children, className, variant, colo
     };
 
     return (
-        <span style={colors} className={classNames(styles[stylingName], className)} {...rest}>
+        <motion.span style={colors} className={classNames(styles[stylingName], className)} {...rest}>
             {children}
-        </span>
+        </motion.span>
     );
 };

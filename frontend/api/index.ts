@@ -174,8 +174,8 @@ export function send(packet: Packet) {
  * connection is open according to isOpen then it will be closed as well
  */
 export function disconnect(dispatch: Function) {
-    send(stateChange(CStateChangeState.DISCONNECT)); // Send a disconnect packet
     resetState(dispatch);
+    send(stateChange(CStateChangeState.DISCONNECT)); // Send a disconnect packet
 }
 
 /**
@@ -213,6 +213,11 @@ export function useRequireGame() {
     const router = useRouter();
 
     useGameState(GameState.NOT_FOUND, () => {
+        // Route to home page
+        router.push('/');
+    });
+
+    useGameState(GameState.UNSET, () => {
         // Route to home page
         router.push('/');
     });

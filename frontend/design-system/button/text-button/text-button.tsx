@@ -2,6 +2,7 @@ import { Box } from '@design-system/layout/box';
 import { useTheme } from '@design-system/theme';
 import { Label } from '@design-system/typography';
 import classNames from 'classnames';
+import { HTMLMotionProps, motion } from 'framer-motion';
 import { ReactNode } from 'react';
 import styles from './text-button.module.scss';
 
@@ -11,7 +12,7 @@ type ButtonProps = {
     endIcon?: ReactNode;
     disabled?: boolean;
     fullWidth?: boolean;
-} & React.HTMLAttributes<HTMLButtonElement>;
+} & HTMLMotionProps<'button'>;
 
 export const TextButton: React.FC<ButtonProps> = ({ children, color, startIcon, endIcon, disabled, fullWidth, ...rest }) => {
     const { theme, toggleTheme } = useTheme();
@@ -21,10 +22,10 @@ export const TextButton: React.FC<ButtonProps> = ({ children, color, startIcon, 
     };
 
     return (
-        <button style={colors} className={classNames(styles.baseButton, fullWidth ? styles.fullWidth : '')} disabled={disabled} aria-disabled={disabled} {...rest}>
+        <motion.button style={colors} className={classNames(styles.baseButton, fullWidth ? styles.fullWidth : '')} disabled={disabled} aria-disabled={disabled} {...rest}>
             {startIcon && <Box className={styles.iconWrapper}>{startIcon}</Box>}
             <Label variant="button">{children}</Label>
             {endIcon && <Box className={styles.iconWrapper}>{endIcon}</Box>}
-        </button>
+        </motion.button>
     );
 };

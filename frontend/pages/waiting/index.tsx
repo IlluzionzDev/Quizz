@@ -13,6 +13,8 @@ import { Button, TextButton } from '@design-system/button';
 import { Container } from '@design-system/layout/container';
 import { Flex } from '@design-system/layout/flex';
 import { Heading, Label } from '@design-system/typography';
+import { AnimatePresence, Variants } from 'framer-motion';
+import { Box } from '@design-system/layout/box';
 
 const Waiting: NextPage = () => {
     const router = useRouter();
@@ -41,9 +43,7 @@ const Waiting: NextPage = () => {
      * Disconnect client from the game
      */
     function disconnectClient() {
-        if (gameState === GameState.WAITING || gameState === GameState.NOT_FOUND) {
-            disconnect(dispatch);
-        }
+        disconnect(dispatch);
     }
 
     /**
@@ -75,35 +75,59 @@ const Waiting: NextPage = () => {
         gameStateComponent = <Label variant="lg">{selfData?.name}</Label>;
     }
 
+    const loadInTop: Variants = {
+        hidden: {
+            opacity: 0,
+            y: -50
+        },
+        show: {
+            opacity: 1,
+            y: 0,
+            transition: {
+                staggerChildren: 0.05,
+                type: 'spring',
+                stiffness: 260,
+                damping: 20
+            }
+        }
+    };
+
     return (
         <FullSection>
-            <Navigation
-                backlink={
-                    <TextButton onClick={() => disconnectClient()}>
-                        {gameData?.owner ? 'End Game' : 'Disconnect'}
-                    </TextButton>
-                }
-            />
+            <Navigation backlink={<TextButton onClick={() => disconnectClient()}>{gameData?.owner ? 'End Game' : 'Disconnect'}</TextButton>} />
             <Container>
-                <Flex direction="column" paddingTop={11} gap={2} alignItems="center">
+                <Flex direction="column" paddingTop={11} gap={2} alignItems="center" variants={loadInTop} initial="hidden" animate="show">
                     <Flex direction="column" gap={7} alignItems="center">
                         <Flex direction="column" gap={1} alignItems="center">
-                            <Heading element="h1" variant="display" color="primary600">
+                            <Heading element="h1" variant="display" color="primary600" variants={loadInTop}>
                                 {gameData?.id}
                             </Heading>
-                            <Heading element="h2" variant="heading-2">
+                            <Heading element="h2" variant="heading-2" variants={loadInTop}>
                                 {gameData?.title}
                             </Heading>
                         </Flex>
 
-                        {gameStateComponent}
+                        <Box variants={loadInTop}>{gameStateComponent}</Box>
                     </Flex>
 
-                    <Flex direction="row" padding={11} className={styles.players} gap={3}>
+                    <Flex key="playerContainer" direction="row" padding={11} className={styles.players} gap={3} variants={loadInTop} initial="hidden" animate="show">
                         {Object.entries(players).length != 0 ? (
                             Object.entries(players).map((player, id) => {
                                 return (
-                                    <Flex key={id} background="neutral100" hasRadius direction="row" justifyContent="space-between" alignItems="center" className={styles.playerItem} paddingTop={3} paddingBottom={3} paddingLeft={6} paddingRight={6}>
+                                    <Flex
+                                        key={id}
+                                        background="neutral100"
+                                        hasRadius
+                                        direction="row"
+                                        justifyContent="space-between"
+                                        alignItems="center"
+                                        className={styles.playerItem}
+                                        paddingTop={3}
+                                        paddingBottom={3}
+                                        paddingLeft={6}
+                                        paddingRight={6}
+                                        variants={loadInTop}
+                                    >
                                         <Label variant="lg">{player[1].name}</Label>
                                         {gameData?.owner && (
                                             <FaTimes

@@ -11,7 +11,8 @@ export enum GameState {
     STARTING, // Currently counting down to start
     ACTIVE, // In session
     FINISHED, // Game over
-    NOT_FOUND // Game does not exist
+    NOT_FOUND, // Game does not exist
+    UNSET
 }
 
 // Data for a question

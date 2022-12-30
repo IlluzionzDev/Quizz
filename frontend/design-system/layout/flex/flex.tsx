@@ -1,7 +1,7 @@
 import { useTheme } from '@design-system/theme';
 import { Box, BoxProps } from '@design-system/layout/box';
 
-type FlexTypes = {
+export type FlexTypes = {
     alignItems?: string;
     justifyContent?: string;
     inline?: boolean;
