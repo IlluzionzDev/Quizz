@@ -1,12 +1,12 @@
 import styles from './game.module.scss';
-import { send, useClient, useGameState, usePacketHandler, useRequireGame, useSyncedTimer } from 'api';
+import { disconnect, send, useClient, useGameState, usePacketHandler, useRequireGame, useSyncedTimer } from 'api';
 import { answer, CStateChangeState, stateChange } from 'api/packets/client';
-import { SAnswerResult, SPID, SPlayerData } from 'api/packets/server';
+import { SAnswerResult, SPID, SPlayerData, SQuestion } from 'api/packets/server';
 import { useAppDispatch, useAppSelector } from 'hooks';
 import type { NextPage } from 'next';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { GameState } from 'api/packets/packets';
+import { GameState, QuestionData } from 'api/packets/packets';
 import { CenterSection, FullSection } from '@design-system/layout/section';
 import { Flex } from '@design-system/layout/flex';
 import { Container } from '@design-system/layout/container';
@@ -17,6 +17,9 @@ import Navigation from '@components/layout/navigation';
 import { Button, TextButton } from '@design-system/button';
 import { TightContainer } from '@design-system/layout/container/container';
 import { FaCheck, FaTimes } from 'react-icons/fa';
+import { AnimatePresence, Variants } from 'framer-motion';
+import { setGameState } from 'store/clientSlice';
+import classNames from 'classnames';
 
 type GameNavProps = {
     selfData: SPlayerData | null;
@@ -32,6 +35,76 @@ const GameNav: React.FC<GameNavProps> = ({ selfData }) => (
         </Container>
     </Box>
 );
+
+type AnswerSelectionProps = {
+    question: SQuestion;
+    answeredIndex: number;
+    result: boolean | null;
+    onAnswer: (id: number) => void;
+};
+
+const AnswerSelection: React.FC<AnswerSelectionProps> = ({ question, answeredIndex, result, onAnswer }) => {
+    // New answer loading
+    const loadInSideways: Variants = {
+        hidden: {
+            opacity: 0,
+            x: -50
+        },
+        show: {
+            opacity: 1,
+            x: 0,
+            transition: {
+                staggerChildren: 0.05,
+                type: 'spring',
+                stiffness: 260,
+                damping: 20
+            }
+        },
+        exit: {
+            opacity: 0,
+            x: 50,
+            transition: {
+                staggerChildren: 0.05,
+                type: 'spring',
+                stiffness: 260,
+                damping: 20
+            }
+        }
+    };
+
+    return (
+        <AnimatePresence mode="wait">
+            <Flex key={question.question + 'answers'} direction="column" gap={4} paddingTop={11} paddingBottom={11} alignItems="center" className={styles.answerBox} variants={loadInSideways} initial="hidden" animate="show" exit="exit">
+                {question.answers.map((answer, id) => {
+                    return (
+                        <Flex
+                            key={id}
+                            alignItems="center"
+                            justifyContent="space-between"
+                            hasRadius
+                            paddingLeft={6}
+                            paddingRight={6}
+                            paddingTop={3}
+                            paddingBottom={3}
+                            className={classNames(
+                                styles.answer,
+                                answeredIndex === -1 ? '' : id === answeredIndex && result != null ? (result ? styles.answer__correct : styles.answer__incorrect) : '',
+                                answeredIndex !== -1 && id !== answeredIndex ? styles.answer__selected : ''
+                            )}
+                            aria-selected={result === null && id === answeredIndex}
+                            onClick={() => {
+                                if (answeredIndex === -1) onAnswer(id);
+                            }}
+                        >
+                            <Label variant="lg">{answer}</Label>
+                            {id === answeredIndex && result != null && (result ? <FaCheck className={styles.correctIcon} /> : <FaTimes className={styles.incorrectIcon} />)}
+                        </Flex>
+                    );
+                })}
+            </Flex>
+        </AnimatePresence>
+    );
+};
 
 const Game: NextPage = () => {
     // Use game client
@@ -109,26 +182,84 @@ const Game: NextPage = () => {
         setResult(data.result);
     });
 
+    const loadInTop: Variants = {
+        hidden: {
+            opacity: 0,
+            y: -50
+        },
+        show: {
+            opacity: 1,
+            y: 0,
+            transition: {
+                staggerChildren: 0.05,
+                type: 'spring',
+                stiffness: 260,
+                damping: 20
+            }
+        }
+    };
+
+    const loadInSideways: Variants = {
+        hidden: {
+            opacity: 0,
+            x: -50
+        },
+        show: {
+            opacity: 1,
+            x: 0,
+            transition: {
+                staggerChildren: 0.05,
+                type: 'spring',
+                stiffness: 260,
+                damping: 20
+            }
+        },
+        exit: {
+            opacity: 0,
+            x: 50,
+            transition: {
+                staggerChildren: 0.05,
+                type: 'spring',
+                stiffness: 260,
+                damping: 20
+            }
+        }
+    };
+
     // If this is the host, display host controls
     if (gameData?.owner) {
         return (
             <FullSection>
-                <Navigation backlink={<TextButton onClick={() => router.push('/')}>End Game</TextButton>} />
+                <Navigation
+                    backlink={
+                        <TextButton
+                            onClick={() => {
+                                disconnect(dispatch);
+                                dispatch(setGameState(GameState.UNSET));
+                                router.push('/');
+                            }}
+                        >
+                            End Game
+                        </TextButton>
+                    }
+                />
                 <TightContainer>
-                    <Flex direction="column" paddingTop={11} gap={2} alignItems="center">
+                    <Flex direction="column" paddingTop={11} gap={2} alignItems="center" variants={loadInTop} initial="hidden" animate="show">
                         <Flex direction="column" gap={7} alignItems="center">
-                            <Heading element="h1" variant="heading-1">
+                            <Heading element="h1" variant="heading-1" variants={loadInTop}>
                                 {gameData.title}
                             </Heading>
                             <Flex direction="column" gap={1} alignItems="center">
-                                <Heading element="h2" variant="heading-2" regular>
+                                <Heading element="h2" variant="heading-2" regular variants={loadInTop}>
                                     Current Question
                                 </Heading>
-                                <Label variant="xl" color="primary600">
+                                <Label variant="xl" color="primary600" variants={loadInTop}>
                                     {question?.question}
                                 </Label>
-                                <Label variant="xl">{timer}s</Label>
-                                <Flex paddingTop={4}>
+                                <Label variant="xl" variants={loadInTop}>
+                                    {timer}s
+                                </Label>
+                                <Flex paddingTop={4} variants={loadInTop}>
                                     <Button variant="secondary" onClick={() => skipQuestion()}>
                                         Skip Question
                                     </Button>
@@ -138,7 +269,20 @@ const Game: NextPage = () => {
                         <Flex direction="column" gap={4} paddingTop={11} paddingBottom={11} alignItems="center" className={styles.playerBox}>
                             {topPlayers().map((player, id) => {
                                 return (
-                                    <Flex key={id} direction="row" background="neutral100" className={styles.player} alignItems="center" justifyContent="space-between" hasRadius paddingLeft={6} paddingRight={6} paddingTop={3} paddingBottom={3}>
+                                    <Flex
+                                        key={id}
+                                        direction="row"
+                                        background="neutral100"
+                                        className={styles.player}
+                                        alignItems="center"
+                                        justifyContent="space-between"
+                                        hasRadius
+                                        paddingLeft={6}
+                                        paddingRight={6}
+                                        paddingTop={3}
+                                        paddingBottom={3}
+                                        variants={loadInTop}
+                                    >
                                         <Label variant="lg">{player.name}</Label>
                                         <Badge variant="active">{player.score}</Badge>
                                     </Flex>
@@ -163,76 +307,9 @@ const Game: NextPage = () => {
                                 <Label variant="xl">0s</Label>
                             </Flex>
                             <Flex direction="column" gap={4} paddingTop={11} paddingBottom={11} alignItems="center" className={styles.answerBox}>
-                                <Label variant='lg' color='neutral200'>Loading Answers...</Label>
-                            </Flex>
-                        </Flex>
-                    </TightContainer>
-                </CenterSection>
-                <GameNav selfData={selfData} />
-            </FullSection>
-        );
-    } else if (result !== null) {
-        // Display results of chosen answer
-        return (
-            <FullSection>
-                <CenterSection>
-                    <TightContainer>
-                        <Flex direction="column" alignItems="center" paddingTop={11} gap={2}>
-                            <Flex direction="column" gap={1}>
-                                <Heading element="h1" variant="heading-1" color="primary600">
-                                    {question.question}
-                                </Heading>
-                                <Label variant="xl">{timer}s</Label>
-                            </Flex>
-                            <Flex direction="column" gap={4} paddingTop={11} paddingBottom={11} alignItems="center" className={styles.answerBox}>
-                                {question.answers.map((answer, id) => {
-                                    return (
-                                        <Flex
-                                            key={id}
-                                            alignItems="center"
-                                            justifyContent="space-between"
-                                            hasRadius
-                                            paddingLeft={6}
-                                            paddingRight={6}
-                                            paddingTop={3}
-                                            paddingBottom={3}
-                                            className={styles.answer}
-                                            aria-correct={id === answeredIndex && result}
-                                            aria-incorrect={id === answeredIndex && !result}
-                                        >
-                                            <Label variant="lg">{answer}</Label>
-                                            {id === answeredIndex && (result ? <FaCheck className={styles.correctIcon} /> : <FaTimes className={styles.incorrectIcon} />)}
-                                        </Flex>
-                                    );
-                                })}
-                            </Flex>
-                        </Flex>
-                    </TightContainer>
-                </CenterSection>
-                <GameNav selfData={selfData} />
-            </FullSection>
-        );
-    } else if (!answered) {
-        // Provide questions to answer
-        return (
-            <FullSection>
-                <CenterSection>
-                    <TightContainer>
-                        <Flex direction="column" alignItems="center" paddingTop={11} gap={2}>
-                            <Flex direction="column" gap={1}>
-                                <Heading element="h1" variant="heading-1" color="primary600">
-                                    {question.question}
-                                </Heading>
-                                <Label variant="xl">{timer}s</Label>
-                            </Flex>
-                            <Flex direction="column" gap={4} paddingTop={11} paddingBottom={11} alignItems="center" className={styles.answerBox}>
-                                {question.answers.map((answer, id) => {
-                                    return (
-                                        <Flex key={id} alignItems="center" hasRadius paddingLeft={6} paddingRight={6} paddingTop={3} paddingBottom={3} className={styles.answer} onClick={() => setAnswer(id)}>
-                                            <Label variant="lg">{answer}</Label>
-                                        </Flex>
-                                    );
-                                })}
+                                <Label variant="lg" color="neutral200">
+                                    Loading Answers...
+                                </Label>
                             </Flex>
                         </Flex>
                     </TightContainer>
@@ -246,23 +323,24 @@ const Game: NextPage = () => {
             <FullSection>
                 <CenterSection>
                     <TightContainer>
-                        <Flex direction="column" alignItems="center" paddingTop={11} gap={2}>
-                            <Flex direction="column" gap={1}>
-                                <Heading element="h1" variant="heading-1" color="primary600">
-                                    {question.question}
-                                </Heading>
-                                <Label variant="xl">{timer}s</Label>
+                        <AnimatePresence mode="wait">
+                            <Flex direction="column" alignItems="center" paddingTop={11} gap={2}>
+                                <Flex id={question.question + 'info'} direction="column" gap={1} variants={loadInSideways} initial="hidden" animate="show">
+                                    <Heading element="h1" variant="heading-1" color="primary600">
+                                        {question.question}
+                                    </Heading>
+                                    <Label variant="xl">{timer}s</Label>
+                                </Flex>
+                                <AnswerSelection
+                                    question={question}
+                                    answeredIndex={answeredIndex}
+                                    result={result}
+                                    onAnswer={(id) => {
+                                        setAnswer(id);
+                                    }}
+                                />
                             </Flex>
-                            <Flex direction="column" gap={4} paddingTop={11} paddingBottom={11} alignItems="center" className={styles.answerBox}>
-                                {question.answers.map((answer, id) => {
-                                    return (
-                                        <Flex key={id} alignItems="center" hasRadius paddingLeft={6} paddingRight={6} paddingTop={3} paddingBottom={3} className={styles.answer} aria-selected={id === answeredIndex}>
-                                            <Label variant="lg">{answer}</Label>
-                                        </Flex>
-                                    );
-                                })}
-                            </Flex>
-                        </Flex>
+                        </AnimatePresence>
                     </TightContainer>
                 </CenterSection>
                 <GameNav selfData={selfData} />

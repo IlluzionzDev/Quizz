@@ -269,11 +269,14 @@ export class Game {
             const q = this.questions[nextIndex];
             this.activeQuestion = new ActiveQuestion(q, nextIndex, currentTime, false);
             this.broadcast(question(q.question, q.answers), true);
+            // Reset to,er
+            this.broadcast(timeSync(QUESTION_TIME, QUESTION_TIME), true);
         }
     }
 
     // Set game to game over, show scores etc
     gameOver() {
+        // Set internal state to finished
         this.setState(packets.GameState.FINISHED);
 
         // Remove from games map
@@ -297,15 +300,19 @@ export class Game {
         this.players.delete(player.id);
     }
 
-    // Safely stop and cleanup game
+    // Run when game manually stopped
     stop() {
-        this.setState(packets.GameState.FINISHED);
-
         // Send disconnect to players
         this.players.forEach((player) => {
             this.removePlayer(player);
             packets.sendPacket(player.socket, disconnect('Game ended by host.'));
         });
+
+        // Set internal state to finished
+        this.state = packets.GameState.FINISHED;
+
+        // Broadcast game no longer exists
+        this.broadcast(gameState(packets.GameState.UNSET), true);
 
         // Remove from games map
         games.delete(this.id);

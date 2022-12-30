@@ -18,7 +18,7 @@ const initialState: ClientState = {
     gameData: null,
     players: {},
     question: null,
-    gameState: GameState.NOT_FOUND,
+    gameState: GameState.UNSET,
     selfData: null
 };
 
@@ -59,7 +59,7 @@ const clientSlice = createSlice({
         },
 
         updateScore: (state, action: PayloadAction<SPlayerData>) => {
-            const playerData: SPlayerData = { id: action.payload.id, name: state.players[action.payload.id].name, score: action.payload.score, type: SPlayerDataType.ADD}
+            const playerData: SPlayerData = { id: action.payload.id, name: state.players[action.payload.id].name, score: action.payload.score, type: SPlayerDataType.ADD };
             state.players[action.payload.id] = playerData;
 
             if (action.payload.id === state.selfData?.id) {
@@ -80,6 +80,7 @@ const clientSlice = createSlice({
             state.open = true;
             state.gameData = initialState.gameData;
             state.players = initialState.players;
+            state.question = initialState.question;
             state.gameState = initialState.gameState;
             state.selfData = initialState.selfData;
         }

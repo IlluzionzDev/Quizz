@@ -20,11 +20,13 @@
     border: 1px solid transparent;
 
     &:hover {
-        transform: scale(1.005);
-        background: var(--primary100);
-        border: 1px solid var(--primary500);
+        @media (hover: hover) {
+            transform: scale(1.005);
+            background: var(--primary100);
+            border: 1px solid var(--primary500);
 
-        @include button-shadow(var(--primary500RGB));
+            @include button-shadow(var(--primary500RGB));
+        }
     }
 
     &[aria-selected='true'] {
@@ -37,7 +39,7 @@
         @include button-shadow(var(--primary500RGB));
     }
 
-    &[aria-correct='true'] {
+    &__correct {
         transform: scale(1.005);
         background: var(--success200);
         border: 1px solid var(--success600);
@@ -45,9 +47,11 @@
         cursor: default;
 
         @include button-shadow(var(--success500RGB));
+
+        pointer-events: none;
     }
 
-    &[aria-incorrect='true'] {
+    &__incorrect {
         transform: scale(1.005);
         background: var(--error200);
         border: 1px solid var(--error600);
@@ -55,11 +59,18 @@
         cursor: default;
 
         @include button-shadow(var(--error500RGB));
+
+        pointer-events: none;
+    }
+
+    &__selected {
+        cursor: default;
+        pointer-events: none;
     }
 }
 
 .playerBox {
-width: 100%;
+    width: 100%;
 }
 
 .player {

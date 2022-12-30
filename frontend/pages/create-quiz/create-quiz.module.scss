@@ -8,4 +8,36 @@
     background-color: red;
 
     @include table-shadow;
+
+    overflow-y: scroll;
+    max-height: 60vh;
+
+    /* width */
+    &::-webkit-scrollbar {
+        width: 8px;
+        display: inline;
+    }
+
+    /* Track */
+    &::-webkit-scrollbar-track {
+        background: transparent;
+        margin-top: rem(4);
+        margin-bottom: rem(4);
+    }
+
+    /* Handle */
+    &::-webkit-scrollbar-thumb {
+        border-radius: $border-radius;
+        background: var(--neutral200);
+    }
+
+    /* Handle on hover */
+    &::-webkit-scrollbar-thumb:hover {
+        background: var(--neutral100);
+    }
+}
+
+.questionsWrapper {
+    overflow-y: scroll;
+    max-height: 60vh;
 }

@@ -259,7 +259,7 @@ const CreateQuiz: NextPage = () => {
                             label="Enter Quiz Title"
                         />
                         <Flex background="white" className={styles.questionsBox} padding={4} direction="column" gap={3} hasRadius variants={loadInTop}>
-                            <Flex direction="column" gap={3} variants={questionAnimation} initial="hidden" animate="show">
+                            <Flex direction="column" gap={3} variants={questionAnimation} initial="hidden" animate="show" className={styles.questionWrapper}>
                                 {questions.length != 0 ? (
                                     questions.map((question, id) => {
                                         return (
