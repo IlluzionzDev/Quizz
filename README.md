@@ -16,5 +16,4 @@ Here are the current features in this application
 ## Progress
 Here are a list of planned features to be added.
 
-[ ] UI Redesign <br>
 [ ] Results-based quiz (A way to quiz applicants or students)
