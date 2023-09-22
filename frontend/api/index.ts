@@ -7,6 +7,7 @@ import { clearState, removePlayer, setGameData, setGameState, setOpen, setQuesti
 import { CStateChangeState, stateChange, kickPlayer } from './packets/client';
 import { GameState, Packet } from './packets/packets';
 import { SDisconnect, SError, SGameState, SJoinGame, SPID, SPlayerData, SPlayerDataType, SQuestion, SScores, STimeSync } from './packets/server';
+import { Socket, io } from 'socket.io-client';
 
 // An empty function for handlers without a function
 const EMPTY_HANDLER = () => null;
@@ -17,7 +18,7 @@ type PacketHandlerFunction = (dispatch: Function, data: any) => void;
 type PacketHandlers = Record<SPID, PacketHandlerFunction>;
 
 // Web socket connection
-let socket: WebSocket | null;
+let socket: Socket | null;
 
 /**
  * Record of packet IDs to handlers
@@ -41,17 +42,17 @@ let handlers: PacketHandlers = {
  */
 function startListener(dispatch: Function, host: string) {
     // Create a new web socket instance
-    if (!socket) socket = new WebSocket(host);
+    if (!socket) socket = io(host);
 
     // Set the handler for the websocket open event
-    socket.onopen = () => {
+    socket.on('connect', () => {
         // Update the open state
         dispatch(setOpen(true));
-    };
+    });
 
     // Set the handler for the websocket message event
-    socket.onmessage = (event: MessageEvent) => {
-        const packet: Packet = JSON.parse(event.data.toString());
+    socket.on('message', (data: Object) => {
+        const packet: Packet = JSON.parse(data.toString());
         const packetId: SPID = packet.id;
         const packetData: any = packet.data;
 
@@ -61,15 +62,17 @@ function startListener(dispatch: Function, host: string) {
             handler(dispatch, packetData);
         }
 
-        console.log(`Received packet ${event.data.toString()}`);
-    };
+        console.log(`Received packet ${data.toString()}`);
+    });
 
-    socket.onclose = () => {
+    socket.on('disconnect', () => {
         dispatch(setOpen(false));
         startListener(dispatch, HOST);
-    };
+    });
 
-    socket.onerror = console.error; // Directly print all errors to the console
+    socket.on('error', (error) => {
+        console.error(error);
+    });
 }
 
 /**

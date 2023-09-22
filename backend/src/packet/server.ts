@@ -1,6 +1,6 @@
 import { GameState, Packet } from './packets';
 
-// Server packet ids
+// Server packets that are clientbound
 export enum SPID {
     SDisconnect = 0x00,
     SError,
