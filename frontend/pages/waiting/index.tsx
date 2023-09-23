@@ -7,14 +7,10 @@ import { useRef, useState } from 'react';
 import { CStateChangeState, kickPlayer, stateChange } from 'api/packets/client';
 import { useAppDispatch, useAppSelector } from 'hooks';
 import { FaPlay, FaTimes } from 'react-icons/fa';
-import { CenterSection, FullSection } from '@design-system/layout/section';
 import Navigation from '@components/layout/navigation';
-import { Button, TextButton } from '@design-system/button';
-import { Container } from '@design-system/layout/container';
-import { Flex } from '@design-system/layout/flex';
-import { Heading, Label } from '@design-system/typography';
-import { AnimatePresence, Variants } from 'framer-motion';
-import { Box } from '@design-system/layout/box';
+import { AnimatePresence, Variants, motion } from 'framer-motion';
+import { Button, Container, Flex, FullSection, Heading, Label, TextButton } from '@illuzionz-studios/design-system';
+import { MotionBox, MotionFlex, MotionHeading } from '@components/motion';
 
 const Waiting: NextPage = () => {
     const router = useRouter();
@@ -96,28 +92,28 @@ const Waiting: NextPage = () => {
         <FullSection>
             <Navigation backlink={<TextButton onClick={() => disconnectClient()}>{gameData?.owner ? 'End Game' : 'Disconnect'}</TextButton>} />
             <Container>
-                <Flex direction="column" paddingTop={11} gap={2} alignItems="center" variants={loadInTop} initial="hidden" animate="show">
+                <MotionFlex direction="column" paddingTop={11} gap={2} alignItems="center" variants={loadInTop} initial="hidden" animate="show">
                     <Flex direction="column" gap={7} alignItems="center">
                         <Flex direction="column" gap={1} alignItems="center">
-                            <Heading element="h1" variant="display" color="primary600" variants={loadInTop}>
+                            <MotionHeading element="h1" variant="display" color="primary600" variants={loadInTop}>
                                 {gameData?.id}
-                            </Heading>
-                            <Heading element="h2" variant="heading-2" variants={loadInTop}>
+                            </MotionHeading>
+                            <MotionHeading element="h2" variant="heading-2" variants={loadInTop}>
                                 {gameData?.title}
-                            </Heading>
+                            </MotionHeading>
                         </Flex>
 
-                        <Box variants={loadInTop}>{gameStateComponent}</Box>
+                        <MotionBox variants={loadInTop}>{gameStateComponent}</MotionBox>
                     </Flex>
 
-                    <Flex key="playerContainer" direction="row" padding={11} className={styles.players} gap={3} variants={loadInTop} initial="hidden" animate="show">
+                    <MotionFlex key="playerContainer" direction="row" padding={11} className={styles.players} gap={3} variants={loadInTop} initial="hidden" animate="show">
                         {Object.entries(players).length != 0 ? (
                             Object.entries(players).map((player, id) => {
                                 return (
-                                    <Flex
+                                    <MotionFlex
                                         key={id}
                                         background="neutral100"
-                                        hasRadius
+                                        radius="md"
                                         direction="row"
                                         justifyContent="space-between"
                                         alignItems="center"
@@ -137,7 +133,7 @@ const Waiting: NextPage = () => {
                                                 }}
                                             />
                                         )}
-                                    </Flex>
+                                    </MotionFlex>
                                 );
                             })
                         ) : (
@@ -147,8 +143,8 @@ const Waiting: NextPage = () => {
                                 </Label>
                             </Flex>
                         )}
-                    </Flex>
-                </Flex>
+                    </MotionFlex>
+                </MotionFlex>
             </Container>
         </FullSection>
     );

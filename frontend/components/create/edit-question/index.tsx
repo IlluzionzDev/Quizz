@@ -1,21 +1,18 @@
-import { Flex } from '@design-system/layout/flex';
 import { QuestionData } from 'api/packets/packets';
 import styles from './edit-question.module.scss';
 import React from 'react';
-import { Label } from '@design-system/typography';
-import { trimString } from '@design-system/utils';
 import { FaPen, FaTrash } from 'react-icons/fa';
-import { FlexTypes } from '@design-system/layout/flex/flex';
+import { Flex, FlexProps, Label, trimString } from '@illuzionz-studios/design-system';
 
 type EditQuestionProps = {
     question: QuestionData;
     onEdit: (question: QuestionData) => void;
     onDelete: (question: QuestionData) => void;
-} & FlexTypes;
+} & FlexProps;
 
 export const EditQuestion: React.FC<EditQuestionProps> = ({ question, onEdit, onDelete, ...rest }) => {
     return (
-        <Flex direction="row" justifyContent="space-between" gap={4} paddingTop={3} paddingBottom={3} paddingLeft={6} paddingRight={6} background="neutral100" alignItems="center" hasRadius {...rest}>
+        <Flex direction="row" justifyContent="space-between" gap={4} paddingTop={3} paddingBottom={3} paddingLeft={6} paddingRight={6} background="neutral100" alignItems="center" radius="md" {...rest}>
             <Flex gap={4} alignItems="center">
                 <Label variant="lg" color="black">
                     {question.question}

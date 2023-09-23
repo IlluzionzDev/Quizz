@@ -6,17 +6,12 @@ import { createRef, useRef, useState } from 'react';
 import { GameState, QuestionData } from 'api/packets/packets';
 import { FaArrowLeft, FaArrowRight, FaDownload, FaPen, FaPlus, FaTimes, FaUpload } from 'react-icons/fa';
 import { useRouter } from 'next/router';
-import { CenterSection, FullSection } from '@design-system/layout/section';
 import Navigation from '@components/layout/navigation';
-import { TextButton } from '@design-system/button';
-import { Container } from '@design-system/layout/container';
-import { Flex } from '@design-system/layout/flex';
-import { Heading, Label } from '@design-system/typography';
-import { TextField } from '@design-system/field';
-import { Box } from '@design-system/layout/box';
 import { EditQuestion, EditQuestionModal } from '@components/create/edit-question';
 import clone from 'clone';
 import { AnimatePresence, motion, Variants } from 'framer-motion';
+import { CenterSection, Container, Flex, FullSection, Label, TextButton } from '@illuzionz-studios/design-system';
+import { MotionFlex, MotionHeading, MotionTextButton, MotionTextField } from '@components/motion';
 
 /**
  * Model of quiz configuration
@@ -239,14 +234,12 @@ const CreateQuiz: NextPage = () => {
             />
             <CenterSection>
                 <Container>
-                    <Flex direction="column" padding={7} gap={7} alignItems="center" className={styles.mainSection} variants={loadInTop} initial="hidden" animate="show">
-                        <Heading element="h1" variant="heading-1" variants={loadInTop}>
+                    <MotionFlex direction="column" padding={7} gap={7} alignItems="center" className={styles.mainSection} variants={loadInTop} initial="hidden" animate="show">
+                        <MotionHeading element="h1" variant="heading-1" variants={loadInTop}>
                             Create Quiz
-                        </Heading>
-                        <TextField
-                            motion={{
-                                variants: { loadInTop }
-                            }}
+                        </MotionHeading>
+                        <MotionTextField
+                            variants={loadInTop}
                             error={submitted && title.length == 0 ? 'Please enter quiz title' : ''}
                             id="quizTitle"
                             name="quiz title"
@@ -258,8 +251,8 @@ const CreateQuiz: NextPage = () => {
                             placeholder="Title"
                             label="Enter Quiz Title"
                         />
-                        <Flex background="white" className={styles.questionsBox} padding={4} direction="column" gap={3} hasRadius variants={loadInTop}>
-                            <Flex direction="column" gap={3} variants={questionAnimation} initial="hidden" animate="show" className={styles.questionWrapper}>
+                        <MotionFlex background="white" className={styles.questionsBox} padding={4} direction="column" gap={3} radius="md" variants={loadInTop}>
+                            <MotionFlex direction="column" gap={3} variants={questionAnimation} initial="hidden" animate="show" className={styles.questionWrapper}>
                                 {questions.length != 0 ? (
                                     questions.map((question, id) => {
                                         return (
@@ -278,7 +271,6 @@ const CreateQuiz: NextPage = () => {
                                                     });
                                                     setQuestions(newQuestions);
                                                 }}
-                                                variants={questionAnimation}
                                             />
                                         );
                                     })
@@ -289,7 +281,7 @@ const CreateQuiz: NextPage = () => {
                                         </Label>
                                     </Flex>
                                 )}
-                            </Flex>
+                            </MotionFlex>
 
                             <Flex direction="row" justifyContent="flex-end">
                                 <TextButton
@@ -301,11 +293,11 @@ const CreateQuiz: NextPage = () => {
                                     Add Question
                                 </TextButton>
                             </Flex>
-                        </Flex>
+                        </MotionFlex>
 
-                        <Flex gap={2} variants={loadInBottom} initial="hidden" animate="show">
+                        <MotionFlex gap={2} variants={loadInBottom} initial="hidden" animate="show">
                             <input type="file" ref={importQuiz} onChange={importFile} style={{ display: 'none' }} />
-                            <TextButton
+                            <MotionTextButton
                                 variants={loadInBottom}
                                 onClick={() => {
                                     importQuiz.current?.click();
@@ -313,15 +305,15 @@ const CreateQuiz: NextPage = () => {
                                 endIcon={<FaUpload />}
                             >
                                 Import
-                            </TextButton>
-                            <TextButton variants={loadInBottom} onClick={exportFile} endIcon={<FaDownload />}>
+                            </MotionTextButton>
+                            <MotionTextButton variants={loadInBottom} onClick={exportFile} endIcon={<FaDownload />}>
                                 Export
-                            </TextButton>
-                            <TextButton variants={loadInBottom} onClick={createQuiz} endIcon={<FaArrowRight />}>
+                            </MotionTextButton>
+                            <MotionTextButton variants={loadInBottom} onClick={createQuiz} endIcon={<FaArrowRight />}>
                                 Create Quiz
-                            </TextButton>
-                        </Flex>
-                    </Flex>
+                            </MotionTextButton>
+                        </MotionFlex>
+                    </MotionFlex>
                 </Container>
             </CenterSection>
         </FullSection>

@@ -1,14 +1,10 @@
-import { Button } from '@design-system/button';
-import { TextField } from '@design-system/field';
-import { CheckboxInput } from '@design-system/input/checkbox';
-import { Flex } from '@design-system/layout/flex';
-import { ModalBody, ModalFooter, ModalHeader, ModalLayout } from '@design-system/modal';
-import { Label } from '@design-system/typography';
 import { QuestionData } from 'api/packets/packets';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useState } from 'react';
 import { FaPlus, FaTrash } from 'react-icons/fa';
 import styles from './edit-question-modal.module.scss';
+import { Button, CheckboxInput, Flex, Label, ModalBody, ModalFooter, ModalHeader, ModalLayout, TextField } from '@illuzionz-studios/design-system';
+import { MotionFlex } from '@components/motion';
 
 type EditQuestionModalProps = {
     question: QuestionData;
@@ -60,7 +56,7 @@ export const EditQuestionModal: React.FC<EditQuestionModalProps> = ({ question, 
                                         const checked = questionData.correct.includes(id);
 
                                         return (
-                                            <Flex
+                                            <MotionFlex
                                                 key={id}
                                                 direction="row"
                                                 justifyContent="space-between"
@@ -70,12 +66,14 @@ export const EditQuestionModal: React.FC<EditQuestionModalProps> = ({ question, 
                                                 paddingBottom={2}
                                                 paddingLeft={6}
                                                 paddingRight={6}
-                                                hasRadius
+                                                radius="md"
                                                 initial={{ opacity: 0, y: -50 }}
                                                 animate={{ opacity: 1, y: 0 }}
                                             >
                                                 <Flex direction="row" gap={4} alignItems="center">
                                                     <CheckboxInput
+                                                        id="correctAnswer"
+                                                        name="correctAnswer"
                                                         checked={checked}
                                                         onChange={(e) => {
                                                             var correctAnswers = questionData.correct;
@@ -117,7 +115,7 @@ export const EditQuestionModal: React.FC<EditQuestionModalProps> = ({ question, 
                                                         }}
                                                     />
                                                 </Flex>
-                                            </Flex>
+                                            </MotionFlex>
                                         );
                                     })
                                 ) : (

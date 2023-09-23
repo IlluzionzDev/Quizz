@@ -27,7 +27,7 @@
 
     /* Handle */
     &::-webkit-scrollbar-thumb {
-        border-radius: $border-radius;
+        border-radius: $border-radius-md;
         background: var(--neutral200);
     }
 
