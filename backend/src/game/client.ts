@@ -52,7 +52,7 @@ export class Client {
             console.log(`Received packet ${socket.toString()}`);
         });
 
-        this.socket.on('close', () => {
+        this.socket.on('disconnect', () => {
             // When client is closed, remove all player instances
             this.cleanUp();
         });

@@ -14,6 +14,7 @@ import { setGameState } from 'store/clientSlice';
 import classNames from 'classnames';
 import { Badge, Box, Button, CenterSection, Container, Flex, FullSection, Label, TextButton, TightContainer } from '@illuzionz-studios/design-system';
 import { MotionFlex, MotionHeading, MotionLabel } from '@components/motion';
+import { ToastContextState } from '@components/toasts/toast-context';
 
 type GameNavProps = {
     selfData: SPlayerData | null;
@@ -170,7 +171,7 @@ const Game: NextPage = () => {
     }
 
     // Accpet answer result
-    usePacketHandler(SPID.SAnswerResult, (dispatch: Function, data: SAnswerResult) => {
+    usePacketHandler(SPID.SAnswerResult, (dispatch: Function, toast: ToastContextState, data: SAnswerResult) => {
         // Set in answered state even if didn't answer to display results screen
         setAnswered(true);
         setResult(data.result);

@@ -133,6 +133,13 @@ function onQuestion(dispatch: Function, toasts: ToastContextState, question: SQu
 function onDisconnect(dispatch: Function, toasts: ToastContextState, data: SDisconnect) {
     // Resetting state will kick to home page
     resetState(dispatch);
+
+    toasts.open({
+        title: 'Disconnected',
+        content: data.reason,
+        color: 'white',
+        backgroundColor: 'error400'
+    });
 }
 
 /**
@@ -152,6 +159,12 @@ function onError(dispatch: Function, toasts: ToastContextState, data: SError) {
     console.error(`An error occurred ${data.cause}`); // Print the error to the console
 
     // Print to screen
+    toasts.open({
+        title: 'Error',
+        content: data.cause,
+        color: 'white',
+        backgroundColor: 'error400'
+    });
 }
 
 /**
@@ -169,7 +182,7 @@ function onJoinGame(dispatch: Function, toasts: ToastContextState, data: SJoinGa
         title: 'Joined Game',
         content: 'You have joined the game',
         color: 'white',
-        backgroundColor: 'info300'
+        backgroundColor: 'success400'
     });
 }
 

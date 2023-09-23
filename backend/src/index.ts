@@ -10,6 +10,13 @@ import { Server, Socket } from 'socket.io';
 // Initializes env variables
 config();
 
+// Remove logging in prod env
+if (process.env.NODE_ENV === 'production') {
+    console.log = () => {};
+    console.error = () => {};
+    console.debug = () => {};
+}
+
 // Env Variables
 const { API_PORT } = process.env;
 
