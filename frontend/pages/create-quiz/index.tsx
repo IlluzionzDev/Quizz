@@ -12,6 +12,7 @@ import clone from 'clone';
 import { AnimatePresence, motion, Variants } from 'framer-motion';
 import { CenterSection, Container, Flex, FullSection, Label, TextButton } from '@illuzionz-studios/design-system';
 import { MotionFlex, MotionHeading, MotionTextButton, MotionTextField } from '@components/motion';
+import { useToast } from '@components/toasts/toast-provider';
 
 /**
  * Model of quiz configuration
