@@ -41,8 +41,11 @@ let handlers: PacketHandlers = {
  * all the listeners are added to the websocket and the update interval is set
  */
 function startListener(dispatch: Function, host: string) {
+    // Only setup socket if not aleady setup
+    if (socket) return;
+
     // Create a new web socket instance
-    if (!socket) socket = io(host);
+    socket = io(host);
 
     // Set the handler for the websocket open event
     socket.on('connect', () => {

@@ -54,7 +54,7 @@ const Home: NextPage = () => {
                                         delay: 0.1
                                     }}
                                 >
-                                    <Button variant="primary" startIcon={<FaPlay />}>
+                                    <Button variant="primary" startIcon={<FaPlay />} className={styles.mainButton}>
                                         Join Quiz
                                     </Button>
                                 </motion.div>
@@ -71,7 +71,7 @@ const Home: NextPage = () => {
                                         delay: 0.2
                                     }}
                                 >
-                                    <Button variant="primary" startIcon={<FaPen />}>
+                                    <Button variant="primary" startIcon={<FaPen />} className={styles.mainButton}>
                                         Create Quiz
                                     </Button>
                                 </motion.div>
