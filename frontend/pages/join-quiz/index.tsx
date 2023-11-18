@@ -13,6 +13,7 @@ import { AnimatePresence, motion, Variants } from 'framer-motion';
 import { setGameState } from 'store/clientSlice';
 import { CenterSection, Flex, FullSection, TextButton, TextField } from '@illuzionz-studios/design-system';
 import { MotionFlex, MotionHeading, MotionTextButton, MotionTextField } from '@components/motion';
+import { ToastContextState } from '@components/toasts/toast-context';
 
 const JoinQuiz: NextPage = () => {
     // Start packet listener
@@ -83,7 +84,7 @@ const JoinQuiz: NextPage = () => {
     /**
      * Listen for name result, if valid we will join the game
      */
-    const onNameTakenResult = (dispatch: Function, data: SNameTakenResult) => {
+    const onNameTakenResult = (dispatch: Function, toasts: ToastContextState, data: SNameTakenResult) => {
         if (data.result) {
             setValidName(false);
             setGottenResponse(true);

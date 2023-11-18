@@ -1,5 +1,5 @@
 import { QuestionData } from 'api/packets/packets';
-import { AnimatePresence, motion } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { useState } from 'react';
 import { FaPlus, FaTrash } from 'react-icons/fa';
 import styles from './edit-question-modal.module.scss';
@@ -106,6 +106,7 @@ export const EditQuestionModal: React.FC<EditQuestionModalProps> = ({ question, 
                                                 </Flex>
                                                 <Flex alignItems="center">
                                                     <FaTrash
+                                                        id="delete-answer"
                                                         className={styles.answerDelete}
                                                         onClick={(e) => {
                                                             const newAnswers = questionData.answers.filter((_, index) => {
@@ -138,6 +139,7 @@ export const EditQuestionModal: React.FC<EditQuestionModalProps> = ({ question, 
                     endActions={
                         <>
                             <Button
+                                id="add-answer"
                                 variant="secondary"
                                 startIcon={<FaPlus />}
                                 disabled={questionData.answers.length >= 4}
@@ -151,6 +153,7 @@ export const EditQuestionModal: React.FC<EditQuestionModalProps> = ({ question, 
                                 Add Answer
                             </Button>
                             <Button
+                                id="submit"
                                 variant="primary"
                                 disabled={questionData.answers.includes('') || questionData.answers.length <= 0 || questionData.question.length === 0 || questionData.correct.length <= 0}
                                 onClick={() => {

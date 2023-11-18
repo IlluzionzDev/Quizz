@@ -1,9 +1,5 @@
-import { useContext, useMemo, useState } from 'react';
+import { PropsWithChildren, useContext, useMemo, useState } from 'react';
 import { ToastContext } from './toast-context';
-import { Box, Flex, Portal } from '@illuzionz-studios/design-system';
-import { Toast } from './toast';
-import styles from './toasts.module.scss';
-import { createPortal } from 'react-dom';
 import { ToastContainer } from './toast-container';
 
 export interface ToastData {
@@ -24,7 +20,7 @@ export const generateRandomId = (length: number) => {
     return result;
 };
 
-export const ToastProvider: React.FC = ({ children }) => {
+export const ToastProvider: React.FC<PropsWithChildren> = ({ children }) => {
     const [toasts, setToasts] = useState<ToastData[]>([]);
 
     const open = (data: ToastData): string => {
@@ -46,7 +42,7 @@ export const ToastProvider: React.FC = ({ children }) => {
     };
 
     const close = (id: string) => {
-        setToasts((currentToasts) => currentToasts.filter((toast) => toast.id !== id));
+        setToasts((currentToasts) => currentToasts.filter((toast) => toast.id != id));
     };
 
     const closeAll = () => {

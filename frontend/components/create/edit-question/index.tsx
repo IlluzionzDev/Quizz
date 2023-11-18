@@ -22,8 +22,8 @@ export const EditQuestion: React.FC<EditQuestionProps> = ({ question, onEdit, on
                 </Label>
             </Flex>
             <Flex gap={4}>
-                <FaPen className={styles.iconButton} onClick={() => onEdit(question)} />
-                <FaTrash className={styles.iconButton} onClick={() => onDelete(question)} />
+                <FaPen id="edit" className={styles.iconButton} onClick={() => onEdit(question)} />
+                <FaTrash id="delete" className={styles.iconButton} onClick={() => onDelete(question)} />
             </Flex>
         </Flex>
     );
