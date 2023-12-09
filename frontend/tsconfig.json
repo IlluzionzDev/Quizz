@@ -1,56 +1,29 @@
 {
-  "compilerOptions": {
-    "target": "ESNext",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext",
-      "es6"
-    ],
-    "types": [
-      "node",
-      "jest",
-      "@testing-library/jest-dom"
-    ],
-    "allowJs": true,
-    "skipLibCheck": true,
-    "strict": true,
-    "forceConsistentCasingInFileNames": true,
-    "noEmit": true,
-    "esModuleInterop": true,
-    "module": "ESNext",
-    "moduleResolution": "node",
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "jsx": "preserve",
-    "incremental": true,
-    "baseUrl": ".",
-    "paths": {
-      "@components/*": [
-        "components/*"
-      ],
-      "@styles/*": [
-        "styles/*"
-      ],
-      "@common/*": [
-        "common/*"
-      ],
-      "@tests/*": [
-        "tests/*"
-      ]
+    "compilerOptions": {
+        "target": "ESNext",
+        "lib": ["dom", "dom.iterable", "esnext", "es6"],
+        "types": ["node", "jest", "@testing-library/jest-dom"],
+        "allowJs": true,
+        "skipLibCheck": true,
+        "strict": true,
+        "forceConsistentCasingInFileNames": true,
+        "noEmit": true,
+        "esModuleInterop": true,
+        "module": "ESNext",
+        "moduleResolution": "node",
+        "resolveJsonModule": true,
+        "isolatedModules": true,
+        "jsx": "react-jsx",
+        "incremental": true,
+        "baseUrl": ".",
+        "paths": {
+            "@components/*": ["components/*"],
+            "@styles/*": ["styles/*"],
+            "@common/*": ["common/*"],
+            "@tests/*": ["tests/*"]
+        },
+        "typeRoots": ["node_modules/@types"]
     },
-    "typeRoots": [
-      "node_modules/@types"
-    ]
-  },
-  "include": [
-    "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx",
-    "jest.config.js",
-    "./tests/setupTests.ts"
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+    "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "jest.config.js", "./tests/setupTests.ts"],
+    "exclude": ["node_modules"]
 }

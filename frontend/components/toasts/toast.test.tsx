@@ -30,14 +30,22 @@ describe('Toast State Operations', () => {
         const result = render(
             <ThemeProvider>
                 <ToastProvider>
-                    <ToastContext.Consumer>{(value) => <button data-testid="open-button" onClick={() => (toastId = value.open(testData))}></button>}</ToastContext.Consumer>
-                    <ToastContext.Consumer>{(value) => <button data-testid="close-button" onClick={() => value.close(toastId)}></button>}</ToastContext.Consumer>
+                    <ToastContext.Consumer>
+                        {(value) => (
+                            <div>
+                                <button data-testid="open-button" onClick={() => (toastId = value.open(testData))}></button>
+                                <button data-testid="close-button" onClick={() => value.close(toastId)}></button>
+                            </div>
+                        )}
+                    </ToastContext.Consumer>
                 </ToastProvider>
             </ThemeProvider>
         );
 
         const openButton = screen.getByTestId('open-button');
         fireEvent.click(openButton);
+
+        console.log('Created toast with id: ', toastId);
 
         // Test toast was added
         expect(screen.getByText(/Test Toast/)).toBeInTheDocument();
