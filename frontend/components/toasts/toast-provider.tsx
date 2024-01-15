@@ -42,19 +42,14 @@ export const ToastProvider: React.FC<PropsWithChildren> = ({ children }) => {
     };
 
     const close = (id: string) => {
-        console.log('Removing toast with id: ', id);
-
-        console.log('Old Toasts State: ', toasts);
         setToasts((currentToasts) => currentToasts.filter((toast) => toast.id != id));
-
-        console.log('New Toasts State: ', toasts);
     };
 
     const closeAll = () => {
         setToasts([]);
     };
 
-    const contextValue = useMemo(() => ({ open, close, closeAll }), []);
+    const contextValue = { open, close, closeAll };
 
     return (
         <ToastContext.Provider value={contextValue}>

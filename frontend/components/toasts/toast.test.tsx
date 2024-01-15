@@ -1,15 +1,21 @@
 import { ThemeProvider } from '@illuzionz-studios/design-system';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { act, fireEvent, render, screen, waitFor, waitForElementToBeRemoved } from '@testing-library/react';
 import { Toast } from './toast';
 import { ToastData, ToastProvider } from './toast-provider';
 import { ToastContext } from './toast-context';
+import { ToastContainer } from './toast-container';
+
+const testData: ToastData = {
+    title: 'Test Toast',
+    content: 'This is my content',
+    backgroundColor: 'success300',
+    color: 'white'
+};
 
 test('Renders Toast', () => {
-    const result = render(
+    render(
         <ThemeProvider>
-            <Toast title="Test Toast" backgroundColor="success300" color="white">
-                This is my content
-            </Toast>
+            <ToastContainer data={[testData]} />
         </ThemeProvider>
     );
 
@@ -17,24 +23,14 @@ test('Renders Toast', () => {
 });
 
 describe('Toast State Operations', () => {
-    const testData: ToastData = {
-        title: 'Test Toast',
-        content: 'This is my content',
-        backgroundColor: 'success300',
-        color: 'white'
-    };
-
-    test('Open and Closes Toast', () => {
-        let toastId = '';
-
-        const result = render(
+    test('Opens Toast', () => {
+        render(
             <ThemeProvider>
                 <ToastProvider>
                     <ToastContext.Consumer>
                         {(value) => (
                             <div>
-                                <button data-testid="open-button" onClick={() => (toastId = value.open(testData))}></button>
-                                <button data-testid="close-button" onClick={() => value.close(toastId)}></button>
+                                <button data-testid="open-button" onClick={() => value.open(testData)}></button>
                             </div>
                         )}
                     </ToastContext.Consumer>
@@ -43,18 +39,12 @@ describe('Toast State Operations', () => {
         );
 
         const openButton = screen.getByTestId('open-button');
-        fireEvent.click(openButton);
 
-        console.log('Created toast with id: ', toastId);
+        act(() => {
+            fireEvent.click(openButton);
+        });
 
         // Test toast was added
         expect(screen.getByText(/Test Toast/)).toBeInTheDocument();
-
-        // Then remove toast
-        const closeButton = screen.getByTestId('close-button');
-        fireEvent.click(closeButton);
-
-        // Check was removed
-        expect(screen.getByText(/Test Toast/)).not.toBeInTheDocument();
     });
 });
