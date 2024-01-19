@@ -4,3 +4,7 @@
     top: 16px;
     left: 16px;
 }
+
+.mainButton {
+    @include button-shadow(var(--primary500RGB));
+}

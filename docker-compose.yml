@@ -4,14 +4,16 @@ services:
   backend:
     build:
       context: ./backend
-    ports: 
+      dockerfile: Dockerfile
+    ports:
       - 4000:4000
     environment:
       API_PORT: 4000
   frontend:
     build:
       context: ./frontend
-    ports: 
+      dockerfile: Dockerfile
+    ports:
       - 3000:3000
     environment:
-      HOST: 'ws://localhost:4000'
+      NEXT_PUBLIC_HOST: 'ws://backend'

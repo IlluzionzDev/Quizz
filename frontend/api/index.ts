@@ -7,17 +7,20 @@ import { clearState, removePlayer, setGameData, setGameState, setOpen, setQuesti
 import { CStateChangeState, stateChange, kickPlayer } from './packets/client';
 import { GameState, Packet } from './packets/packets';
 import { SDisconnect, SError, SGameState, SJoinGame, SPID, SPlayerData, SPlayerDataType, SQuestion, SScores, STimeSync } from './packets/server';
+import { Socket, io } from 'socket.io-client';
+import { useToast } from '@components/toasts/toast-provider';
+import { ToastContextState } from '@components/toasts/toast-context';
 
 // An empty function for handlers without a function
 const EMPTY_HANDLER = () => null;
 
 // Defines the type of packet handler function
-type PacketHandlerFunction = (dispatch: Function, data: any) => void;
+type PacketHandlerFunction = (dispatch: Function, toasts: ToastContextState, data: any) => void;
 // Defines the packet handlers map which is id -> handler
 type PacketHandlers = Record<SPID, PacketHandlerFunction>;
 
 // Web socket connection
-let socket: WebSocket | null;
+let socket: Socket | null;
 
 /**
  * Record of packet IDs to handlers
@@ -39,37 +42,42 @@ let handlers: PacketHandlers = {
  * Creates a connection to the websocket at APP_HOST and returns the websocket
  * all the listeners are added to the websocket and the update interval is set
  */
-function startListener(dispatch: Function, host: string) {
+function startListener(dispatch: Function, toasts: ToastContextState, host: string) {
+    // Only setup socket if not aleady setup
+    if (socket) return;
+
     // Create a new web socket instance
-    if (!socket) socket = new WebSocket(host);
+    socket = io(host);
 
     // Set the handler for the websocket open event
-    socket.onopen = () => {
+    socket.on('connect', () => {
         // Update the open state
         dispatch(setOpen(true));
-    };
+    });
 
     // Set the handler for the websocket message event
-    socket.onmessage = (event: MessageEvent) => {
-        const packet: Packet = JSON.parse(event.data.toString());
+    socket.on('message', (data: Object) => {
+        const packet: Packet = JSON.parse(data.toString());
         const packetId: SPID = packet.id;
         const packetData: any = packet.data;
 
         // Valid packet
         if (packetId in handlers) {
             const handler = handlers[packetId];
-            handler(dispatch, packetData);
+            handler(dispatch, toasts, packetData);
         }
 
-        console.log(`Received packet ${event.data.toString()}`);
-    };
+        console.log(`Received packet ${data.toString()}`);
+    });
 
-    socket.onclose = () => {
+    socket.on('disconnect', () => {
         dispatch(setOpen(false));
-        startListener(dispatch, HOST);
-    };
+        startListener(dispatch, toasts, HOST);
+    });
 
-    socket.onerror = console.error; // Directly print all errors to the console
+    socket.on('error', (error) => {
+        console.error(error);
+    });
 }
 
 /**
@@ -78,7 +86,7 @@ function startListener(dispatch: Function, host: string) {
  *
  * @param data The player data of the other player
  */
-function onPlayerData(dispatch: Function, data: SPlayerData) {
+function onPlayerData(dispatch: Function, toasts: ToastContextState, data: SPlayerData) {
     dispatch(updatePlayers(data));
 }
 
@@ -88,7 +96,7 @@ function onPlayerData(dispatch: Function, data: SPlayerData) {
  * *
  * @param data The score data
  */
-function onScores(dispatch: Function, data: SScores) {
+function onScores(dispatch: Function, toasts: ToastContextState, data: SScores) {
     for (let dataKey in data.scores) {
         // Object to update score
         const playerData: SPlayerData = { id: dataKey, name: '', score: data.scores[dataKey], type: SPlayerDataType.SELF };
@@ -102,7 +110,7 @@ function onScores(dispatch: Function, data: SScores) {
  *
  * @param data The current game state
  */
-function onGameState(dispatch: Function, data: SGameState) {
+function onGameState(dispatch: Function, toasts: ToastContextState, data: SGameState) {
     dispatch(setGameState(data.state));
 }
 
@@ -112,7 +120,7 @@ function onGameState(dispatch: Function, data: SGameState) {
  *
  * @param question The current question
  */
-function onQuestion(dispatch: Function, question: SQuestion) {
+function onQuestion(dispatch: Function, toasts: ToastContextState, question: SQuestion) {
     dispatch(setQuestion(question));
 }
 
@@ -122,9 +130,16 @@ function onQuestion(dispatch: Function, question: SQuestion) {
  *
  * @param data The disconnect data contains the reason for disconnect
  */
-function onDisconnect(dispatch: Function, data: SDisconnect) {
+function onDisconnect(dispatch: Function, toasts: ToastContextState, data: SDisconnect) {
     // Resetting state will kick to home page
     resetState(dispatch);
+
+    toasts.open({
+        title: 'Disconnected',
+        content: data.reason,
+        color: 'white',
+        backgroundColor: 'error400'
+    });
 }
 
 /**
@@ -140,10 +155,16 @@ function resetState(dispatch: Function) {
  *
  * @param data The data for the error packet contains the error cause
  */
-function onError(dispatch: Function, data: SError) {
+function onError(dispatch: Function, toasts: ToastContextState, data: SError) {
     console.error(`An error occurred ${data.cause}`); // Print the error to the console
 
     // Print to screen
+    toasts.open({
+        title: 'Error',
+        content: data.cause,
+        color: 'white',
+        backgroundColor: 'error400'
+    });
 }
 
 /**
@@ -152,10 +173,17 @@ function onError(dispatch: Function, data: SError) {
  *
  * @param data The data for the game contains the id and title
  */
-function onJoinGame(dispatch: Function, data: SJoinGame) {
+function onJoinGame(dispatch: Function, toasts: ToastContextState, data: SJoinGame) {
     // Set the game data to the provided value
     dispatch(setGameData(data));
     dispatch(setGameState(GameState.WAITING));
+
+    toasts.open({
+        title: 'Joined Game',
+        content: 'You have joined the game',
+        color: 'white',
+        backgroundColor: 'success400'
+    });
 }
 
 /**
@@ -183,7 +211,7 @@ export function disconnect(dispatch: Function) {
  *
  * @param id The id of the player to kick
  */
-export function kick(dispatch: Function, id: string) {
+export function kick(dispatch: Function, toasts: ToastContextState, id: string) {
     dispatch(removePlayer(id));
     send(kickPlayer(id)); // Send a kick player packet
 }
@@ -194,11 +222,12 @@ export function kick(dispatch: Function, id: string) {
  */
 export function useClient() {
     const dispatch = useAppDispatch();
+    const toasts = useToast();
 
     // Load client after first render
     useEffect(() => {
         // Open client listener
-        startListener(dispatch, HOST);
+        startListener(dispatch, toasts, HOST);
     }, []);
 }
 
@@ -246,7 +275,7 @@ export function useGameState(state: GameState, callback: Function) {
  * @param id Packet id
  * @param handler The function that accepts the packet data
  */
-export function usePacketHandler<D>(id: SPID, handler: (dispatch: Function, data: D) => any) {
+export function usePacketHandler<D>(id: SPID, handler: (dispatch: Function, toasts: ToastContextState, data: D) => any) {
     useEffect(() => {
         handlers[id] = handler;
 
@@ -278,7 +307,7 @@ export function useSyncedTimer(initialValue: number): number {
      *
      * @param data The time sync packet data
      */
-    function onTimeSync(dispatch: Function, data: STimeSync) {
+    function onTimeSync(dispatch: Function, toasts: ToastContextState, data: STimeSync) {
         // Convert the remaining time to seconds and ceil it
         setValue(Math.ceil(data.remaining / 1000));
         // Set the last update time = now to prevent it updating again

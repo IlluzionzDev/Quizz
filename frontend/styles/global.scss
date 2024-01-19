@@ -1,0 +1,13 @@
+@import '@illuzionz-studios/design-system/main-styles';
+
+:root {
+    @include generateVars('primary100', #d9dffc);
+    @include generateVars('primary200', #b4c0f8);
+    @include generateVars('primary300', #8ea0f5);
+    @include generateVars('primary400', #6981f1);
+    @include generateVars('primary500', #4361ee);
+    @include generateVars('primary600', #364ebe);
+    @include generateVars('primary700', #283a8f);
+    @include generateVars('primary800', #1b275f);
+    @include generateVars('primary900', #0d1330);
+}

@@ -1,5 +1,4 @@
-import { Container } from '@design-system/layout/container';
-import { Flex } from '@design-system/layout/flex';
+import { Container, Flex } from '@illuzionz-studios/design-system';
 import { ReactNode } from 'react';
 
 type NavigationProps = {

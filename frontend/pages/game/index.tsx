@@ -7,19 +7,14 @@ import type { NextPage } from 'next';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { GameState, QuestionData } from 'api/packets/packets';
-import { CenterSection, FullSection } from '@design-system/layout/section';
-import { Flex } from '@design-system/layout/flex';
-import { Container } from '@design-system/layout/container';
-import { Heading, Label } from '@design-system/typography';
-import { Badge } from '@design-system/badge';
-import { Box } from '@design-system/layout/box';
 import Navigation from '@components/layout/navigation';
-import { Button, TextButton } from '@design-system/button';
-import { TightContainer } from '@design-system/layout/container/container';
 import { FaCheck, FaTimes } from 'react-icons/fa';
 import { AnimatePresence, Variants } from 'framer-motion';
 import { setGameState } from 'store/clientSlice';
 import classNames from 'classnames';
+import { Badge, Box, Button, CenterSection, Container, Flex, FullSection, Label, TextButton, TightContainer } from '@illuzionz-studios/design-system';
+import { MotionFlex, MotionHeading, MotionLabel } from '@components/motion';
+import { ToastContextState } from '@components/toasts/toast-context';
 
 type GameNavProps = {
     selfData: SPlayerData | null;
@@ -30,7 +25,7 @@ const GameNav: React.FC<GameNavProps> = ({ selfData }) => (
         <Container>
             <Flex direction="row" justifyContent="space-between" alignItems="center" paddingTop={6} paddingBottom={6}>
                 <Label variant="md">{selfData?.name}</Label>
-                <Badge variant="active">{selfData?.score}</Badge>
+                <Badge variant="primary">{selfData?.score}</Badge>
             </Flex>
         </Container>
     </Box>
@@ -74,14 +69,14 @@ const AnswerSelection: React.FC<AnswerSelectionProps> = ({ question, answeredInd
 
     return (
         <AnimatePresence mode="wait">
-            <Flex key={question.question + 'answers'} direction="column" gap={4} paddingTop={11} paddingBottom={11} alignItems="center" className={styles.answerBox} variants={loadInSideways} initial="hidden" animate="show" exit="exit">
+            <MotionFlex key={question.question + 'answers'} direction="column" gap={4} paddingTop={11} paddingBottom={11} alignItems="center" className={styles.answerBox} variants={loadInSideways} initial="hidden" animate="show" exit="exit">
                 {question.answers.map((answer, id) => {
                     return (
                         <Flex
                             key={id}
                             alignItems="center"
                             justifyContent="space-between"
-                            hasRadius
+                            radius="md"
                             paddingLeft={6}
                             paddingRight={6}
                             paddingTop={3}
@@ -101,7 +96,7 @@ const AnswerSelection: React.FC<AnswerSelectionProps> = ({ question, answeredInd
                         </Flex>
                     );
                 })}
-            </Flex>
+            </MotionFlex>
         </AnimatePresence>
     );
 };
@@ -176,7 +171,7 @@ const Game: NextPage = () => {
     }
 
     // Accpet answer result
-    usePacketHandler(SPID.SAnswerResult, (dispatch: Function, data: SAnswerResult) => {
+    usePacketHandler(SPID.SAnswerResult, (dispatch: Function, toast: ToastContextState, data: SAnswerResult) => {
         // Set in answered state even if didn't answer to display results screen
         setAnswered(true);
         setResult(data.result);
@@ -244,39 +239,39 @@ const Game: NextPage = () => {
                     }
                 />
                 <TightContainer>
-                    <Flex direction="column" paddingTop={11} gap={2} alignItems="center" variants={loadInTop} initial="hidden" animate="show">
+                    <MotionFlex direction="column" paddingTop={11} gap={2} alignItems="center" variants={loadInTop} initial="hidden" animate="show">
                         <Flex direction="column" gap={7} alignItems="center">
-                            <Heading element="h1" variant="heading-1" variants={loadInTop}>
+                            <MotionHeading element="h1" variant="heading-1" variants={loadInTop}>
                                 {gameData.title}
-                            </Heading>
+                            </MotionHeading>
                             <Flex direction="column" gap={1} alignItems="center">
-                                <Heading element="h2" variant="heading-2" regular variants={loadInTop}>
+                                <MotionHeading element="h2" variant="heading-2" regular variants={loadInTop}>
                                     Current Question
-                                </Heading>
-                                <Label variant="xl" color="primary600" variants={loadInTop}>
+                                </MotionHeading>
+                                <MotionLabel variant="xl" color="primary600" variants={loadInTop}>
                                     {question?.question}
-                                </Label>
-                                <Label variant="xl" variants={loadInTop}>
+                                </MotionLabel>
+                                <MotionLabel variant="xl" variants={loadInTop}>
                                     {timer}s
-                                </Label>
-                                <Flex paddingTop={4} variants={loadInTop}>
+                                </MotionLabel>
+                                <MotionFlex paddingTop={4} variants={loadInTop}>
                                     <Button variant="secondary" onClick={() => skipQuestion()}>
                                         Skip Question
                                     </Button>
-                                </Flex>
+                                </MotionFlex>
                             </Flex>
                         </Flex>
                         <Flex direction="column" gap={4} paddingTop={11} paddingBottom={11} alignItems="center" className={styles.playerBox}>
                             {topPlayers().map((player, id) => {
                                 return (
-                                    <Flex
+                                    <MotionFlex
                                         key={id}
                                         direction="row"
                                         background="neutral100"
                                         className={styles.player}
                                         alignItems="center"
                                         justifyContent="space-between"
-                                        hasRadius
+                                        radius="md"
                                         paddingLeft={6}
                                         paddingRight={6}
                                         paddingTop={3}
@@ -284,12 +279,12 @@ const Game: NextPage = () => {
                                         variants={loadInTop}
                                     >
                                         <Label variant="lg">{player.name}</Label>
-                                        <Badge variant="active">{player.score}</Badge>
-                                    </Flex>
+                                        <Badge variant="primary">{player.score}</Badge>
+                                    </MotionFlex>
                                 );
                             })}
                         </Flex>
-                    </Flex>
+                    </MotionFlex>
                 </TightContainer>
             </FullSection>
         );
@@ -301,9 +296,9 @@ const Game: NextPage = () => {
                     <TightContainer>
                         <Flex direction="column" alignItems="center" paddingTop={11} gap={2}>
                             <Flex direction="column" gap={1}>
-                                <Heading element="h1" variant="heading-1" color="primary600">
+                                <MotionHeading element="h1" variant="heading-1" color="primary600">
                                     Loading Question...
-                                </Heading>
+                                </MotionHeading>
                                 <Label variant="xl">0s</Label>
                             </Flex>
                             <Flex direction="column" gap={4} paddingTop={11} paddingBottom={11} alignItems="center" className={styles.answerBox}>
@@ -325,12 +320,12 @@ const Game: NextPage = () => {
                     <TightContainer>
                         <AnimatePresence mode="wait">
                             <Flex direction="column" alignItems="center" paddingTop={11} gap={2}>
-                                <Flex id={question.question + 'info'} direction="column" gap={1} variants={loadInSideways} initial="hidden" animate="show">
-                                    <Heading element="h1" variant="heading-1" color="primary600">
+                                <MotionFlex id={question.question + 'info'} direction="column" gap={1} variants={loadInSideways} initial="hidden" animate="show">
+                                    <MotionHeading element="h1" variant="heading-1" color="primary600">
                                         {question.question}
-                                    </Heading>
+                                    </MotionHeading>
                                     <Label variant="xl">{timer}s</Label>
-                                </Flex>
+                                </MotionFlex>
                                 <AnswerSelection
                                     question={question}
                                     answeredIndex={answeredIndex}

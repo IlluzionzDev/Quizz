@@ -1,3 +1,4 @@
+import { Socket } from 'socket.io-client';
 
 // Packet data object
 export interface Packet {
@@ -23,6 +24,6 @@ export interface QuestionData {
 }
 
 // Send a packet to the client
-export const sendPacket = (client: WebSocket, packet: Packet) => {
+export const sendPacket = (client: Socket, packet: Packet) => {
     client.send(JSON.stringify(packet));
 };

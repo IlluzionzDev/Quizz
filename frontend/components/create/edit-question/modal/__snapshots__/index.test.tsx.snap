@@ -1,0 +1,333 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Renders Edit Question Modal 1`] = `
+<div
+  className="fqDsqO _modalWrapper_r4ukg_24"
+  onClick={[Function]}
+>
+  <div>
+    <div
+      className="_modalContent_r4ukg_34"
+      onClick={[Function]}
+      role="dialog"
+    >
+      <div
+        style={
+          {
+            "opacity": 0,
+            "transform": "scale(0.9) translateZ(0)",
+          }
+        }
+      >
+        <div
+          className="eNcpvq _modalHeader_s64lc_24"
+        >
+          <div
+            className="fqDsqO diCnFa"
+          >
+            Edit Question
+            <button
+              aria-disabled={false}
+              className="boKaSP dZopkn nkGib eULEMB"
+              disabled={false}
+              onClick={[Function]}
+              type="button"
+            >
+              <div
+                className="hJhoBS grXnAC"
+              >
+                <svg
+                  fill="currentColor"
+                  height="1em"
+                  stroke="currentColor"
+                  strokeWidth="0"
+                  style={
+                    {
+                      "color": undefined,
+                    }
+                  }
+                  viewBox="0 0 352 512"
+                  width="1em"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M242.72 256l100.07-100.07c12.28-12.28 12.28-32.19 0-44.48l-22.24-22.24c-12.28-12.28-32.19-12.28-44.48 0L176 189.28 75.93 89.21c-12.28-12.28-32.19-12.28-44.48 0L9.21 111.45c-12.28 12.28-12.28 32.19 0 44.48L109.28 256 9.21 356.07c-12.28 12.28-12.28 32.19 0 44.48l22.24 22.24c12.28 12.28 32.2 12.28 44.48 0L176 322.72l100.07 100.07c12.28 12.28 32.2 12.28 44.48 0l22.24-22.24c12.28-12.28 12.28-32.19 0-44.48L242.72 256z"
+                  />
+                </svg>
+              </div>
+            </button>
+          </div>
+        </div>
+        <div
+          className="izDRes _modalBody_1cy32_24"
+        >
+          <div
+            className="fqDsqO jaMYaJ"
+          >
+            <div
+              className="jpXYLd"
+            >
+              <div
+                className="fqDsqO bUMMBp"
+              >
+                <label
+                  className="fqDsqO _label-md_1a16q_40"
+                  htmlFor="quizTitle"
+                >
+                  Question Title
+                </label>
+                <div
+                  className="bvKZbw diCnFa grqfTd"
+                >
+                  <input
+                    className="bKsInV fYiMdL _input_1t9fs_24"
+                    id="quizTitle"
+                    name="quiz title"
+                    onChange={[Function]}
+                    type="text"
+                    value="My Test Question"
+                  />
+                </div>
+              </div>
+            </div>
+            <div
+              className="fqDsqO deCjf"
+            >
+              <div
+                className="fqDsqO hhGPpY"
+              >
+                <p
+                  className="fqDsqO _label-lg_1a16q_32"
+                >
+                  Answers
+                </p>
+                <p
+                  className="bkokOm _label-md_1a16q_40"
+                >
+                  2
+                  /4
+                </p>
+              </div>
+              <div
+                className="fqDsqO deCjf"
+              >
+                <div
+                  className="fsgkWy diCnFa"
+                  style={
+                    {
+                      "opacity": 0,
+                      "transform": "translateY(-50px) translateZ(0)",
+                    }
+                  }
+                >
+                  <div
+                    className="fqDsqO bYRgXa"
+                  >
+                    <div
+                      className="fqDsqO kCmGWL"
+                    >
+                      <svg
+                        className="lduPfP"
+                        fill="currentColor"
+                        height="1em"
+                        onClick={[Function]}
+                        stroke="currentColor"
+                        strokeWidth="0"
+                        style={
+                          {
+                            "color": undefined,
+                          }
+                        }
+                        viewBox="0 0 512 512"
+                        width="1em"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M173.898 439.404l-166.4-166.4c-9.997-9.997-9.997-26.206 0-36.204l36.203-36.204c9.997-9.998 26.207-9.998 36.204 0L192 312.69 432.095 72.596c9.997-9.997 26.207-9.997 36.204 0l36.203 36.204c9.997 9.997 9.997 26.206 0 36.204l-294.4 294.401c-9.998 9.997-26.207 9.997-36.204-.001z"
+                        />
+                      </svg>
+                      <input
+                        checked={true}
+                        className="erOwAS itSUNB"
+                        id="correctAnswer"
+                        name="correctAnswer"
+                        onChange={[Function]}
+                        type="checkbox"
+                      />
+                    </div>
+                    <input
+                      onChange={[Function]}
+                      placeholder="Enter Answer"
+                      type="text"
+                      value="Answer One"
+                    />
+                  </div>
+                  <div
+                    className="fqDsqO hLtqjR"
+                  >
+                    <svg
+                      fill="currentColor"
+                      height="1em"
+                      id="delete-answer"
+                      onClick={[Function]}
+                      stroke="currentColor"
+                      strokeWidth="0"
+                      style={
+                        {
+                          "color": undefined,
+                        }
+                      }
+                      viewBox="0 0 448 512"
+                      width="1em"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M432 32H312l-9.4-18.7A24 24 0 0 0 281.1 0H166.8a23.72 23.72 0 0 0-21.4 13.3L136 32H16A16 16 0 0 0 0 48v32a16 16 0 0 0 16 16h416a16 16 0 0 0 16-16V48a16 16 0 0 0-16-16zM53.2 467a48 48 0 0 0 47.9 45h245.8a48 48 0 0 0 47.9-45L416 128H32z"
+                      />
+                    </svg>
+                  </div>
+                </div>
+                <div
+                  className="fsgkWy diCnFa"
+                  style={
+                    {
+                      "opacity": 0,
+                      "transform": "translateY(-50px) translateZ(0)",
+                    }
+                  }
+                >
+                  <div
+                    className="fqDsqO bYRgXa"
+                  >
+                    <div
+                      className="fqDsqO kCmGWL"
+                    >
+                      <input
+                        checked={false}
+                        className="erOwAS itSUNB"
+                        id="correctAnswer"
+                        name="correctAnswer"
+                        onChange={[Function]}
+                        type="checkbox"
+                      />
+                    </div>
+                    <input
+                      onChange={[Function]}
+                      placeholder="Enter Answer"
+                      type="text"
+                      value="Answer Two"
+                    />
+                  </div>
+                  <div
+                    className="fqDsqO hLtqjR"
+                  >
+                    <svg
+                      fill="currentColor"
+                      height="1em"
+                      id="delete-answer"
+                      onClick={[Function]}
+                      stroke="currentColor"
+                      strokeWidth="0"
+                      style={
+                        {
+                          "color": undefined,
+                        }
+                      }
+                      viewBox="0 0 448 512"
+                      width="1em"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M432 32H312l-9.4-18.7A24 24 0 0 0 281.1 0H166.8a23.72 23.72 0 0 0-21.4 13.3L136 32H16A16 16 0 0 0 0 48v32a16 16 0 0 0 16 16h416a16 16 0 0 0 16-16V48a16 16 0 0 0-16-16zM53.2 467a48 48 0 0 0 47.9 45h245.8a48 48 0 0 0 47.9-45L416 128H32z"
+                      />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          className="iFekOE _modalFooter_1dhy6_24"
+        >
+          <div
+            className="fqDsqO diCnFa"
+          >
+            <div
+              className="fqDsqO jeIDqh"
+            >
+              <button
+                aria-disabled={false}
+                className="gKHkUm dZopkn nkGib idrciz"
+                disabled={false}
+                onClick={[Function]}
+                type="button"
+              >
+                <p
+                  className="fqDsqO _button-text_1a16q_64"
+                >
+                  Cancel
+                </p>
+              </button>
+            </div>
+            <div
+              className="fqDsqO kCmGWL"
+            >
+              <button
+                aria-disabled={false}
+                className="gKHkUm dZopkn nkGib ileKtx"
+                disabled={false}
+                id="add-answer"
+                onClick={[Function]}
+                type="button"
+              >
+                <div
+                  className="hJhoBS grXnAC"
+                >
+                  <svg
+                    fill="currentColor"
+                    height="1em"
+                    stroke="currentColor"
+                    strokeWidth="0"
+                    style={
+                      {
+                        "color": undefined,
+                      }
+                    }
+                    viewBox="0 0 448 512"
+                    width="1em"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z"
+                    />
+                  </svg>
+                </div>
+                <p
+                  className="fqDsqO _button-text_1a16q_64"
+                >
+                  Add Answer
+                </p>
+              </button>
+              <button
+                aria-disabled={false}
+                className="gKHkUm dZopkn nkGib dsPndz"
+                disabled={false}
+                id="submit"
+                onClick={[Function]}
+                type="button"
+              >
+                <p
+                  className="fqDsqO _button-text_1a16q_64"
+                >
+                  Save
+                </p>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

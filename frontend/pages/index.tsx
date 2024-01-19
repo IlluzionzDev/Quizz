@@ -1,17 +1,10 @@
 /* eslint-disable @next/next/link-passhref */
-import { Button } from '@design-system/button';
-import { Box } from '@design-system/layout/box';
-import { Container } from '@design-system/layout/container';
-import { TightContainer } from '@design-system/layout/container/container';
-import { Flex } from '@design-system/layout/flex';
-import { CenterSection, FullSection } from '@design-system/layout/section';
-import { ThemeSwitcher } from '@design-system/theme';
-import { Body, Heading } from '@design-system/typography';
 import { motion } from 'framer-motion';
 import type { NextPage } from 'next';
 import Link from 'next/link';
 import { FaPen, FaPlay, FaTimes } from 'react-icons/fa';
 import styles from './index.module.scss';
+import { Body, Button, CenterSection, Flex, FullSection, Heading, TightContainer } from '@illuzionz-studios/design-system';
 
 const Home: NextPage = () => {
     return (
@@ -61,7 +54,7 @@ const Home: NextPage = () => {
                                         delay: 0.1
                                     }}
                                 >
-                                    <Button variant="primary" startIcon={<FaPlay />}>
+                                    <Button variant="primary" startIcon={<FaPlay />} className={styles.mainButton}>
                                         Join Quiz
                                     </Button>
                                 </motion.div>
@@ -78,7 +71,7 @@ const Home: NextPage = () => {
                                         delay: 0.2
                                     }}
                                 >
-                                    <Button variant="primary" startIcon={<FaPen />}>
+                                    <Button variant="primary" startIcon={<FaPen />} className={styles.mainButton}>
                                         Create Quiz
                                     </Button>
                                 </motion.div>

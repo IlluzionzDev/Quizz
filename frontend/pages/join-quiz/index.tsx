@@ -7,16 +7,13 @@ import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';
 import { useAppDispatch, useAppSelector } from 'hooks';
 import { SNameTakenResult, SPID } from 'api/packets/server';
-import { CenterSection, FullSection } from '@design-system/layout/section';
-import { Container } from '@design-system/layout/container';
 import Navigation from '@components/layout/navigation';
-import { Button, TextButton } from '@design-system/button';
 import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
-import { Flex } from '@design-system/layout/flex';
-import { Heading } from '@design-system/typography';
-import { TextField } from '@design-system/field';
 import { AnimatePresence, motion, Variants } from 'framer-motion';
 import { setGameState } from 'store/clientSlice';
+import { CenterSection, Flex, FullSection, TextButton, TextField } from '@illuzionz-studios/design-system';
+import { MotionFlex, MotionHeading, MotionTextButton, MotionTextField } from '@components/motion';
+import { ToastContextState } from '@components/toasts/toast-context';
 
 const JoinQuiz: NextPage = () => {
     // Start packet listener
@@ -87,7 +84,7 @@ const JoinQuiz: NextPage = () => {
     /**
      * Listen for name result, if valid we will join the game
      */
-    const onNameTakenResult = (dispatch: Function, data: SNameTakenResult) => {
+    const onNameTakenResult = (dispatch: Function, toasts: ToastContextState, data: SNameTakenResult) => {
         if (data.result) {
             setValidName(false);
             setGottenResponse(true);
@@ -164,10 +161,10 @@ const JoinQuiz: NextPage = () => {
             <CenterSection>
                 <AnimatePresence mode="wait">
                     {validGame ? (
-                        <Flex key="enterName" direction="column" padding={7} gap={7} alignItems="center" variants={loadInSideways} initial="hidden" animate="show">
-                            <Heading element="h1" variant="heading-1" variants={loadInSideways}>
+                        <MotionFlex key="enterName" direction="column" padding={7} gap={7} alignItems="center" variants={loadInSideways} initial="hidden" animate="show">
+                            <MotionHeading element="h1" variant="heading-1" variants={loadInSideways}>
                                 Join Quiz
-                            </Heading>
+                            </MotionHeading>
                             <form
                                 onSubmit={(e) => {
                                     e.preventDefault();
@@ -176,10 +173,8 @@ const JoinQuiz: NextPage = () => {
                                     setSubmittedCode(true);
                                 }}
                             >
-                                <TextField
-                                    motion={{
-                                        variants: { loadInSideways }
-                                    }}
+                                <MotionTextField
+                                    variants={loadInSideways}
                                     error={submittedCode && gottenResponse && !validName ? 'Name already taken' : ''}
                                     value={name}
                                     onChange={(e) => {
@@ -195,7 +190,7 @@ const JoinQuiz: NextPage = () => {
                                     maxLength={16}
                                 />
                             </form>
-                            <TextButton
+                            <MotionTextButton
                                 variants={loadInSideways}
                                 endIcon={<FaArrowRight />}
                                 disabled={gameCode.length != 5}
@@ -205,13 +200,13 @@ const JoinQuiz: NextPage = () => {
                                 }}
                             >
                                 Join Game
-                            </TextButton>
-                        </Flex>
+                            </MotionTextButton>
+                        </MotionFlex>
                     ) : (
-                        <Flex key="enterQuizCode" direction="column" padding={7} gap={7} alignItems="center" variants={loadInAnimation} initial="hidden" animate="show" exit="exit">
-                            <Heading element="h1" variant="heading-1" variants={loadInAnimation}>
+                        <MotionFlex key="enterQuizCode" direction="column" padding={7} gap={7} alignItems="center" variants={loadInAnimation} initial="hidden" animate="show" exit="exit">
+                            <MotionHeading element="h1" variant="heading-1" variants={loadInAnimation}>
                                 Join Quiz
-                            </Heading>
+                            </MotionHeading>
                             <form
                                 onSubmit={(e) => {
                                     e.preventDefault();
@@ -220,10 +215,8 @@ const JoinQuiz: NextPage = () => {
                                     setSubmittedCode(true);
                                 }}
                             >
-                                <TextField
-                                    motion={{
-                                        variants: { loadInAnimation }
-                                    }}
+                                <MotionTextField
+                                    variants={loadInAnimation}
                                     error={submittedCode && gottenResponse && !validGame ? 'Game does not exist' : ''}
                                     value={gameCode}
                                     onChange={(e) => {
@@ -240,10 +233,10 @@ const JoinQuiz: NextPage = () => {
                                 />
                             </form>
 
-                            <TextButton
+                            <MotionTextButton
                                 initial={{ y: 50, opacity: 0 }}
                                 animate={{ y: 0, opacity: 1 }}
-                                transition={{ type: 'spring', stiffness: 260, damping: 20, delay: 0.15 }}
+                                // transition={{ type: 'spring', stiffness: 260, damping: 20, delay: 0.15 }}
                                 endIcon={<FaArrowRight />}
                                 disabled={gameCode.length != 5}
                                 onClick={() => {
@@ -252,8 +245,8 @@ const JoinQuiz: NextPage = () => {
                                 }}
                             >
                                 Next
-                            </TextButton>
-                        </Flex>
+                            </MotionTextButton>
+                        </MotionFlex>
                     )}
                 </AnimatePresence>
             </CenterSection>

@@ -1,4 +1,6 @@
 import * as WebSocket from 'ws';
+import { CPID } from './client';
+import { Socket } from 'socket.io';
 
 // Packet data object
 export interface Packet {
@@ -23,7 +25,12 @@ export interface QuestionData {
     correct: number[]; // All correct answers indexes
 }
 
+// Defines the type of packet handler function
+export type PacketHandlerFunction = (client: WebSocket, data: any) => void;
+// Defines the packet handlers map which is id -> handler
+export type PacketHandlers = Record<CPID, PacketHandlerFunction>;
+
 // Send a packet to the client
-export const sendPacket = (client: WebSocket, packet: Packet) => {
+export const sendPacket = (client: Socket, packet: Packet) => {
     client.send(JSON.stringify(packet));
 };
